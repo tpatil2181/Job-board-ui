@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applied Job</title>
+</head>
+<script>
+    jobs = [
+        {
+            jobTitle: 'Software Engineer',
+            company: 'Google',
+            workmode: 'Remote',
+            appliedOn: '10 April 2026',
+            status: 'Applied'
+        },
+        {
+            jobTitle: 'Backend Developer',
+            company: 'Amazon',
+            workmode: 'Onsite',
+            appliedOn: '8 April 2026',
+            status: 'Interview'
+        }
+    ];
+</script>
+<style>
+    .job-table {
+        width: 100%;
+        overflow-x: auto;
+        /* prevents breaking on small screens */
+    }
+
+    .job-table table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+    }
+
+    .job-table th,
+    .job-table td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .job-table th {
+        background: #f5f5f5;
+        font-weight: 600;
+    }
+
+    /* status colors */
+    .job-table .applied {
+        color: blue;
+    }
+
+    .job-table .interview {
+        color: orange;
+    }
+
+    .job-table .selected {
+        color: green;
+    }
+
+    .job-table .rejected {
+        color: red;
+    }
+
+    /* button */
+    .job-table button {
+        padding: 5px 10px;
+        border: none;
+        background: red;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
+
+<body>
+    <div class="job-table">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Mode</th>
+                    <th>Applied On</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let job of jobs">
+                    <td>{{job.jobTitle}}</td>
+                    <td>{{job.company}}</td>
+                    <td>{{job.workmode}}</td>
+                    <td>{{job.appliedOn}}</td>
+                    <td class="status" [ngClass]="job.status.toLowerCase()">
+                        {{job.status}}
+                    </td>
+                    <td>
+                        <button (click)="onWithdraw(job)">Withdraw</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    </div>
+    </div>
+
+
+</html>
+
+
+
+<!-- 
+it should be look like this 
+Job title              Company          Mode         Applied on       status       action
+Java Developer         Infosys          On site      12 Dec           Selected     Withdraw -->
