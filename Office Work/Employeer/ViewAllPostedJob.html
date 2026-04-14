@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Posted Job</title>
+</head>
+<style>
+    .employer-jobs {
+  width: 100%;
+  overflow-x: auto;
+  font-family: Arial, sans-serif;
+}
+
+.employer-jobs table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.employer-jobs th,
+.employer-jobs td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.employer-jobs th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+/* dropdown */
+.employer-jobs select {
+  padding: 5px;
+  border-radius: 4px;
+}
+
+/* button */
+.employer-jobs button {
+  padding: 5px 10px;
+  border: none;
+  background: #007bff;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.employer-jobs button:hover {
+  opacity: 0.9;
+}
+</style>
+<body>
+
+    <div class="employer-jobs">
+
+  <table>
+    <thead>
+      <tr>
+        <th>Job Title</th>
+        <th>Experience</th>
+        <th>Post Date</th>
+        <th>Status</th>
+        <th>No. of Applicants</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let job of jobs">
+        <td>{{job.title}}</td>
+        <td>{{job.experience}}</td>
+        <td>{{job.postDate}}</td>
+
+        <!-- Status Dropdown -->
+        <td>
+          <select [(ngModel)]="job.status">
+            <option value="Open">Open</option>
+            <option value="Closed">Closed</option>
+            <option value="Paused">Paused</option>
+          </select>
+        </td>
+
+        <td>{{job.applicants}}</td>
+
+        <!-- Action -->
+        <td>
+          <button (click)="updateJob(job)">Update</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+    
+</body>
+</html>
+
+<!-- 
+create structure like this, where there will be all list of posted job by employeer
+Job Title       Experience      post Date       Status      No of applicant        action
+
+on status there will be doropdown list of 3 element and  place of action ther will be update button , and it should for all job that will be in list -->

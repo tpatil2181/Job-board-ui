@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .applicant-list {
+  width: 100%;
+  overflow-x: auto;
+  font-family: Arial, sans-serif;
+}
+
+.applicant-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.applicant-list th,
+.applicant-list td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.applicant-list th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+/* link */
+.view-link {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.view-link:hover {
+  text-decoration: underline;
+}
+
+/* dropdown */
+.applicant-list select {
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.applicant-list button {
+  padding: 5px 10px;
+  border: none;
+  background: #007bff;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+</style>
+<body>
+
+    <div class="applicant-list">
+
+  <table>
+    <thead>
+      <tr>
+        <th>Applicant Name</th>
+        <th>Profile</th>
+        <th>Status</th>
+        <th>Action</th>
+
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let applicant of applicants">
+
+        <!-- Name -->
+        <td>{{ applicant.name }}</td>
+
+        <!-- View Profile -->
+        <td>
+          <a (click)="viewProfile(applicant)" class="view-link">
+            View Profile
+          </a>
+        </td>
+
+        <!-- Action Dropdown -->
+        <td>
+          <select [(ngModel)]="applicant.status">
+            <option value="Shortlisted">Shortlisted</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Interview">Interview</option>
+          </select>
+        </td>
+         <!-- Action -->
+        <td>
+          <button (click)="updateCandidateStatus(job)">Update</button>
+        </td>
+
+      </tr>
+    </tbody>
+
+  </table>
+
+</div>
+    
+</body>
+</html>
+
+
+
+<!-- create me structure like this, in which i should see the list of all candidate who applied for perticular job
+
+Applicant name      View Profile (button or link for  view  applicannt profile)          action (dropdown list for -3 items)  -->
