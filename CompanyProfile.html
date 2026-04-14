@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company profile</title>
+</head>
+<style>
+    .company-profile {
+        max-width: 900px;
+        margin: auto;
+        padding: 20px;
+        background: #fff;
+        font-family: Arial, sans-serif;
+    }
+
+    /* header */
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .logo-section {
+        text-align: center;
+    }
+
+    .logo-section img {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    .logo-section button {
+        margin-top: 5px;
+        padding: 5px 10px;
+    }
+
+    /* basic info */
+    .basic-info {
+        flex: 1;
+    }
+
+    .edit-btn {
+        margin-top: 10px;
+        padding: 6px 12px;
+        border: none;
+        background: #007bff;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    /* section */
+    .section {
+        margin-top: 20px;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    /* mobile */
+    @media (max-width: 600px) {
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .profile-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<body>
+
+    <div class="company-profile">
+
+        <!-- Header Section -->
+        <div class="profile-header">
+
+            <div class="logo-section">
+                <img [src]="company.logo" alt="Company Logo">
+                <button>Update</button>
+            </div>
+
+            <div class="basic-info">
+                <h2>{{company.name}}</h2>
+                <button class="edit-btn">Edit Profile</button>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <!-- Contact Info -->
+        <div class="section">
+            <h3>Contact Information</h3>
+
+            <div class="info-grid">
+                <div><b>Email:</b> {{company.email}}</div>
+                <div><b>Website:</b> {{company.website}}</div>
+                <div><b>Phone:</b> {{company.phone}}</div>
+                <div><b>Address:</b> {{company.address}}</div>
+                <div><b>Headquarters:</b> {{company.headquarters}}</div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- About Company -->
+        <div class="section">
+            <h3>About Company</h3>
+            <p>{{company.about}}</p>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+
+
+<!-- image
+view image 
+update button
+
+Company name
+
+Contact
+mail
+website
+address
+headquaters
+
+
+about company 
+
+
+
+ -->
