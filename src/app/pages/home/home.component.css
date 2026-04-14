@@ -1,0 +1,120 @@
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      line-height: 1.6;
+    }
+
+    /* Navbar */
+    nav {
+      background: #333;
+      color: white;
+      padding: 15px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav h1 {
+      font-size: 24px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+    }
+
+    nav ul li {
+      margin-left: 20px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #00c6ff;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 90vh;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .hero h2 {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .hero button {
+      padding: 12px 25px;
+      border: none;
+      background: white;
+      color: #0072ff;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .hero button:hover {
+      background: #ddd;
+    }
+
+    /* Features */
+    .features {
+      padding: 50px;
+      text-align: center;
+    }
+
+    .features h2 {
+      margin-bottom: 30px;
+    }
+
+    .feature-box {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    .box {
+      width: 250px;
+      margin: 15px;
+      padding: 20px;
+      background: #f4f4f4;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+
+    .box:hover {
+      transform: translateY(-10px);
+      background: #e0f7ff;
+    }
+
+    /* Footer */
+    footer {
+      background: #333;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+    }

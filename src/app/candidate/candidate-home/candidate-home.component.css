@@ -1,0 +1,67 @@
+.layout {
+  display: flex;
+  height: calc(100vh - 60px);
+}
+
+
+
+/* Sidebar already 250px */
+
+.content {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;   /* 🔥 IMPORTANT */
+  align-items: center;      /* center horizontally */
+  justify-content: flex-start; /* move to top */
+}
+
+/* Search */
+.search-container {
+  text-align: center;
+}
+
+.search-container h2 {
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+.search-box {
+  display: flex;
+  gap: 10px;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.search-box input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 200px;
+}
+
+.search-box button {
+  padding: 10px 20px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-box button:hover {
+  background: #2563eb;
+}
+
+
+.job-list {
+  width: 100%;
+  max-width: 800px;
+  margin-top: 20px;
+}
+
+
+
+

@@ -1,0 +1,65 @@
+<div class="profile-container">
+
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <div class="profile-img">
+      <span>{{ user.name.charAt(0) }}</span>
+    </div>
+
+    <div>
+      <h2>{{ user.name }}</h2>
+      <p>{{ user.title }}</p>
+    </div>
+  </div>
+
+  <!-- Upload Section -->
+  <div class="section">
+    <h3>Profile Image</h3>
+    <input type="file" (change)="onProfileImageUpload($event)">
+  </div>
+
+  <!-- Contact -->
+  <div class="section">
+    <h3>Contact Details</h3>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Mobile:</strong> {{ user.mobile }}</p>
+  </div>
+
+  <!-- Resume -->
+  <div class="section">
+    <h3>Resume</h3>
+    <p>{{ user.name }}.pdf</p>
+    <button (click)="viewResume()">View</button>
+    <input type="file" (change)="onResumeUpload($event)">
+  </div>
+
+  <!-- Description -->
+  <div class="section">
+    <h3>Profile Description</h3>
+    <p>{{ user.description }}</p>
+  </div>
+
+  <!-- Extra Info -->
+  <div class="section grid">
+    <div>
+      <h4>Experience</h4>
+      <p>{{ user.experience }}</p>
+    </div>
+
+    <div>
+      <h4>Education</h4>
+      <p>{{ user.education }}</p>
+    </div>
+
+    <div>
+      <h4>Skills</h4>
+      <p>{{ user.skills }}</p>
+    </div>
+
+    <div>
+      <h4>Languages</h4>
+      <p>{{ user.languages }}</p>
+    </div>
+  </div>
+
+</div>

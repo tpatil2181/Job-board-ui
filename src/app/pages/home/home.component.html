@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Page</title>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <h1>MyWebsite</h1>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Features</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#">Login</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h2>Find Your Next Job</h2>
+    <p>Build something amazing with simple HTML & CSS</p>
+    <button (click)="goHome()">Get Started</button>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <h2>Our Features</h2>
+    <div class="feature-box">
+      <div class="box">
+        <h3>Fast</h3>
+        <p>Optimized for speed and performance.</p>
+      </div>
+      <div class="box">
+        <h3>Responsive</h3>
+        <p>Looks great on all devices.</p>
+      </div>
+      <div class="box">
+        <h3>Easy</h3>
+        <p>Simple and beginner-friendly design.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 MyWebsite | All Rights Reserved</p>
+  </footer>
+
+</body>
+</html>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+</head>
+<Body>
+  <!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">Hire<span>Flow</span></a>
+    <ul class="nav-links">
+      <li><a href="#jobs">Find Jobs</a></li>
+      <li><a href="#companies">Companies</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#">Career Advice</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#" class="btn btn-outline">Sign In</a>
+      <a href="#" class="btn btn-solid">Post a Job</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <h1>Find Your Next Job</h1>
+    <p>Search thousands of jobs from top companies across India and worldwide.</p>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Job title, skills, or company..." />
+      <input type="text" id="locationInput" placeholder="City or Remote" style="border-left:1px solid #ddd; border-right:1px solid #ddd;" />
+      <button onclick="handleSearch()">Search Jobs</button>
+    </div>
+    <div class="hero-links">
+      <span style="color:rgba(255,255,255,0.7); font-size:13px;">Popular:</span>
+      <a href="#" onclick="fillSearch('Software Engineer')">Software Engineer</a>
+      <a href="#" onclick="fillSearch('Product Manager')">Product Manager</a>
+      <a href="#" onclick="fillSearch('Data Analyst')">Data Analyst</a>
+      <a href="#" onclick="fillSearch('UI UX Designer')">UI/UX Designer</a>
+      <a href="#" onclick="fillSearch('Remote')">Remote Jobs</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat"><div class="stat-num" id="c1">0</div><div class="stat-lbl">Active Jobs</div></div>
+    <div class="stat"><div class="stat-num" id="c2">0</div><div class="stat-lbl">Companies Hiring</div></div>
+    <div class="stat"><div class="stat-num" id="c3">0</div><div class="stat-lbl">Candidates Placed</div></div>
+    <div class="stat"><div class="stat-num" id="c4">0</div><div class="stat-lbl">Cities Covered</div></div>
+  </div>
+</div>
+
+
+</Body>
+

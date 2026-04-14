@@ -1,0 +1,52 @@
+<div class="auth-container">
+  <div class="auth-card">
+
+    <h2>Register</h2>
+
+    <form (ngSubmit)="register()" #registerForm="ngForm">
+
+      <input type="text"
+             placeholder="First Name"
+             name="first_name"
+             [(ngModel)]="candidate.first_name"
+             required>
+
+      <input type="text"
+             placeholder="Last Name"
+             name="last_name"
+             [(ngModel)]="candidate.last_name"
+             required>
+
+      <input type="number"
+             placeholder="Mobile Number"
+             name="mobNo"
+             [(ngModel)]="candidate.mobNo"
+             required>
+
+      <input type="email"
+             placeholder="Email"
+             name="email"
+             [(ngModel)]="candidate.email"
+             required>
+
+      <input type="password"
+             placeholder="Password"
+             name="password"
+             [(ngModel)]="candidate.password"
+             required>
+
+     
+
+      <button type="submit" [disabled]="registerForm.invalid">
+        Register
+      </button>
+
+    </form>
+
+    <p>
+      Already have an account?
+      <span (click)="goToLogin()">Login</span>
+    </p>
+
+  </div>
+</div>
