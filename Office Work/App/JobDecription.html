@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Description</title>
+</head>
+
+<style>
+    .job-details {
+        max-width: 900px;
+        margin: auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        background: #fff;
+    }
+
+    /* top */
+    .top-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .company-row {
+        display: flex;
+        gap: 10px;
+        margin: 5px 0;
+    }
+
+    .salary {
+        color: green;
+        font-weight: 600;
+    }
+
+    .right img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+    }
+
+    /* info */
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin: 15px 0;
+    }
+
+    /* action */
+    .action-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .actions button {
+        margin-left: 10px;
+        padding: 6px 12px;
+        border: none;
+        background: #007bff;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    /* sections */
+    .section {
+        margin-top: 20px;
+    }
+
+    .skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .skills span {
+        background: #eee;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+</style>
+
+<body>
+
+    <div class="job-details">
+
+        <!-- Top Section -->
+        <div class="top-section">
+
+            <div class="left">
+                <h2>{{job.jobTitle}}</h2>
+                <div class="company-row">
+                    <span class="expericence">{{job.Experience requried}}</span>
+                    <span class="salary">{{job.salary}}</span>
+                </div>
+                <p class="company">{{job.company}}</p>
+                <!-- <p class="rating">⭐ {{job.rating}}</p> -->
+
+            </div>
+
+            <div class="right">
+                <img [src]="job.logo" alt="Company Logo">
+            </div>
+
+        </div>
+
+        <!-- Basic Info -->
+        <div class="info-row">
+            <span><b>Work Mode:</b> {{job.workmode}}</span>
+            <span><b>Location:</b> {{job.location}}</span>
+        </div>
+
+        <hr>
+
+        <!-- Action Section -->
+        <div class="action-row">
+            <span>Posted on: {{job.postedOn}}</span>
+
+            <div class="actions">
+                <!-- show based on login -->
+                <button *ngIf="!isLoggedIn">Register to Apply</button>
+                <button *ngIf="!isLoggedIn">Login to Apply</button>
+                <button *ngIf="isLoggedIn">Apply</button>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Job Summary -->
+        <div class="section">
+            <h3>Job Summary</h3>
+            <p>{{job.description}}</p>
+        </div>
+
+        <!-- Skills -->
+        <div class="section">
+            <h3>Key Skills</h3>
+            <div class="skills">
+                <span *ngFor="let skill of job.skills">{{skill}}</span>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+<!-- 
+create me a page to show full job description like
+
+job title
+company  star reating           salary                      company logo
+workmode
+location        
+----------------------------------------------------------------------------
+posted on date                           register to apply  login to apply  Or If(Login then give apply button)
+
+
+
+job summary Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsa a dolorum eum obcaecati vero voluptatem eaque cupiditate velit, dolores, excepturi error saepe dolor iusto? Earum expedita dolorum ullam ipsum maiores?
+this all information is given by employeer while posting job
+
+key skilll
+ -->

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job card Comonent</title>
+</head>
+<style>
+    .job-card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    label {
+        font-size: 12px;
+        color: #777;
+    }
+
+    p {
+        margin: 3px 0 0;
+        font-weight: 500;
+    }
+
+    .status {
+        padding: 3px 8px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    /* status colors */
+    .applied {
+        background: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .interview {
+        background: #fff3e0;
+        color: #ef6c00;
+    }
+
+    .rejected {
+        background: #fdecea;
+        color: #d32f2f;
+    }
+
+    .action button {
+        padding: 6px 12px;
+        border: none;
+        background: #d32f2f;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .action button:hover {
+        opacity: 0.9;
+    }
+</style>
+
+<body>
+    <div class="job-card">
+
+        <div class="row">
+            <div>
+                <label>Job Title</label>
+                <p>{{ job.jobTitle }}</p>
+            </div>
+
+            <div>
+                <label>Company</label>
+                <p>{{ job.company }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label>Work Mode</label>
+                <p>{{ job.workmode }}</p>
+            </div>
+
+            <div>
+                <label>Applied On</label>
+                <p>{{ job.appliedOn }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label>Status</label>
+                <p class="status" [ngClass]="job.status.toLowerCase()">
+                    {{ job.status }}
+                </p>
+            </div>
+
+            <div class="action">
+                <button (click)="onWithdraw()">Withdraw</button>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

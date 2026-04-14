@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HireFlow — Job Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Merriweather:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue:    #2557a7;
+      --blue-dk: #1a4080;
+      --blue-lt: #e8f0fb;
+      --gray-1:  #f5f5f5;
+      --gray-2:  #e0e0e0;
+      --gray-3:  #9e9e9e;
+      --gray-4:  #555;
+      --text:    #1a1a1a;
+      --white:   #ffffff;
+      --border:  #d4d4d4;
+      --radius:  4px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Lato', sans-serif; color: var(--text); background: var(--white); line-height: 1.6; font-size: 15px; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+    /* ── Navbar ── */
+    .navbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-inner {
+      display: flex; align-items: center; gap: 32px;
+      padding: 14px 20px; max-width: 1100px; margin: 0 auto;
+    }
+    .logo { font-family: 'Merriweather', serif; font-size: 20px; color: var(--blue); font-weight: 700; }
+    .logo span { color: var(--text); }
+    .nav-links { display: flex; gap: 24px; list-style: none; margin-left: auto; }
+    .nav-links a { color: var(--gray-4); font-size: 14px; }
+    .nav-links a:hover { color: var(--blue); text-decoration: none; }
+    .nav-actions { display: flex; gap: 10px; }
+    .btn { display: inline-block; padding: 8px 18px; border-radius: var(--radius); font-size: 14px; font-weight: 700; cursor: pointer; border: none; font-family: 'Lato', sans-serif; transition: background 0.15s, color 0.15s; }
+    .btn-outline { border: 1.5px solid var(--blue); color: var(--blue); background: none; }
+    .btn-outline:hover { background: var(--blue-lt); text-decoration: none; }
+    .btn-solid { background: var(--blue); color: var(--white); }
+    .btn-solid:hover { background: var(--blue-dk); text-decoration: none; }
+
+    /* ── Hero ── */
+    .hero { background: var(--blue); padding: 56px 20px 48px; text-align: center; }
+    .hero h1 { font-family: 'Merriweather', serif; font-size: 32px; color: var(--white); font-weight: 700; margin-bottom: 10px; }
+    .hero p { color: rgba(255,255,255,0.85); font-size: 16px; margin-bottom: 28px; }
+    .search-box {
+      display: flex; background: var(--white); border-radius: var(--radius);
+      overflow: hidden; max-width: 700px; margin: 0 auto 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .search-box input {
+      flex: 1; padding: 14px 16px; border: none; outline: none;
+      font-family: 'Lato', sans-serif; font-size: 15px; color: var(--text);
+      border-right: 1px solid var(--border); min-width: 0;
+    }
+    .search-box input::placeholder { color: var(--gray-3); }
+    .search-box button {
+      padding: 14px 28px; background: var(--blue-dk); color: var(--white);
+      border: none; font-family: 'Lato', sans-serif; font-size: 15px;
+      font-weight: 700; cursor: pointer; white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .search-box button:hover { background: #132e5e; }
+    .hero-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .hero-links a { color: rgba(255,255,255,0.9); font-size: 13.5px; }
+    .hero-links a:hover { color: var(--white); }
+
+    /* ── Stats bar ── */
+    .stats-bar { background: var(--gray-1); border-bottom: 1px solid var(--border); }
+    .stats-inner { display: flex; justify-content: center; gap: 48px; padding: 14px 20px; max-width: 1100px; margin: 0 auto; flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat-num { font-weight: 700; font-size: 20px; color: var(--blue); }
+    .stat-lbl { font-size: 12px; color: var(--gray-3); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* ── Main layout ── */
+    .main { padding: 36px 0 60px; }
+    .main-grid { display: grid; grid-template-columns: 240px 1fr; gap: 28px; }
+
+    /* ── Sidebar ── */
+    .sidebar { }
+    .filter-group { margin-bottom: 24px; }
+    .filter-group h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-4); margin-bottom: 10px; border-bottom: 1px solid var(--gray-2); padding-bottom: 6px; }
+    .filter-group label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--gray-4); margin-bottom: 6px; cursor: pointer; }
+    .filter-group label:hover { color: var(--blue); }
+    .filter-group input[type="checkbox"] { accent-color: var(--blue); width: 15px; height: 15px; cursor: pointer; }
+    .filter-group input[type="text"] {
+      width: 100%; padding: 7px 10px; border: 1px solid var(--border);
+      border-radius: var(--radius); font-family: 'Lato', sans-serif;
+      font-size: 14px; outline: none; color: var(--text);
+    }
+    .filter-group input[type="text"]:focus { border-color: var(--blue); }
+    .count { color: var(--gray-3); font-size: 12px; margin-left: auto; }
+    .clear-btn { background: none; border: none; color: var(--blue); font-size: 13px; cursor: pointer; padding: 0; font-family: 'Lato', sans-serif; }
+    .clear-btn:hover { text-decoration: underline; }
+
+    /* ── Jobs list ── */
+    .jobs-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+    .jobs-header h2 { font-family: 'Merriweather', serif; font-size: 18px; }
+    .sort-select { padding: 6px 10px; border: 1px solid var(--border); border-radius: var(--radius); font-family: 'Lato', sans-serif; font-size: 13px; outline: none; color: var(--gray-4); cursor: pointer; }
+
+    .job-card {
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 18px 20px; margin-bottom: 12px; background: var(--white);
+      display: flex; gap: 16px; align-items: flex-start;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      cursor: pointer;
+    }
+    .job-card:hover { border-color: var(--blue); box-shadow: 0 2px 8px rgba(37,87,167,0.1); }
+    .job-card.new-job { border-left: 3px solid var(--blue); }
+
+    .job-logo {
+      width: 48px; height: 48px; border-radius: var(--radius);
+      border: 1px solid var(--gray-2); display: flex; align-items: center;
+      justify-content: center; font-size: 18px; font-weight: 700;
+      flex-shrink: 0; background: var(--gray-1);
+    }
+    .job-info { flex: 1; min-width: 0; }
+    .job-title { font-size: 16px; font-weight: 700; color: var(--blue); margin-bottom: 2px; }
+    .job-title:hover { text-decoration: underline; }
+    .job-company { font-size: 14px; color: var(--gray-4); margin-bottom: 8px; }
+    .job-meta { display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--gray-3); margin-bottom: 10px; }
+    .job-meta span::before { margin-right: 4px; }
+    .job-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-size: 12px; padding: 2px 10px; border-radius: 2px; border: 1px solid;
+      font-weight: 700;
+    }
+    .tag-type   { color: var(--gray-4); border-color: var(--gray-2); background: var(--gray-1); }
+    .tag-remote { color: #2a7a2a; border-color: #c3e6c3; background: #f0faf0; }
+    .tag-new    { color: var(--blue); border-color: #b3c9ea; background: var(--blue-lt); }
+
+    .job-right { text-align: right; flex-shrink: 0; }
+    .job-salary { font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; }
+    .job-posted { font-size: 12px; color: var(--gray-3); margin-top: 4px; }
+    .job-save {
+      background: none; border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 5px 10px; font-size: 12px; color: var(--gray-4);
+      cursor: pointer; font-family: 'Lato', sans-serif; margin-top: 8px;
+      transition: all 0.15s;
+    }
+    .job-save:hover { border-color: var(--blue); color: var(--blue); }
+    .job-save.saved { background: var(--blue-lt); color: var(--blue); border-color: var(--blue); }
+
+    .pagination { display: flex; gap: 4px; justify-content: center; margin-top: 28px; }
+    .page-btn {
+      padding: 7px 13px; border: 1px solid var(--border); background: var(--white);
+      border-radius: var(--radius); font-size: 14px; cursor: pointer; color: var(--gray-4);
+      font-family: 'Lato', sans-serif; transition: all 0.15s;
+    }
+    .page-btn:hover, .page-btn.active { border-color: var(--blue); color: var(--blue); background: var(--blue-lt); }
+    .page-btn.active { font-weight: 700; }
+
+    /* ── Company logos section ── */
+    .companies-section { background: var(--gray-1); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 36px 0; }
+    .companies-section h2 { text-align: center; font-family: 'Merriweather', serif; font-size: 20px; margin-bottom: 24px; }
+    .companies-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+    .company-tile {
+      background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 14px 22px; display: flex; align-items: center; gap: 10px;
+      font-size: 14px; font-weight: 700; color: var(--gray-4);
+      transition: border-color 0.15s; cursor: pointer;
+    }
+    .company-tile:hover { border-color: var(--blue); color: var(--blue); }
+    .company-tile-logo {
+      width: 30px; height: 30px; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+    }
+    .jobs-count { font-size: 12px; color: var(--gray-3); font-weight: 400; }
+
+    /* ── How it works ── */
+    .how-section { padding: 52px 0; }
+    .how-section h2 { text-align: center; font-family: 'Merriweather', serif; font-size: 22px; margin-bottom: 36px; }
+    .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .how-card { text-align: center; padding: 28px 24px; border: 1px solid var(--border); border-radius: var(--radius); }
+    .how-num { width: 36px; height: 36px; border-radius: 50%; background: var(--blue); color: var(--white); font-weight: 700; font-size: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+    .how-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .how-card p { font-size: 14px; color: var(--gray-4); }
+
+    /* ── Dual CTA ── */
+    .cta-section { background: var(--blue); padding: 52px 0; }
+    .cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .cta-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius); padding: 32px 28px; text-align: center; }
+    .cta-card h3 { color: var(--white); font-family: 'Merriweather', serif; font-size: 18px; margin-bottom: 10px; }
+    .cta-card p { color: rgba(255,255,255,0.8); font-size: 14px; margin-bottom: 20px; }
+    .btn-white { background: var(--white); color: var(--blue); font-weight: 700; padding: 10px 24px; border-radius: var(--radius); border: none; font-family: 'Lato', sans-serif; font-size: 14px; cursor: pointer; transition: background 0.15s; display: inline-block; }
+    .btn-white:hover { background: var(--blue-lt); text-decoration: none; }
+
+    /* ── Footer ── */
+    .footer { background: #1a1a1a; color: #aaa; padding: 40px 0 24px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 36px; }
+    .footer-brand .logo { color: #fff; font-size: 18px; display: inline-block; margin-bottom: 10px; }
+    .footer-brand p { font-size: 13px; line-height: 1.7; }
+    .footer-col h4 { color: #fff; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 8px; }
+    .footer-col a { color: #aaa; font-size: 13px; }
+    .footer-col a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid #333; padding-top: 20px; display: flex; justify-content: space-between; font-size: 12px; flex-wrap: wrap; gap: 8px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 860px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .how-grid { grid-template-columns: 1fr; }
+      .cta-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 540px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .search-box { flex-direction: column; }
+      .search-box input { border-right: none; border-bottom: 1px solid var(--border); }
+      .job-right { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">Hire<span>Flow</span></a>
+    <ul class="nav-links">
+      <li><a href="#jobs">Find Jobs</a></li>
+      <li><a href="#companies">Companies</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#">Career Advice</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#" class="btn btn-outline">Sign In</a>
+      <a href="#" class="btn btn-solid">Post a Job</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <h1>Find Your Next Job</h1>
+    <p>Search thousands of jobs from top companies across India and worldwide.</p>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Job title, skills, or company..." />
+      <input type="text" id="locationInput" placeholder="City or Remote" style="border-left:1px solid #ddd; border-right:1px solid #ddd;" />
+      <button onclick="handleSearch()">Search Jobs</button>
+    </div>
+    <div class="hero-links">
+      <span style="color:rgba(255,255,255,0.7); font-size:13px;">Popular:</span>
+      <a href="#" onclick="fillSearch('Software Engineer')">Software Engineer</a>
+      <a href="#" onclick="fillSearch('Product Manager')">Product Manager</a>
+      <a href="#" onclick="fillSearch('Data Analyst')">Data Analyst</a>
+      <a href="#" onclick="fillSearch('UI UX Designer')">UI/UX Designer</a>
+      <a href="#" onclick="fillSearch('Remote')">Remote Jobs</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat"><div class="stat-num" id="c1">0</div><div class="stat-lbl">Active Jobs</div></div>
+    <div class="stat"><div class="stat-num" id="c2">0</div><div class="stat-lbl">Companies Hiring</div></div>
+    <div class="stat"><div class="stat-num" id="c3">0</div><div class="stat-lbl">Candidates Placed</div></div>
+    <div class="stat"><div class="stat-num" id="c4">0</div><div class="stat-lbl">Cities Covered</div></div>
+  </div>
+</div>
+
+<!-- JOBS -->
+<section class="main" id="jobs">
+  <div class="container">
+    <div class="main-grid">
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="filter-group">
+          <h3>Job Type <button class="clear-btn" onclick="clearFilter('type')">Clear</button></h3>
+          <label><input type="checkbox" name="type" value="full-time" onchange="applyFilters()" /> Full-time <span class="count">234</span></label>
+          <label><input type="checkbox" name="type" value="part-time" onchange="applyFilters()" /> Part-time <span class="count">87</span></label>
+          <label><input type="checkbox" name="type" value="contract" onchange="applyFilters()" /> Contract <span class="count">142</span></label>
+          <label><input type="checkbox" name="type" value="internship" onchange="applyFilters()" /> Internship <span class="count">63</span></label>
+        </div>
+        <div class="filter-group">
+          <h3>Work Mode <button class="clear-btn" onclick="clearFilter('mode')">Clear</button></h3>
+          <label><input type="checkbox" name="mode" value="remote" onchange="applyFilters()" /> Remote <span class="count">198</span></label>
+          <label><input type="checkbox" name="mode" value="hybrid" onchange="applyFilters()" /> Hybrid <span class="count">156</span></label>
+          <label><input type="checkbox" name="mode" value="onsite" onchange="applyFilters()" /> On-site <span class="count">172</span></label>
+        </div>
+        <div class="filter-group">
+          <h3>Experience</h3>
+          <label><input type="checkbox" name="exp" value="fresher" onchange="applyFilters()" /> Fresher (0–1 yr) <span class="count">112</span></label>
+          <label><input type="checkbox" name="exp" value="junior" onchange="applyFilters()" /> Junior (1–3 yrs) <span class="count">189</span></label>
+          <label><input type="checkbox" name="exp" value="mid" onchange="applyFilters()" /> Mid (3–6 yrs) <span class="count">204</span></label>
+          <label><input type="checkbox" name="exp" value="senior" onchange="applyFilters()" /> Senior (6+ yrs) <span class="count">97</span></label>
+        </div>
+        <div class="filter-group">
+          <h3>Location</h3>
+          <input type="text" placeholder="Enter city..." id="locationFilter" oninput="applyFilters()" />
+        </div>
+        <div class="filter-group">
+          <h3>Category</h3>
+          <label><input type="checkbox" name="cat" value="tech" onchange="applyFilters()" /> Technology <span class="count">310</span></label>
+          <label><input type="checkbox" name="cat" value="design" onchange="applyFilters()" /> Design <span class="count">88</span></label>
+          <label><input type="checkbox" name="cat" value="marketing" onchange="applyFilters()" /> Marketing <span class="count">76</span></label>
+          <label><input type="checkbox" name="cat" value="finance" onchange="applyFilters()" /> Finance <span class="count">54</span></label>
+          <label><input type="checkbox" name="cat" value="hr" onchange="applyFilters()" /> Human Resources <span class="count">41</span></label>
+        </div>
+      </aside>
+
+      <!-- Jobs List -->
+      <div>
+        <div class="jobs-header">
+          <h2 id="jobsTitle">Featured Jobs</h2>
+          <select class="sort-select" onchange="sortJobs(this.value)">
+            <option value="relevant">Most Relevant</option>
+            <option value="recent">Most Recent</option>
+            <option value="salary">Highest Salary</option>
+          </select>
+        </div>
+        <div id="jobsList"></div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPANIES -->
+<section class="companies-section" id="companies">
+  <div class="container">
+    <h2>Top Hiring Companies</h2>
+    <div class="companies-grid" id="companiesGrid"></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="container">
+    <h2>How It Works</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">1</div>
+        <h3>Create Your Profile</h3>
+        <p>Sign up and build your professional profile with your skills, experience, and resume.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">2</div>
+        <h3>Search & Apply</h3>
+        <p>Browse thousands of jobs, filter by your preferences, and apply with one click.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">3</div>
+        <h3>Get Hired</h3>
+        <p>Track your applications, receive interview calls, and land your next opportunity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-grid">
+      <div class="cta-card">
+        <h3>Looking for a Job?</h3>
+        <p>Create a free profile and let top companies find you. Access thousands of openings today.</p>
+        <a href="#" class="btn-white">Create Free Account</a>
+      </div>
+      <div class="cta-card">
+        <h3>Hiring Talent?</h3>
+        <p>Post your job in minutes and reach thousands of qualified candidates across India.</p>
+        <a href="#" class="btn-white">Post a Job</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">HireFlow</a>
+        <p>Connecting job seekers with the right opportunities and helping companies find the right talent.</p>
+      </div>
+      <div class="footer-col">
+        <h4>For Candidates</h4>
+        <ul>
+          <li><a href="#">Browse Jobs</a></li>
+          <li><a href="#">Create Profile</a></li>
+          <li><a href="#">My Applications</a></li>
+          <li><a href="#">Career Advice</a></li>
+          <li><a href="#">Salary Guide</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>For Employers</h4>
+        <ul>
+          <li><a href="#">Post a Job</a></li>
+          <li><a href="#">Search Candidates</a></li>
+          <li><a href="#">Employer Dashboard</a></li>
+          <li><a href="#">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 HireFlow. All rights reserved.</span>
+      <span>Made for job seekers across India</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Data ──
+const allJobs = [
+  { id:1, title:"Senior Software Engineer", company:"Infosys", location:"Bengaluru", type:"Full-time", mode:"hybrid", exp:"senior", cat:"tech", salary:"₹18–24 LPA", logo:"I", color:"#007CC3", isNew:true, posted:"Today",  applicants:87 },
+  { id:2, title:"Product Manager", company:"Flipkart", location:"Bengaluru", type:"Full-time", mode:"onsite", exp:"mid", cat:"tech", salary:"₹22–30 LPA", logo:"F", color:"#F74F00", isNew:true, posted:"Today", applicants:53 },
+  { id:3, title:"UI/UX Designer", company:"Zomato", location:"Gurugram", type:"Full-time", mode:"hybrid", exp:"junior", cat:"design", salary:"₹10–16 LPA", logo:"Z", color:"#E23744", isNew:false, posted:"2 days ago", applicants:119 },
+  { id:4, title:"Data Analyst", company:"TCS", location:"Mumbai", type:"Full-time", mode:"onsite", exp:"junior", cat:"tech", salary:"₹6–10 LPA", logo:"T", color:"#1C3B6E", isNew:false, posted:"3 days ago", applicants:204 },
+  { id:5, title:"React Developer", company:"Razorpay", location:"Remote", type:"Full-time", mode:"remote", exp:"mid", cat:"tech", salary:"₹14–20 LPA", logo:"R", color:"#2D81F7", isNew:true, posted:"1 day ago", applicants:66 },
+  { id:6, title:"Digital Marketing Manager", company:"Swiggy", location:"Bengaluru", type:"Full-time", mode:"hybrid", exp:"mid", cat:"marketing", salary:"₹12–18 LPA", logo:"S", color:"#FC8019", isNew:false, posted:"4 days ago", applicants:44 },
+  { id:7, title:"Java Backend Developer", company:"Wipro", location:"Pune", type:"Full-time", mode:"onsite", exp:"mid", cat:"tech", salary:"₹10–15 LPA", logo:"W", color:"#341c5c", isNew:false, posted:"5 days ago", applicants:98 },
+  { id:8, title:"HR Business Partner", company:"HCL Tech", location:"Noida", type:"Full-time", mode:"hybrid", exp:"senior", cat:"hr", salary:"₹12–16 LPA", logo:"H", color:"#0076CE", isNew:false, posted:"1 week ago", applicants:37 },
+  { id:9, title:"Financial Analyst", company:"HDFC Bank", location:"Mumbai", type:"Full-time", mode:"onsite", exp:"junior", cat:"finance", salary:"₹8–12 LPA", logo:"H", color:"#004C97", isNew:true, posted:"1 day ago", applicants:72 },
+  { id:10, title:"DevOps Engineer", company:"Freshworks", location:"Remote", type:"Full-time", mode:"remote", exp:"mid", cat:"tech", salary:"₹16–22 LPA", logo:"F", color:"#25c16f", isNew:false, posted:"3 days ago", applicants:55 },
+  { id:11, title:"Graphic Designer", company:"Byju's", location:"Bengaluru", type:"Full-time", mode:"hybrid", exp:"junior", cat:"design", salary:"₹6–9 LPA", logo:"B", color:"#8A2BE2", isNew:false, posted:"6 days ago", applicants:88 },
+  { id:12, title:"Software Intern", company:"Ola", location:"Bengaluru", type:"Internship", mode:"onsite", exp:"fresher", cat:"tech", salary:"₹15–25k/mo", logo:"O", color:"#1C1C1C", isNew:true, posted:"Today", applicants:312 },
+];
+
+const companies = [
+  { name:"Infosys",   logo:"I", color:"#007CC3", jobs:142 },
+  { name:"TCS",       logo:"T", color:"#1C3B6E", jobs:210 },
+  { name:"Wipro",     logo:"W", color:"#341c5c", jobs:98  },
+  { name:"Flipkart",  logo:"F", color:"#F74F00", jobs:67  },
+  { name:"Zomato",    logo:"Z", color:"#E23744", jobs:34  },
+  { name:"Razorpay",  logo:"R", color:"#2D81F7", jobs:28  },
+  { name:"Swiggy",    logo:"S", color:"#FC8019", jobs:45  },
+  { name:"Freshworks",logo:"F", color:"#25c16f", jobs:52  },
+  { name:"HCL Tech",  logo:"H", color:"#0076CE", jobs:89  },
+  { name:"HDFC Bank", logo:"H", color:"#004C97", jobs:61  },
+  { name:"Ola",       logo:"O", color:"#1C1C1C", jobs:39  },
+  { name:"Byju's",    logo:"B", color:"#8A2BE2", jobs:23  },
+];
+
+// ── State ──
+let filteredJobs = [...allJobs];
+let currentPage = 1;
+const PER_PAGE = 6;
+const saved = new Set();
+
+// ── Render Jobs ──
+function renderJobs() {
+  const list = document.getElementById('jobsList');
+  const start = (currentPage - 1) * PER_PAGE;
+  const page  = filteredJobs.slice(start, start + PER_PAGE);
+  document.getElementById('jobsTitle').textContent = filteredJobs.length + ' Jobs Found';
+
+  list.innerHTML = page.map(job => `
+    <div class="job-card${job.isNew ? ' new-job' : ''}" onclick="viewJob(${job.id})">
+      <div class="job-logo" style="color:${job.color}; border-color:${job.color}22; background:${job.color}10;">
+        ${job.logo}
+      </div>
+      <div class="job-info">
+        <div class="job-title">${job.title}</div>
+        <div class="job-company">${job.company}</div>
+        <div class="job-meta">
+          <span>📍 ${job.location}</span>
+          <span>🕐 ${job.type}</span>
+          <span>👥 ${job.applicants} applicants</span>
+        </div>
+        <div class="job-tags">
+          ${job.isNew ? '<span class="tag tag-new">New</span>' : ''}
+          ${job.mode === 'remote' ? '<span class="tag tag-remote">Remote</span>' : ''}
+          ${job.mode === 'hybrid' ? '<span class="tag tag-type">Hybrid</span>' : ''}
+          <span class="tag tag-type">${job.type}</span>
+          <span class="tag tag-type">${job.exp.charAt(0).toUpperCase() + job.exp.slice(1)}</span>
+        </div>
+      </div>
+      <div class="job-right">
+        <div class="job-salary">${job.salary}</div>
+        <div class="job-posted">Posted ${job.posted}</div>
+        <button class="job-save${saved.has(job.id) ? ' saved' : ''}"
+          onclick="event.stopPropagation(); toggleSave(${job.id}, this)">
+          ${saved.has(job.id) ? '★ Saved' : '☆ Save'}
+        </button>
+      </div>
+    </div>
+  `).join('');
+
+  renderPagination();
+}
+
+function renderPagination() {
+  const total = Math.ceil(filteredJobs.length / PER_PAGE);
+  const pg = document.getElementById('pagination');
+  if (total <= 1) { pg.innerHTML = ''; return; }
+  let html = '';
+  if (currentPage > 1) html += `<button class="page-btn" onclick="goPage(${currentPage-1})">← Prev</button>`;
+  for (let i = 1; i <= total; i++) {
+    html += `<button class="page-btn${i===currentPage?' active':''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  if (currentPage < total) html += `<button class="page-btn" onclick="goPage(${currentPage+1})">Next →</button>`;
+  pg.innerHTML = html;
+}
+
+function goPage(n) { currentPage = n; renderJobs(); window.scrollTo({top:document.getElementById('jobs').offsetTop - 80, behavior:'smooth'}); }
+
+// ── Filters ──
+function applyFilters() {
+  const types  = [...document.querySelectorAll('input[name="type"]:checked')].map(i=>i.value);
+  const modes  = [...document.querySelectorAll('input[name="mode"]:checked')].map(i=>i.value);
+  const exps   = [...document.querySelectorAll('input[name="exp"]:checked')].map(i=>i.value);
+  const cats   = [...document.querySelectorAll('input[name="cat"]:checked')].map(i=>i.value);
+  const loc    = (document.getElementById('locationFilter')?.value || '').toLowerCase();
+  const query  = (document.getElementById('searchInput')?.value || '').toLowerCase();
+
+  filteredJobs = allJobs.filter(j => {
+    if (types.length && !types.includes(j.type.toLowerCase().replace('-','').split(' ')[0]+'-'+j.type.toLowerCase().replace('-','').split(' ')[1])) {
+      const typeMap = {'Full-time':'full-time','Part-time':'part-time','Contract':'contract','Internship':'internship'};
+      if (types.length && !types.includes(typeMap[j.type])) return false;
+    }
+    if (modes.length && !modes.includes(j.mode)) return false;
+    if (exps.length  && !exps.includes(j.exp))   return false;
+    if (cats.length  && !cats.includes(j.cat))    return false;
+    if (loc && !j.location.toLowerCase().includes(loc)) return false;
+    if (query && !j.title.toLowerCase().includes(query) && !j.company.toLowerCase().includes(query)) return false;
+    return true;
+  });
+  currentPage = 1;
+  renderJobs();
+}
+
+function clearFilter(group) {
+  document.querySelectorAll(`input[name="${group}"]`).forEach(i => i.checked = false);
+  applyFilters();
+}
+
+// ── Sort ──
+function sortJobs(val) {
+  if (val === 'recent') filteredJobs.sort((a,b) => a.id > b.id ? -1 : 1);
+  else if (val === 'salary') filteredJobs.sort((a,b) => parseInt(b.salary) - parseInt(a.salary) || 0);
+  else filteredJobs.sort((a,b) => (b.isNew?1:0)-(a.isNew?1:0));
+  currentPage = 1; renderJobs();
+}
+
+// ── Search ──
+function handleSearch() {
+  applyFilters();
+  document.getElementById('jobs').scrollIntoView({behavior:'smooth'});
+}
+function fillSearch(val) {
+  document.getElementById('searchInput').value = val;
+  applyFilters();
+  document.getElementById('jobs').scrollIntoView({behavior:'smooth'});
+  return false;
+}
+
+// ── Save ──
+function toggleSave(id, btn) {
+  if (saved.has(id)) { saved.delete(id); btn.textContent = '☆ Save'; btn.classList.remove('saved'); }
+  else { saved.add(id); btn.textContent = '★ Saved'; btn.classList.add('saved'); }
+}
+
+// ── View Job ──
+function viewJob(id) {
+  const job = allJobs.find(j => j.id === id);
+  // In Angular: this.router.navigate(['/jobs', id])
+  alert(`Opening job detail for:\n${job.title} at ${job.company}\n\n(In Angular → Router.navigate(['/jobs/${id}']))`);
+}
+
+// ── Companies ──
+function renderCompanies() {
+  document.getElementById('companiesGrid').innerHTML = companies.map(c => `
+    <div class="company-tile">
+      <div class="company-tile-logo" style="background:${c.color}15; color:${c.color};">${c.logo}</div>
+      <div>
+        <div>${c.name}</div>
+        <div class="jobs-count">${c.jobs} open jobs</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── Counter ──
+function animateCount(id, target, suffix='') {
+  const el = document.getElementById(id);
+  let n = 0; const step = target / 60;
+  const t = setInterval(() => {
+    n = Math.min(n + step, target);
+    el.textContent = Math.floor(n).toLocaleString('en-IN') + suffix;
+    if (n >= target) clearInterval(t);
+  }, 16);
+}
+
+// ── Init ──
+renderJobs();
+renderCompanies();
+animateCount('c1', 48000);
+animateCount('c2', 12000);
+animateCount('c3', 95000);
+animateCount('c4', 50, '+');
+</script>
+</body>
+</html>
