@@ -1,0 +1,44 @@
+<div class="applicant-list">
+
+  <table>
+    <thead>
+      <tr>
+        <th>Applicant Name</th>
+        <th>View Profile</th>
+        <th>Action</th>
+        <th>Update</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let applicant of applicants">
+
+        <td>{{ applicant.name }}</td>
+
+        <td>
+          <button (click)="viewProfile(applicant)">
+            View Profile
+          </button>
+        </td>
+
+        <td>
+          <select [(ngModel)]="applicant.status">
+            <option value="Shortlisted">Shortlisted</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Selected">Selected</option>
+            <option value="Selected">Interview</option>
+          </select>
+        </td>
+
+        <td>
+          <button (click)="updateApplicant(applicant)">
+            Update
+          </button>
+        </td>
+
+      </tr>
+    </tbody>
+
+  </table>
+
+</div>

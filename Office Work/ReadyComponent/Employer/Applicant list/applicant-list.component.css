@@ -1,0 +1,40 @@
+.applicant-list {
+  width: 100%;
+  overflow-x: auto;
+  font-family: Arial, sans-serif;
+}
+
+.applicant-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.applicant-list th,
+.applicant-list td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.applicant-list th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+.applicant-list select {
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.applicant-list button {
+  padding: 5px 10px;
+  border: none;
+  background: #28a745;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.applicant-list button:hover {
+  opacity: 0.9;
+}
