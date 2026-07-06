@@ -1,0 +1,201 @@
+<header class="site">
+  <div class="brand"><span class="hire">Hire</span><span class="flow">Flow</span></div>
+  <nav class="site-nav">
+    <a href="#">Find Jobs</a>
+    <a href="#">Companies</a>
+    <a href="#">Career Advice</a>
+  </nav>
+  <button class="btn-primary">Post a Job</button>
+</header>
+
+<div class="app-body">
+
+  <!-- PROFILE SUMMARY BAR -->
+  <div class="profile-bar">
+    <div class="avatar-wrap">
+      <div class="avatar">{{ avatarInitials }}</div>
+      <div class="avatar-edit" (click)="uploadPhoto()">📷</div>
+    </div>
+
+    <div class="profile-info">
+      <h1
+        [attr.contenteditable]="isEditingProfile"
+        (input)="onNameInput($event)"
+        [class.editing]="isEditingProfile">{{ name }}</h1>
+
+      <div class="role"
+        [attr.contenteditable]="isEditingProfile"
+        (input)="onRoleInput($event)"
+        [class.editing]="isEditingProfile">{{ role }}</div>
+
+      <div class="meta">
+        <span class="dot-live" *ngIf="openToWork"></span>
+        <span *ngIf="openToWork">Open to work ·</span>
+        {{ location }} · {{ experienceYears }} yrs experience
+      </div>
+
+      <div class="strength-wrap">
+        <div class="strength-top"><span>Profile strength</span><span>{{ profileStrength }}%</span></div>
+        <div class="strength-bar"><div class="strength-fill" [style.width.%]="profileStrength"></div></div>
+      </div>
+    </div>
+
+    <div class="profile-actions">
+      <button class="btn-outline" (click)="viewResume()">View Resume</button>
+      <button class="btn-primary" (click)="toggleEditProfile()">
+        {{ isEditingProfile ? 'Save Changes' : 'Edit Profile' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- TWO COLUMN APP LAYOUT -->
+  <div class="grid">
+
+    <!-- MAIN COLUMN -->
+    <div>
+
+      <!-- About -->
+      <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">📝</span> About</h2>
+          <button class="icon-btn" (click)="toggleEditAbout()">
+            {{ isEditingAbout ? '💾 Save' : '✏️ Edit' }}
+          </button>
+        </div>
+        <p class="about-text"
+          [attr.contenteditable]="isEditingAbout"
+          (input)="onAboutInput($event)"
+          [class.editing]="isEditingAbout">{{ aboutText }}</p>
+      </div>
+
+      <!-- Experience -->
+      <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">💼</span> Experience</h2>
+          <button class="icon-btn" (click)="addItem('experience')">+ Add</button>
+        </div>
+        <div class="item" *ngFor="let exp of experience">
+          <div class="item-icon">{{ exp.icon }}</div>
+          <div class="item-body">
+            <div class="item-title">{{ exp.title }}</div>
+            <div class="item-sub">{{ exp.subtitle }}</div>
+          </div>
+          <div class="item-controls">
+            <button class="ctrl-btn" (click)="editItem('experience')">✏️</button>
+            <button class="ctrl-btn danger" (click)="removeItem(experience, exp, 'Experience')">🗑️</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">🎓</span> Education</h2>
+          <button class="icon-btn" (click)="addItem('education')">+ Add</button>
+        </div>
+        <div class="item" *ngFor="let edu of education">
+          <div class="item-icon">{{ edu.icon }}</div>
+          <div class="item-body">
+            <div class="item-title">{{ edu.title }}</div>
+            <div class="item-sub">{{ edu.subtitle }}</div>
+          </div>
+          <div class="item-controls">
+            <button class="ctrl-btn" (click)="editItem('education')">✏️</button>
+            <button class="ctrl-btn danger" (click)="removeItem(education, edu, 'Education')">🗑️</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projects -->
+      <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">📁</span> Projects</h2>
+          <button class="icon-btn" (click)="addItem('project')">+ Add</button>
+        </div>
+        <div class="item" *ngFor="let proj of projects">
+          <div class="item-icon">{{ proj.icon }}</div>
+          <div class="item-body">
+            <div class="item-title">{{ proj.title }}</div>
+            <div class="item-desc" *ngIf="proj.description">{{ proj.description }}</div>
+            <a class="item-link" *ngIf="proj.link" [href]="proj.link">View case study →</a>
+          </div>
+          <div class="item-controls">
+            <button class="ctrl-btn" (click)="editItem('project')">✏️</button>
+            <button class="ctrl-btn danger" (click)="removeItem(projects, proj, 'Project')">🗑️</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Certifications -->
+      <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">🏅</span> Certifications</h2>
+          <button class="icon-btn" (click)="addItem('certification')">+ Add</button>
+        </div>
+        <div class="item" *ngFor="let cert of certifications">
+          <div class="item-icon">{{ cert.icon }}</div>
+          <div class="item-body">
+            <div class="item-title">{{ cert.title }}</div>
+            <div class="item-sub">{{ cert.subtitle }}</div>
+          </div>
+          <div class="item-controls">
+            <button class="ctrl-btn" (click)="editItem('certification')">✏️</button>
+            <button class="ctrl-btn danger" (click)="removeItem(certifications, cert, 'Certification')">🗑️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDE COLUMN -->
+    <div>
+
+      <!-- Resume -->
+      <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">📄</span> Resume</h2>
+        </div>
+        <div class="resume-row">
+          <div class="resume-file">
+            <div class="resume-icon">📄</div>
+            <div>
+              <div class="resume-name">{{ resumeFileName }}</div>
+              <div class="resume-updated">{{ resumeUpdatedLabel }}</div>
+            </div>
+          </div>
+        </div>
+        <button class="btn-primary full-width" (click)="updateResume()">Update Resume</button>
+      </div>
+
+      <!-- Skills -->
+      <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">🛠️</span> Skills</h2>
+        </div>
+        <div class="tags">
+          <span class="tag" [class.gray]="skill.variant === 'gray'" *ngFor="let skill of skills">
+            {{ skill.label }}
+            <span class="x" (click)="removeSkill(skill)">✕</span>
+          </span>
+          <span class="tag add-tag" (click)="addSkill()">+ Add</span>
+        </div>
+      </div>
+
+      <!-- Languages -->
+      <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">🌐</span> Languages</h2>
+          <button class="icon-btn" (click)="addLanguage()">+ Add</button>
+        </div>
+        <div class="lang-list">
+          <div class="lang-item" *ngFor="let lang of languages">
+            <b>{{ lang.name }}</b>
+            <span class="lang-level">{{ lang.level }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" [class.show]="toastMessage">{{ toastMessage }}</div>

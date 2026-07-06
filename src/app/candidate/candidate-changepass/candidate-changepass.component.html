@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="card">
+
+    <h2>Change Password</h2>
+   <!-- [(ngModel)]=confirmpass; -->
+
+    <form (ngSubmit)="submit()" #form="ngForm">
+
+      <div class="form-group">
+        <label>Current Password</label>
+        <input type="password"
+               name="currentPassword"
+               [(ngModel)]="changePass.currentPass"
+               required>
+      </div>
+
+      <div class="form-group">
+        <label>New Password</label>
+        <input type="password"
+               name="newPassword"
+               [(ngModel)]="changePass.newPass"
+               required>
+      </div>
+
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password"
+               name="confirmPassword"
+               [(ngModel)]="confirmpass"
+               required>
+      </div>
+
+      <button type="submit" [disabled]="form.invalid">
+        Update Password
+      </button>
+
+    </form>
+
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<div class="jobs-container">
+
+    <div class="page-header">
+        <h2>My Posted Jobs</h2>
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>Job Title</th>
+                <th>Location</th>
+                <th>Work Mode</th>
+                <th>Salary</th>
+                <th>Applicants</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr *ngFor="let job of jobs">
+
+                <td>{{ job.jobTitle }}</td>
+
+                <td>{{ job.jobLocation }}</td>
+
+                <td>{{ job.workMode }}</td>
+
+                <td>₹ {{ job.maxSalary }}</td>
+
+                <td>{{ job.totalApplicants }}</td>
+
+                <td>
+
+                    <button
+                        class="view-btn"
+                        (click)="viewApplicants(job.jobId)">
+
+                        View Applicants
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>

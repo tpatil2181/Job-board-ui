@@ -1,0 +1,77 @@
+<!-- app/shared/components/header/header.component.html -->
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <div class="nav-inner">
+
+    <a [routerLink]="['/']" class="logo">Hire<span>Flow</span></a>
+
+    <ul class="nav-links">
+      <li><a [routerLink]="['/jobs']"      routerLinkActive="active">Find Jobs</a></li>
+      <li><a [routerLink]="['/companies']" routerLinkActive="active">Companies</a></li>
+      <li><a [routerLink]="['/about']"     routerLinkActive="active">How It Works</a></li>
+      <li><a [routerLink]="['/about']"     routerLinkActive="active">Career Advice</a></li>
+    </ul>
+
+    <!-- Logged OUT -->
+    <div class="nav-actions" *ngIf="!isLoggedIn">
+      <a [routerLink]="['/login']"    class="btn btn-outline">Sign In</a>
+      <a [routerLink]="['/register']" class="btn btn-solid">Register</a>
+    </div>
+
+    <!-- Logged IN -->
+    <div class="nav-actions" *ngIf="isLoggedIn">
+      <span class="welcome-text">Hi, {{ userName }}</span>
+      <a [routerLink]="[dashboardRoute]" class="btn btn-outline">Dashboard</a>
+      <button class="btn btn-solid" (click)="onLogout()">Logout</button>
+    </div>
+
+  </div>
+</nav>
+
+
+<!-- ===== HERO ===== -->
+<section class="hero" *ngIf="showHero">
+  <div class="container">
+
+    <h1>{{ heroTitle }}</h1>
+    <p class="hero-sub">{{ heroSubtitle }}</p>
+
+    <div class="search-box">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        placeholder="Job title, skills, or company..."
+        (keydown.enter)="onSearch()"
+      />
+      <input
+        type="text"
+        [(ngModel)]="locationQuery"
+        placeholder="City or Remote"
+        (keydown.enter)="onSearch()"
+      />
+      <button (click)="onSearch()">Search Jobs</button>
+    </div>
+
+    <div class="hero-tags">
+      <span class="tag-label">Popular:</span>
+      <a
+        href="#"
+        *ngFor="let tag of popularTags"
+        (click)="onTagClick(tag, $event)"
+      >{{ tag }}</a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ===== STATS BAR ===== -->
+<div class="stats-bar" *ngIf="showStats">
+  <div class="stats-inner">
+    <div class="stat" *ngFor="let stat of stats">
+      <div class="stat-num">{{ stat.display }}</div>
+      <div class="stat-lbl">{{ stat.label }}</div>
+    </div>
+  </div>
+</div>

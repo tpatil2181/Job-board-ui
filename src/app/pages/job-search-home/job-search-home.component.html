@@ -1,0 +1,54 @@
+<div 
+  class="job-card" 
+  [ngClass]="{'new-job': job.isNew}" 
+  (click)="viewJob(job.id)"
+>
+
+  <!-- Logo -->
+  <div 
+    class="job-logo"
+    [ngStyle]="{
+      color: job.color,
+      borderColor: job.color + '22',
+      background: job.color + '10'
+    }"
+  >
+    {{ job.logo }}
+  </div>
+
+  <!-- Info -->
+  <div class="job-info">
+    <div class="job-title">{{ job.title }}</div>
+    <div class="job-company">{{ job.company }}</div>
+
+    <div class="job-meta">
+      <span>📍 {{ job.location }}</span>
+      <span>🕐 {{ job.type }}</span>
+      <span>👥 {{ job.applicants }} applicants</span>
+    </div>
+
+    <div class="job-tags">
+      <span *ngIf="job.isNew" class="tag tag-new">New</span>
+      <span *ngIf="job.mode === 'remote'" class="tag tag-remote">Remote</span>
+      <span *ngIf="job.mode === 'hybrid'" class="tag tag-type">Hybrid</span>
+
+      <span class="tag tag-type">{{ job.type }}</span>
+      <span class="tag tag-type">{{ job.exp }}</span>
+    </div>
+  </div>
+
+  <!-- Right -->
+  <div class="job-right" (click)="$event.stopPropagation()">
+    <div class="job-salary">{{ job.salary }}</div>
+    <div class="job-posted">Posted {{ job.posted }}</div>
+
+    <button 
+      class="job-save" 
+      [ngClass]="{'saved': isSaved}"
+      (click)="toggleSave()"
+    >
+      {{ isSaved ? '★ Saved' : '☆ Save' }}
+    </button>
+  </div>
+
+</div>

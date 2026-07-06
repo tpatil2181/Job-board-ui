@@ -1,0 +1,78 @@
+<!-- <h2>Applied Jobs</h2>
+
+<table border="1" cellpadding="10">
+
+  <thead>
+    <tr>
+      <th>Job Title</th>
+      <th>Company</th>
+      <th>Mode</th>
+      <th>Applied On</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let job of appliedJobs">
+    <tr *ngFor="let job of appliedJobs; trackBy: trackByJob">
+
+      <td>{{job.JobTitle}}</td>
+      <td>{{job.Comapny}}</td>
+      <td>{{job.WorkMode}}</td>
+      <td>Applied Date</td>
+       <td>{{job.appliedOn}}</td> 
+      <td>{{job.Status}}</td>
+      <td>
+        <button (click)="onWithdraw(job.applyid)">Withdraw</button>
+      </td>
+    </tr>
+  </tbody>
+
+</table> -->
+
+
+
+
+<div class="applied-container">
+
+  <h2>Applied Jobs</h2>
+
+  <!-- 🔹 Table -->
+  <div class="job-table">
+    <table>
+
+      <thead>
+        <tr>
+          <th>Job Title</th>
+          <th>Company</th>
+          <th>Mode</th>
+          <th>Applied On</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let job of appliedJobs; trackBy: trackByJob">
+          <td>{{ job.JobTitle }}</td>
+          <td>{{ job.Comapny }}</td>
+          <td>{{ job.WorkMode }}</td>
+          <td>{{ job.applyid }}</td>
+          <td>
+            <!-- <span class="status" [ngClass]="job.Status.toLowerCase()">{{ job.Status }}</span> -->
+          </td>
+          <td>
+                <button (click)="onWithdraw(job.applyid)">Withdraw</button>
+          </td>
+        </tr>
+
+        <tr *ngIf="appliedJobs.length === 0">
+          <td colspan="6" class="empty-row">You haven't applied to any jobs yet.</td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+</div>

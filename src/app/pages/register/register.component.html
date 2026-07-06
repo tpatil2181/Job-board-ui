@@ -1,0 +1,173 @@
+<!-- <div class="auth-container">
+  <div class="auth-card">
+
+    <h2>Register</h2>
+
+    <form (ngSubmit)="register()" #registerForm="ngForm">
+
+      <input type="text"
+             placeholder="First Name"
+             name="first_name"
+             [(ngModel)]="candidate.first_name"
+             required>
+
+      <input type="text"
+             placeholder="Last Name"
+             name="last_name"
+             [(ngModel)]="candidate.last_name"
+             required>
+
+      <input type="number"
+             placeholder="Mobile Number"
+             name="mobNo"
+             [(ngModel)]="candidate.mobNo"
+             required>
+
+      <input type="email"
+             placeholder="Email"
+             name="email"
+             [(ngModel)]="candidate.email"
+             required>
+
+      <input type="password"
+             placeholder="Password"
+             name="password"
+             [(ngModel)]="candidate.password"
+             required>
+
+     
+
+      <button type="submit" [disabled]="registerForm.invalid">
+        Register
+      </button>
+
+    </form>
+
+    <p>
+      Already have an account?
+      <span (click)="goToLogin()">Login</span>
+    </p>
+
+  </div>
+</div> -->
+
+
+
+<div class="register-page">
+
+  <!-- Left Side -->
+  <div class="register-banner">
+    <div class="overlay">
+      <h1>HireFlow</h1>
+
+      <h2>Start Your Career Journey</h2>
+
+      <p>
+        Create your account and connect with thousands of employers across India.
+      </p>
+
+      <div class="stats">
+        <div>
+          <h3>48,000+</h3>
+          <span>Active Jobs</span>
+        </div>
+
+        <div>
+          <h3>12,000+</h3>
+          <span>Companies Hiring</span>
+        </div>
+
+        <div>
+          <h3>95,000+</h3>
+          <span>Candidates Placed</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side -->
+  <div class="register-section">
+    <div class="auth-card">
+
+      <h2>Create Account</h2>
+
+      <p class="subtitle">
+        Register and start applying to your dream jobs.
+      </p>
+
+      <form (ngSubmit)="register()" #registerForm="ngForm">
+
+        <div class="name-row">
+
+          <div class="form-group">
+            <label>First Name</label>
+            <input
+              type="text"
+              placeholder="Enter first name"
+              name="first_name"
+              [(ngModel)]="candidate.first_name"
+              required>
+          </div>
+
+          <div class="form-group">
+            <label>Last Name</label>
+            <input
+              type="text"
+              placeholder="Enter last name"
+              name="last_name"
+              [(ngModel)]="candidate.last_name"
+              required>
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <label>Mobile Number</label>
+          <input
+            type="number"
+            placeholder="Enter mobile number"
+            name="mobNo"
+            [(ngModel)]="candidate.mobNo"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input
+            type="email"
+            placeholder="Enter email"
+            name="email"
+            [(ngModel)]="candidate.email"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input
+            type="password"
+            placeholder="Create password"
+            name="password"
+            [(ngModel)]="candidate.password"
+            required>
+        </div>
+
+        <button
+          class="register-btn"
+          type="submit"
+          [disabled]="registerForm.invalid">
+
+          Create Account
+
+        </button>
+
+      </form>
+
+      <p class="login-text">
+        Already have an account?
+        <span (click)="goToLogin()">Login</span>
+      </p>
+
+    </div>
+  </div>
+
+</div>

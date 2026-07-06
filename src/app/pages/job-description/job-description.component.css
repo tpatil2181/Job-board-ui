@@ -1,0 +1,178 @@
+.job-details-container {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.job-header-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+.job-main-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.job-info h1 {
+  margin: 0;
+  font-size: 32px;
+  color: #111827;
+}
+
+.company-info {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.company-name {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.rating {
+  color: #f59e0b;
+}
+
+.job-meta {
+  margin-top: 15px;
+
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+
+  color: #4b5563;
+}
+
+.salary {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.company-logo img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+
+.job-extra-info {
+  margin-top: 25px;
+
+  display: flex;
+  gap: 40px;
+
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.apply-card {
+  margin-top: 20px;
+
+  background: white;
+  border-radius: 18px;
+
+  padding: 20px 30px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  box-shadow: 0 4px 18px rgba(0,0,0,.06);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.primary-btn {
+  border: none;
+  background: #4f46e5;
+  color: white;
+
+  padding: 12px 24px;
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: #4338ca;
+}
+
+.secondary-btn {
+  border: none;
+  background: #e5e7eb;
+  color: #111827;
+
+  padding: 12px 24px;
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+.content-card {
+  margin-top: 20px;
+
+  background: white;
+  border-radius: 18px;
+
+  padding: 30px;
+
+  box-shadow: 0 4px 18px rgba(0,0,0,.06);
+}
+
+.content-card h2 {
+  margin-bottom: 15px;
+  color: #111827;
+}
+
+.content-card p {
+  line-height: 1.8;
+  color: #4b5563;
+}
+
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.skill-chip {
+  padding: 10px 16px;
+
+  border-radius: 999px;
+
+  background: #eef2ff;
+  color: #4f46e5;
+
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+
+  .job-main-info,
+  .apply-card,
+  .job-extra-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .company-logo {
+    margin-top: 15px;
+  }
+
+  .action-buttons {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .action-buttons button {
+    width: 100%;
+  }
+}

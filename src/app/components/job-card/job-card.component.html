@@ -1,0 +1,33 @@
+<!-- <p>job-card works!</p> -->
+
+
+<div class="job-card">
+
+  <!-- Left Logo -->
+  <div class="logo">
+    {{ job.company.charAt(0) }}
+  </div>
+
+  <!-- Job Info -->
+  <div class="info">
+    <h3 class="title">{{ job.title }}</h3>
+    <p class="company">{{ job.company }}</p>
+
+    <div class="meta">
+      <span>📍 {{ job.location }}</span>
+      <span>💼 {{ job.type }}</span>
+      <span>👨‍💻 {{ job.experience }}</span>
+    </div>
+
+    <div class="tags">
+      <span class="tag">{{ job.mode }}</span>
+    </div>
+  </div>
+
+  <!-- Right Section -->
+  <div class="right">
+    <div class="salary">{{ job.salary }}</div>
+    <button class="apply-btn">Apply</button>
+  </div>
+
+</div>

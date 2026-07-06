@@ -1,0 +1,163 @@
+<div class="page">
+
+    <!-- ================= Job Details ================= -->
+
+    <div class="job-card">
+
+        <div class="job-left">
+
+            <h2>{{ job.jobTitle }}</h2>
+
+            <p>{{ job.companyName }}</p>
+
+            <div class="job-info">
+
+                <span>📍 {{ job.jobLocation }}</span>
+
+                <span>💼 {{ job.workMode }}</span>
+
+                <span>💰 ₹ {{ job.maxSalary }}</span>
+
+            </div>
+
+        </div>
+
+        <div class="job-right">
+
+            <div class="count">
+                {{ applicants.length }}
+            </div>
+
+            <p>Total Applicants</p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= Applicant List ================= -->
+
+    <div class="applicant-container">
+
+        <div class="header">
+
+            <h3>Applicants</h3>
+
+        </div>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>#</th>
+
+                    <th>Applicant</th>
+
+                    <th>Email</th>
+
+                    <th>Profile</th>
+
+                    <th>Status</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let applicant of applicants; let i=index">
+
+                    <td>{{ i+1 }}</td>
+
+                    <td>
+
+                        <div class="candidate">
+
+                            <div class="avatar">
+
+                                {{ applicant.firstName.charAt(0) }}
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+
+                                    {{ applicant.firstName }}
+                                    {{ applicant.lastName }}
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        {{ applicant.email }}
+
+                    </td>
+
+                    <td>
+
+                        <button class="view-btn"
+                            (click)="viewProfile(applicant.candidateId)">
+
+                            View Profile
+
+                        </button>
+
+                    </td>
+
+                    <td>
+
+                        <select
+                            [(ngModel)]="applicant.applicationStatus">
+
+                            <option value="APPLIED">
+                                Applied
+                            </option>
+
+                            <option value="SHORTLISTED">
+                                Shortlisted
+                            </option>
+
+                            <option value="INTERVIEW">
+                                Interview
+                            </option>
+
+                            <option value="REJECTED">
+                                Rejected
+                            </option>
+
+                        </select>
+
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="update-btn"
+                            (click)="updateCandidateStatus(applicant)">
+
+                            Update
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

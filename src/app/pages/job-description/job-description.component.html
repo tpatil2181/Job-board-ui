@@ -1,0 +1,160 @@
+<div class="job-details-container">
+
+  <!-- Header Card -->
+  <div class="job-header-card">
+
+    <div class="job-main-info">
+
+      <div class="job-info">
+
+        <h1>{{ job?.jobTitle }}</h1>
+
+        <div class="company-info">
+          <span class="company-name">
+            {{ job?.employerName }}
+          </span>
+
+          <span class="rating">
+            ⭐ 4.3
+          </span>
+        </div>
+
+        <div class="job-meta">
+
+          <span>
+            💼 {{ job?.minExperience }} - {{ job?.maxExperience }} Years
+          </span>
+
+          <span class="salary">
+            <!-- ₹ {{ job?.minSalary | number }} - -->
+            <!-- ₹ {{ job?.maxSalary | number }} -->
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="company-logo">
+
+        <!-- <img -->
+          <!-- /* [src]="job?.companyLogo || 'assets/images/company-placeholder.png'" */ -->
+          <!-- alt="Company Logo" -->
+        <!-- /> -->
+
+      </div>
+
+    </div>
+
+    <div class="job-extra-info">
+
+      <div>
+        <strong>Work Mode:</strong>
+        {{ job?.workMode }}
+      </div>
+
+      <div>
+        <strong>Location:</strong>
+        {{ job?.jobLocation }}
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Apply Section -->
+  <div class="apply-card">
+
+    <span>
+      Posted on:
+      <!-- {{ job?.datePosted | date:'mediumDate' }} -->
+    </span>
+
+    <div class="action-buttons">
+
+      <button
+        class="secondary-btn"
+        *ngIf="!isLoggedIn"
+      >
+        Register to Apply
+      </button>
+
+      <button
+        class="secondary-btn"
+        *ngIf="!isLoggedIn"
+      >
+        Login to Apply
+      </button>
+
+      <button
+        class="primary-btn"
+        *ngIf="isLoggedIn"
+        (click)="applyJob()"
+      >
+        Apply Now
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- Job Summary -->
+  <div class="content-card">
+
+    <h2>Job Summary</h2>
+
+    <p>
+      {{ job?.jobDescription }}
+    </p>
+
+  </div>
+
+  <!-- Responsibilities -->
+  <!-- <div 
+    class="content-card"
+    /* *ngIf="job?.jobResponsibilities" */
+    /* *ngIf="job?.jobDescription" */
+
+  >-->
+
+    <h2>Responsibilities</h2>
+
+    <p>
+      <!-- {{ job?.jobResponsibilities }} -->
+        
+    </p>
+
+  </div>
+
+  <!-- Qualifications -->
+  <!-- <div
+    class="content-card"
+    /* *ngIf="job?.jobQualifications" */
+  >
+
+    <h2>Qualifications</h2>
+
+    <p>
+       {{ job?.jobQualifications }} 
+    </p> -->
+
+  <!-- </div> -->
+
+  <!-- Skills -->
+  <div class="content-card">
+
+    <h2>Key Skills</h2>
+
+    <div class="skills-container">
+
+      <!-- <span
+        class="skill-chip"
+        /* *ngFor="let skill of job?.skills" */
+      >
+        {{ skill.skillName }}
+      </span> -->
+
+    </div>
+
+  </div>
+
+<!-- </div> -->

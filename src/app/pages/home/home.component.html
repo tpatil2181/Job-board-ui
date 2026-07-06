@@ -1,0 +1,366 @@
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">Hire<span>Flow</span></a>
+    <ul class="nav-links">
+      <li><a href="#jobs">Find Jobs</a></li>
+      <li><a href="#companies">Companies</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#">Career Advice</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div *ngIf="!isLoggedIn" class="nav-actions">
+        <button (click)="goToLogin()" class="btn btn-outline">Sign In</button>
+        <button (click)="goToRegister()" class="btn btn-outline">Sign Up</button>
+        <button (click)="goToCompanyLogin()" class="btn btn-outline">Company Login</button>
+        <button (click)="goToCompanyRegister()" class="btn btn-outline">Company Registration</button>
+
+        <!-- <button (click)="goToCompanyLogin()" class="btn btn-outline">Sign In</button>
+        <button (click)="goToCompanyRegister()" class="btn btn-outline">Sign Up</button> -->
+      </div>
+      <div *ngIf="isLoggedIn" class="nav-actions">
+        <div class="profile-dropdown">
+
+          <button class="profile-btn" (click)="isMenuOpen = !isMenuOpen">
+            <!-- <img src="assets/images/profile.png" alt="Profile" class="profile-image" /> -->
+
+            <span class="profile-name">
+              UserName
+             <!-- {{ localStorage.getItem('firstname') || 'User' }} -->
+            </span>
+
+            <span class="arrow">
+              ▼
+            </span>
+          </button>
+            <div class="dropdown-menu" *ngIf="isMenuOpen">
+
+              <button
+                *ngFor="let item of menuItems"
+                class="menu-item"
+                type="button"
+                (click)="onMenuClick(item.action)"
+              >
+                <span class="menu-icon">{{ item.icon }}</span>
+                <span>{{ item.label }}</span>
+              </button>
+
+            </div>
+          <!-- <div class="dropdown-menu" *ngIf="isMenuOpen"> -->
+
+            <!-- <a href="#" (click)="goToProfile()" class="menu-item">
+              👤 My Profile
+            </a> -->
+            <!-- <button class="menu-item" (click)="goToProfile()">
+              👤 My Profile
+            </button>
+
+           <button class="menu-item" (click)="goToAppliedJobs()">
+              📄 Applied Jobs
+            </button> -->
+
+            <!-- <a routerLink="/change-password" class="menu-item">
+              🔒 Change Password
+            </a> -->
+             <!-- <button class="menu-item" (click)="goToChnagePasswordPage()">
+              🔒 Change Password
+            </button>
+
+            <a routerLink="/settings" class="menu-item">
+              ⚙️ Settings
+            </a>
+
+          </div> -->
+
+        </div>
+        <!-- <button (click)="goToProfile()" class="btn btn-outline">My Profile </button> -->
+        <!-- <button (click)="logout()" class="btn btn-outline">Logout</button> -->
+      </div>
+      <!-- <button (click)="goTologin()" class="btn btn-outline">Sign In</button>
+                  <button (click)="goToRegister()" class="btn btn-outline">Sign Up</button>
+                  <a href="#" class="btn btn-solid">Post a Job</a> -->
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <h1>Find Your Next Job</h1>
+    <p>Search thousands of jobs from top companies across India and worldwide.</p>
+    <div class="search-box">
+      <input type="text" [(ngModel)]="searchQuery" placeholder="Job title, skills, or company..."
+        (keyup.enter)="handleSearch()" />
+      <input type="text" [(ngModel)]="locationQuery" placeholder="City or Remote"
+        style="border-left:1px solid #ddd; border-right:1px solid #ddd;" (keyup.enter)="handleSearch()" />
+      <button (click)="handleSearch()">Search Jobs</button>
+    </div>
+    <div class="hero-links">
+      <span style="color:rgba(255,255,255,0.7); font-size:13px;">Popular:</span>
+      <a href="#" *ngFor="let tag of popularSearches" (click)="fillSearch(tag); $event.preventDefault()">
+        {{ tag }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat">
+      <div class="stat-num">{{ formatNumber(statActiveJobs) }}</div>
+      <div class="stat-lbl">Active Jobs</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">{{ formatNumber(statCompanies) }}</div>
+      <div class="stat-lbl">Companies Hiring</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">{{ formatNumber(statPlaced) }}</div>
+      <div class="stat-lbl">Candidates Placed</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">{{ statCities }}+</div>
+      <div class="stat-lbl">Cities Covered</div>
+    </div>
+  </div>
+</div>
+
+<!-- JOBS -->
+<section class="main" id="jobs">
+  <div class="container">
+    <div class="main-grid">
+
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+
+        <!-- Job Type -->
+        <div class="filter-group">
+          <h3>Job Type <button class="clear-btn" (click)="clearFilter('types')">Clear</button></h3>
+          <label *ngFor="let opt of [
+            {value:'full-time', label:'Full-time', count:234},
+            {value:'part-time', label:'Part-time', count:87},
+            {value:'contract',  label:'Contract',  count:142},
+            {value:'internship',label:'Internship',count:63}
+          ]">
+            <input type="checkbox" [checked]="isChecked('types', opt.value)"
+              (change)="onCheckboxChange('types', opt.value, $any($event.target).checked)" />
+            {{ opt.label }} <span class="count">{{ opt.count }}</span>
+          </label>
+        </div>
+
+        <!-- Work Mode -->
+        <div class="filter-group">
+          <h3>Work Mode <button class="clear-btn" (click)="clearFilter('modes')">Clear</button></h3>
+          <label *ngFor="let opt of [
+            {value:'REMOTE', label:'Remote', count:198},
+            {value:'HYBRID', label:'Hybrid', count:156},
+            {value:'ONSITE', label:'On-site',count:172}
+          ]">
+            <input type="checkbox" [checked]="isChecked('modes', opt.value)"
+              (change)="onCheckboxChange('modes', opt.value, $any($event.target).checked)" />
+            {{ opt.label }} <span class="count">{{ opt.count }}</span>
+          </label>
+        </div>
+
+        <!-- Experience -->
+        <div class="filter-group">
+          <h3>Experience</h3>
+          <label *ngFor="let opt of [
+            {value:'fresher',label:'Fresher (0–1 yr)', count:112},
+            {value:'junior', label:'Junior (1–3 yrs)', count:189},
+            {value:'mid',    label:'Mid (3–6 yrs)',    count:204},
+            {value:'senior', label:'Senior (6+ yrs)',  count:97}
+          ]">
+            <input type="checkbox" [checked]="isChecked('exps', opt.value)"
+              (change)="onCheckboxChange('exps', opt.value, $any($event.target).checked)" />
+            {{ opt.label }} <span class="count">{{ opt.count }}</span>
+          </label>
+        </div>
+
+        <!-- Location -->
+        <div class="filter-group">
+          <h3>Location</h3>
+          <input type="text" placeholder="Enter city..." [value]="filters.location"
+            (input)="onLocationFilterChange($any($event.target).value)" />
+        </div>
+
+        <!-- Category -->
+        <div class="filter-group">
+          <h3>Category</h3>
+          <label *ngFor="let opt of [
+            {value:'tech',      label:'Technology',     count:310},
+            {value:'design',    label:'Design',         count:88},
+            {value:'marketing', label:'Marketing',      count:76},
+            {value:'finance',   label:'Finance',        count:54},
+            {value:'hr',        label:'Human Resources',count:41}
+          ]">
+            <input type="checkbox" [checked]="isChecked('cats', opt.value)"
+              (change)="onCheckboxChange('cats', opt.value, $any($event.target).checked)" />
+            {{ opt.label }} <span class="count">{{ opt.count }}</span>
+          </label>
+        </div>
+
+      </aside>
+
+      <!-- Jobs List -->
+      <div>
+        <div class="jobs-header">
+          <h2>{{ filteredJobs.length }} Jobs Found</h2>
+          <select class="sort-select" [ngModel]="sortValue" (ngModelChange)="onSortChange($event)">
+            <option value="relevant">Most Relevant</option>
+            <option value="recent">Most Recent</option>
+            <option value="salary">Highest Salary</option>
+          </select>
+        </div>
+
+        <!-- Job Cards -->
+        <div class="job-card" [class.new-job]="job.datePosted === 'Just now'"
+          *ngFor="let job of jobs; trackBy: trackByJob" (click)="viewJob(job.jobId)">
+          <!-- <div
+            class="job-logo"
+            /* [style.color]="job.color" */
+            /* [style.border-color]="job.color + '22'" */
+            /* [style.background]="job.color + '10'" */
+          >
+            {{ job.logo }}
+          </div> -->
+          <div class="job-info">
+            <div class="job-title">{{ job.jobTitle }}</div>
+            <div class="job-company">{{ job.employerName }}</div>
+            <div class="job-meta">
+              <span>📍 {{ job.jobLocation }}</span>
+              <span>🕐 {{ job.employmentType }}</span>
+              <!-- <span>👥 {{ job.applicants }} applicants</span> -->
+            </div>
+            <div class="job-tags">
+              <!-- <span class="tag tag-new" *ngIf="job.isNew">New</span> -->
+              <span class="tag tag-remote" *ngIf="job.workMode === 'remote'">Remote</span>
+              <span class="tag tag-type" *ngIf="job.workMode === 'hybrid'">Hybrid</span>
+              <!-- <span class="tag tag-type">{{ job.type }}</span> -->
+              <!-- <span class="tag tag-type">{{ capitalize(job.exp) }}</span> -->
+            </div>
+          </div>
+          <div class="job-right">
+            <div class="job-salary">{{ job.maxSalary }}</div>
+            <div class="job-posted">Posted {{ job.datePosted }}</div>
+            <button class="job-save" [class.saved]="isSaved(job.jobId)" (click)="toggleSave(job.jobId, $event)">
+              {{ isSaved(job.jobId) ? '★ Saved' : '☆ Save' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" *ngIf="totalPages > 1">
+          <button class="page-btn" *ngIf="currentPage > 1" (click)="goPage(currentPage - 1)">← Prev</button>
+          <button class="page-btn" [class.active]="p === currentPage" *ngFor="let p of pageNumbers"
+            (click)="goPage(p)">{{ p }}</button>
+          <button class="page-btn" *ngIf="currentPage < totalPages" (click)="goPage(currentPage + 1)">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPANIES -->
+<section class="companies-section" id="companies">
+  <div class="container">
+    <h2>Top Hiring Companies</h2>
+    <div class="companies-grid">
+      <div class="company-tile" *ngFor="let c of companies">
+        <div class="company-tile-logo" [style.background]="c.color + '15'" [style.color]="c.color">{{ c.logo }}</div>
+        <div>
+          <div>{{ c.name }}</div>
+          <div class="jobs-count">{{ c.jobs }} open jobs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="container">
+    <h2>How It Works</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">1</div>
+        <h3>Create Your Profile</h3>
+        <p>Sign up and build your professional profile with your skills, experience, and resume.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">2</div>
+        <h3>Search &amp; Apply</h3>
+        <p>Browse thousands of jobs, filter by your preferences, and apply with one click.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">3</div>
+        <h3>Get Hired</h3>
+        <p>Track your applications, receive interview calls, and land your next opportunity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-grid">
+      <div class="cta-card">
+        <h3>Looking for a Job?</h3>
+        <p>Create a free profile and let top companies find you. Access thousands of openings today.</p>
+        <a href="#" class="btn-white">Create Free Account</a>
+      </div>
+      <div class="cta-card">
+        <h3>Hiring Talent?</h3>
+        <p>Post your job in minutes and reach thousands of qualified candidates across India.</p>
+        <a href="#" class="btn-white">Post a Job</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">HireFlow</a>
+        <p>Connecting job seekers with the right opportunities and helping companies find the right talent.</p>
+      </div>
+      <div class="footer-col">
+        <h4>For Candidates</h4>
+        <ul>
+          <li><a href="#">Browse Jobs</a></li>
+          <li><a href="#">Create Profile</a></li>
+          <li><a href="#">My Applications</a></li>
+          <li><a href="#">Career Advice</a></li>
+          <li><a href="#">Salary Guide</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>For Employers</h4>
+        <ul>
+          <li><a href="#">Post a Job</a></li>
+          <li><a href="#">Search Candidates</a></li>
+          <li><a href="#">Employer Dashboard</a></li>
+          <li><a href="#">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 HireFlow. All rights reserved.</span>
+      <span>Made for job seekers across India</span>
+    </div>
+  </div>
+</footer>

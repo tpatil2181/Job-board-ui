@@ -1,0 +1,23 @@
+<div class="sidebar">
+
+  <!-- Profile Section -->
+  <div class="profile">
+    <div class="avatar">
+      {{ this.name.charAt(0) }}
+    </div>
+    <h3>{{ this.name }}</h3>
+    <p>{{ this.role }}</p>
+  </div>
+
+
+  
+  <!-- Menu -->
+  <ul class="menu">
+    <li routerLink="/JSProfile" routerLinkActive="active">My Profile</li>
+    <li routerLink="" routerLinkActive="active">Browse Jobs</li>
+    <li routerLink="/applied-jobs" routerLinkActive="active">Applied Jobs</li>
+    <li routerLink="/changePass" routerLinkActive="active">Change Password</li>
+    <li routerLink="/settings" routerLinkActive="active">Settings</li>
+  </ul>
+
+</div>

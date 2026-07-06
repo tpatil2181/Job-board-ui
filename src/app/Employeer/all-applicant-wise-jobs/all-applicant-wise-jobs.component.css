@@ -1,0 +1,79 @@
+.jobs-container {
+
+    padding: 25px;
+
+}
+
+.page-header {
+
+    margin-bottom: 20px;
+
+}
+
+.page-header h2 {
+
+    color: #1f2937;
+
+}
+
+table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    background: white;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+}
+
+th {
+
+    background: #f3f4f6;
+
+    padding: 15px;
+
+    text-align: left;
+
+}
+
+td {
+
+    padding: 15px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+}
+
+tr:hover {
+
+    background: #f9fafb;
+
+}
+
+.view-btn {
+
+    background: #2563eb;
+
+    color: white;
+
+    border: none;
+
+    padding: 8px 14px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+}
+
+.view-btn:hover {
+
+    background: #1d4ed8;
+
+}
