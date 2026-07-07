@@ -6,12 +6,6 @@
   --line: #e4e7eb;
   --muted: #6b7280;
   --page-bg: #f3f4f6;
-  --green-bg: #dcfce7;
-  --green-text: #15803d;
-  --red-bg: #fee2e2;
-  --red-text: #dc2626;
-  --badge-blue-bg: #dbeafe;
-  --badge-blue-text: #1d4ed8;
 
   display: block;
   font-family: 'Inter', sans-serif;
@@ -35,7 +29,7 @@ h2 {
   margin: 0 auto;
 }
 
-/* 🔹 Table */
+/* 🔹 Table card wrapper */
 .job-table {
   background: #fff;
   padding: 20px;
@@ -49,11 +43,16 @@ table {
   border-collapse: collapse;
 }
 
+thead tr {
+  
+  background: #3d6dcc;
+}
+
 th {
   text-align: left;
   padding: 14px 16px;
-  background: var(--page-bg);
-  color: var(--muted);
+  color: #fff;
+  /* color: var(--muted); */
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -62,6 +61,14 @@ th {
 
 th:first-child { border-radius: 8px 0 0 8px; }
 th:last-child { border-radius: 0 8px 8px 0; }
+
+tbody tr {
+  transition: background 0.15s;
+}
+
+tbody tr:hover {
+  background: var(--page-bg);
+}
 
 td {
   padding: 16px;
@@ -73,10 +80,7 @@ tbody tr:last-child td {
   border-bottom: none;
 }
 
-tbody tr:hover {
-  background: var(--page-bg);
-}
-
+/* 🔹 Empty state */
 .empty-row {
   text-align: center;
   color: var(--muted);
@@ -84,46 +88,23 @@ tbody tr:hover {
   font-size: 14px;
 }
 
-/* 🔹 Status Styling */
-.status {
-  font-weight: 700;
-  font-size: 12px;
-  padding: 5px 12px;
-  border-radius: 20px;
-  display: inline-block;
-}
-
-.status.applied {
-  color: var(--badge-blue-text);
-  background: var(--badge-blue-bg);
-}
-
-.status.shortlisted {
-  color: var(--green-text);
-  background: var(--green-bg);
-}
-
-.status.rejected {
-  color: var(--red-text);
-  background: var(--red-bg);
-}
-
-/* 🔹 Button */
-.withdraw-btn {
+/* 🔹 Action button (no class on the element itself, so styled via table scope) */
+.job-table button {
   padding: 7px 16px;
   background: #fff;
-  color: var(--red-text);
-  border: 1.5px solid var(--red-bg);
+  color: #dc2626;
+  border: 1.5px solid #fee2e2;
   border-radius: 6px;
   font-size: 12.5px;
   font-weight: 700;
+  font-family: 'Inter', sans-serif;
   cursor: pointer;
   transition: 0.15s;
 }
 
-.withdraw-btn:hover {
-  background: var(--red-text);
-  border-color: var(--red-text);
+.job-table button:hover {
+  background: #dc2626;
+  border-color: #dc2626;
   color: #fff;
 }
 
