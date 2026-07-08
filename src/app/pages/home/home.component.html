@@ -84,7 +84,8 @@
 </nav>
 
 <!-- HERO -->
-<section class="hero">
+
+<!-- <section class="hero">
   <div class="container">
     <h1>Find Your Next Job</h1>
     <p>Search thousands of jobs from top companies across India and worldwide.</p>
@@ -101,6 +102,51 @@
         {{ tag }}
       </a>
     </div>
+  </div>
+</section> -->
+<section class="hero">
+  <div class="container">
+    <h1>Find Your Next Job</h1>
+    <p>Search thousands of jobs from top companies across India and worldwide.</p>
+
+    <div class="search-box">
+
+      <!-- Job Title -->
+      <input
+        type="text"
+        [(ngModel)]="jobTitle"
+        placeholder="Job title, skills, or company..."
+        (keyup.enter)="searchJobs()" />
+
+      <!-- Location -->
+      <input
+        type="text"
+        [(ngModel)]="jobLocation"
+        placeholder="City or Remote"
+        style="border-left:1px solid #ddd; border-right:1px solid #ddd;"
+        (keyup.enter)="searchJobs()" />
+
+      <button (click)="searchJobs()">
+        Search Jobs
+      </button>
+
+    </div>
+
+    <div class="hero-links">
+      <span style="color:rgba(255,255,255,0.7); font-size:13px;">
+        Popular:
+      </span>
+
+      <a
+        href="#"
+        *ngFor="let tag of popularSearches"
+        (click)="fillSearch(tag); $event.preventDefault()">
+
+        {{ tag }}
+
+      </a>
+    </div>
+
   </div>
 </section>
 

@@ -5,6 +5,7 @@ import { CandidateLogin, CandidateRegistration, Job } from '../Interface/models'
 import { CandidateChangePassword } from '../Interface/Canditate/candidate-chagepass';
 import { AppliedJob, Candidate, JobApplication } from '../Interface/Canditate/candidate';
 import { PostedJob } from '../Interface/employerModel';
+import { HttpParams } from '@angular/common/http';
 
 
 @Injectable({
@@ -103,6 +104,42 @@ export class AuthService {
   getJobById(jobId: number): Observable<Job> {
     return this.http.get<Job>(`${this.baseUrl}/job/${jobId}`);  
   }
+
+
+//=================================Job Searching wiery=================================
+
+ 
+searchJobs(filters: {
+  // keyword?: string;
+  jobTitle?: string;
+  jobLocation?: string;
+  workMode?: string;
+  experience?: number;
+  salary?: number;
+  industryType?: string;
+}) {
+
+  console.log("Filters:", filters);
+
+  let params = new HttpParams();
+
+  Object.entries(filters).forEach(([key, value]) => {
+
+    console.log(key, value);
+
+    if (value !== null && value !== undefined && value !== '') {
+      params = params.set(key, value.toString());
+    }
+
+  });
+
+  console.log("Params:", params.toString());
+
+  return this.http.get<any>(
+    `${this.baseUrl}/jobsearch`,
+    { params }
+  );
+}
 
 
 

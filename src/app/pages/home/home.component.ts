@@ -62,11 +62,66 @@ export class HomeComponent implements OnInit {
     // isLoggedIn = false;
 
 
+    // keyword: string = '';
 
-//========================Backend Logic and API calls==========================================
+    
+    jobTitle: string = '';
+    jobLocation: string = '';
+    workMode: string = '';
+    experience: number | null = null;
+    salary: number | null = null;
+    industryType: string = '';
+
+//========================Searching Query work==========================================
+searchJobs() {
+  console.log("Search button clicked");
+
+  this.authService.searchJobs({
+
+    // keyword: this.keyword, use when search on any keword is implemented
 
 
-// Backend Api Calls
+    jobTitle: this.jobTitle,
+    jobLocation: this.jobLocation,
+    workMode: this.workMode,
+    experience: this.experience ?? undefined,
+    salary: this.salary ?? undefined,
+    industryType: this.industryType
+
+  }).subscribe({
+      next: (response: any) => {
+
+      console.log(response);
+
+      this.jobs = response.content;   // ✅ Use content
+
+    },
+
+
+    // next: (jobs) => {
+
+    //   this.jobs = jobs;
+      
+
+    // },
+
+    error: (err) => {
+
+      console.error(err);
+
+    }
+
+  });
+
+}
+
+
+
+
+
+//======================== Backend Api Calls==========================================
+
+
 
   goToLogin() {
             // this.isLoggedIn = true; 
@@ -308,12 +363,19 @@ onMenuClick(action: string): void {
     document.getElementById('jobs')?.scrollIntoView({ behavior: 'smooth' });
   }
 
-  fillSearch(val: string): void {
-    this.searchQuery = val;
-    this.filters.query = val;
-    this.applyFilters();
-    document.getElementById('jobs')?.scrollIntoView({ behavior: 'smooth' });
-  }
+  fillSearch(tag: string) {
+
+  this.jobTitle = tag;
+  this.searchJobs();
+
+}
+
+  // fillSearch(val: string): void {
+  //   this.searchQuery = val;
+  //   this.filters.query = val;
+  //   this.applyFilters();
+  //   document.getElementById('jobs')?.scrollIntoView({ behavior: 'smooth' });
+  // }
 
   // ── Filters ──
   onCheckboxChange(group: keyof Pick<Filters, 'types' | 'modes' | 'exps' | 'cats'>, value: string, checked: boolean): void {
