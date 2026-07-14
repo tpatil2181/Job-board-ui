@@ -26,32 +26,27 @@
 
             <span class="profile-name">
               UserName
-             <!-- {{ localStorage.getItem('firstname') || 'User' }} -->
+              <!-- {{ localStorage.getItem('firstname') || 'User' }} -->
             </span>
 
             <span class="arrow">
               ▼
             </span>
           </button>
-            <div class="dropdown-menu" *ngIf="isMenuOpen">
+          <div class="dropdown-menu" *ngIf="isMenuOpen">
 
-              <button
-                *ngFor="let item of menuItems"
-                class="menu-item"
-                type="button"
-                (click)="onMenuClick(item.action)"
-              >
-                <span class="menu-icon">{{ item.icon }}</span>
-                <span>{{ item.label }}</span>
-              </button>
+            <button *ngFor="let item of menuItems" class="menu-item" type="button" (click)="onMenuClick(item.action)">
+              <span class="menu-icon">{{ item.icon }}</span>
+              <span>{{ item.label }}</span>
+            </button>
 
-            </div>
+          </div>
           <!-- <div class="dropdown-menu" *ngIf="isMenuOpen"> -->
 
-            <!-- <a href="#" (click)="goToProfile()" class="menu-item">
+          <!-- <a href="#" (click)="goToProfile()" class="menu-item">
               👤 My Profile
             </a> -->
-            <!-- <button class="menu-item" (click)="goToProfile()">
+          <!-- <button class="menu-item" (click)="goToProfile()">
               👤 My Profile
             </button>
 
@@ -59,10 +54,10 @@
               📄 Applied Jobs
             </button> -->
 
-            <!-- <a routerLink="/change-password" class="menu-item">
+          <!-- <a routerLink="/change-password" class="menu-item">
               🔒 Change Password
             </a> -->
-             <!-- <button class="menu-item" (click)="goToChnagePasswordPage()">
+          <!-- <button class="menu-item" (click)="goToChnagePasswordPage()">
               🔒 Change Password
             </button>
 
@@ -112,19 +107,12 @@
     <div class="search-box">
 
       <!-- Job Title -->
-      <input
-        type="text"
-        [(ngModel)]="jobTitle"
-        placeholder="Job title, skills, or company..."
+      <input type="text" [(ngModel)]="jobTitle" placeholder="Job title, skills, or company..."
         (keyup.enter)="searchJobs()" />
 
       <!-- Location -->
-      <input
-        type="text"
-        [(ngModel)]="jobLocation"
-        placeholder="City or Remote"
-        style="border-left:1px solid #ddd; border-right:1px solid #ddd;"
-        (keyup.enter)="searchJobs()" />
+      <input type="text" [(ngModel)]="jobLocation" placeholder="City or Remote"
+        style="border-left:1px solid #ddd; border-right:1px solid #ddd;" (keyup.enter)="searchJobs()" />
 
       <button (click)="searchJobs()">
         Search Jobs
@@ -137,10 +125,7 @@
         Popular:
       </span>
 
-      <a
-        href="#"
-        *ngFor="let tag of popularSearches"
-        (click)="fillSearch(tag); $event.preventDefault()">
+      <a href="#" *ngFor="let tag of popularSearches" (click)="fillSearch(tag); $event.preventDefault()">
 
         {{ tag }}
 
@@ -182,7 +167,7 @@
       <aside class="sidebar">
 
         <!-- Job Type -->
-        <div class="filter-group">
+        <!-- <div class="filter-group">
           <h3>Job Type <button class="clear-btn" (click)="clearFilter('types')">Clear</button></h3>
           <label *ngFor="let opt of [
             {value:'full-time', label:'Full-time', count:234},
@@ -194,9 +179,24 @@
               (change)="onCheckboxChange('types', opt.value, $any($event.target).checked)" />
             {{ opt.label }} <span class="count">{{ opt.count }}</span>
           </label>
+        </div> -->
+
+        <div class="filter-group">
+          <h3>Job Type <button class="clear-btn" (click)="clearEmploymentTypes()"> Clear</button></h3>
+          <label *ngFor="let opt of [
+                { value:'Full Time', label:'Full Time', count:234 },
+                { value:'Part Time', label:'Part Time', count:87 },
+                { value:'Contract', label:'Contract', count:142 },
+                { value:'Internship', label:'Internship', count:63 }
+              ]">
+            <input type="checkbox" [checked]="selectedEmploymentTypes.includes(opt.value)"
+              (change)="onEmploymentTypeChange(opt.value, $any($event.target).checked)">
+            {{ opt.label }}
+            <span class="count">{{ opt.count }}</span>
+          </label>
         </div>
 
-        <!-- Work Mode -->
+        <!-- Work Mode
         <div class="filter-group">
           <h3>Work Mode <button class="clear-btn" (click)="clearFilter('modes')">Clear</button></h3>
           <label *ngFor="let opt of [
@@ -208,6 +208,32 @@
               (change)="onCheckboxChange('modes', opt.value, $any($event.target).checked)" />
             {{ opt.label }} <span class="count">{{ opt.count }}</span>
           </label>
+        </div> -->
+
+        <!-- Work Mode -->
+        <div class="filter-group">
+
+          <h3>
+            Work Mode
+            <button class="clear-btn" (click)="clearWorkModes()">
+              Clear
+            </button>
+          </h3>
+
+          <label *ngFor="let opt of [
+                { value:'REMOTE', label:'Remote', count:198 },
+                { value:'HYBRID', label:'Hybrid', count:156 },
+                { value:'ONSITE', label:'On-site', count:172 }
+              ]">
+
+            <input type="checkbox" [checked]="selectedWorkModes.includes(opt.value)"
+              (change)="onWorkModeChange(opt.value, $any($event.target).checked)">
+
+            {{ opt.label }}
+            <span class="count">{{ opt.count }}</span>
+
+          </label>
+
         </div>
 
         <!-- Experience -->
@@ -233,7 +259,7 @@
         </div>
 
         <!-- Category -->
-        <div class="filter-group">
+        <!-- <div class="filter-group">
           <h3>Category</h3>
           <label *ngFor="let opt of [
             {value:'tech',      label:'Technology',     count:310},
@@ -246,8 +272,34 @@
               (change)="onCheckboxChange('cats', opt.value, $any($event.target).checked)" />
             {{ opt.label }} <span class="count">{{ opt.count }}</span>
           </label>
-        </div>
+        </div> -->
 
+        <!-- Category -->
+          <div class="filter-group">
+
+            <h3>
+              Category
+              <button class="clear-btn" (click)="clearCategories()">
+                Clear
+              </button>
+            </h3>
+
+            <label *ngFor="let opt of [
+                { value:'Information Technology', label:'Technology', count:310 },
+                { value:'Design', label:'Design', count:88 },
+                { value:'Marketing', label:'Marketing', count:76 },
+                { value:'Finance', label:'Finance', count:54 },
+                { value:'Human Resources', label:'Human Resources', count:41 }
+              ]">
+
+              <input
+                type="checkbox"
+                [checked]="selectedCategories.includes(opt.value)"
+                (change)="onCategoryChange(opt.value, $any($event.target).checked)">
+              {{ opt.label }}
+              <span class="count">{{ opt.count }}</span>
+            </label>
+          </div>
       </aside>
 
       <!-- Jobs List -->

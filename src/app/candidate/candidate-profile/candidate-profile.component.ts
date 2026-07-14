@@ -24,6 +24,8 @@ export interface LanguageItem {
   level: string;
 }
 
+
+
 @Component({
   selector: 'app-candidate-profile',
   standalone: true,
@@ -32,6 +34,49 @@ export interface LanguageItem {
   styleUrls: ['./candidate-profile.component.css']
 })
 export class CandidateProfileComponent {
+//============================ My Code And variables============================
+  profileImage: any;
+  resume: any;
+
+
+ candidate = this.authService.getLoggedInCandidate();
+ candidateemail: string  = localStorage.getItem('email') || '';
+ usrId: number = localStorage.getItem('userId') ? Number(localStorage.getItem('userId')) : 0;
+
+// candidate: Candidate = {
+//        first_name: '',
+//         last_name:'',
+//         mobNo:'',
+//         email:'',
+//         education:'',
+//          resume: {
+//               id: 0,
+//               filePath: '',
+//               candidateId:0,
+//             },
+//         skills:'', 
+//     };
+
+  ngOnInit() {
+    // ✅ get ID from URL
+    // const email = this.route.snapshot.paramMap.get('email');
+
+    // console.log('User ID from URL:', email);
+
+    // if (email) {
+    //   this.getCandidate(email);
+    // }
+  }
+
+  
+
+
+   constructor(
+    private route: ActivatedRoute,
+    // private authService: AuthService
+    public authService: AuthService
+  ) {}
+//============================ My Code And variables END============================
 
   // ---- profile summary ----
   name = 'Ananya Kulkarni';
@@ -177,13 +222,69 @@ export class CandidateProfileComponent {
   }
 
   // ---- resume ----
+
+  selectedFile!: File;
+   onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
   updateResume(): void {
-    this.resumeUpdatedLabel = 'Updated just now';
-    this.showToast('Resume updated successfully');
+    // this.selectedFile = event.target.files[0];
+    if (!this.selectedFile) {
+      alert('Please select a file');
+      // this.authService.getCandidate(this.candidate.email).subscribe(res => {
+      // localStorage.setItem('candidate', JSON.stringify(res)); // update storage
+      // });
+
+
+
+      // this.authService.getLoggedInCandidate().subscribe(res => {
+      // localStorage.setItem('candidate', JSON.stringify(res)); // update storage
+      // });
+      return;
+    }
+
+    this.authService.uploadResume(this.selectedFile,  this.usrId).subscribe({
+      next: (res) => {
+        console.log(res);
+        alert('Resume uploaded successfully ✅');
+      },
+      error: (err) => {
+        console.error(err);
+        
+         if (err.error && err.error.message) {
+          alert(err.error.message);
+        } else {
+          // alert('Something went wrong ❌');
+           alert('Upload failed ❌');
+        }
+      
+      }
+    });
+//   }
+    // this.resumeUpdatedLabel = 'Updated just now';
+    // this.showToast('Resume updated successfully');
   }
 
   viewResume(): void {
-    this.showToast('Opening resume preview');
+    const resumeId = this.candidate.resumeId;
+    console.error("Resume id is "+ this.candidate.first_name);
+      // ✅ MUST check
+      if (!resumeId) {
+        console.error('Resume ID is missing ❌');
+        alert('Resume not available');
+        return;
+      }
+       this.authService.getResume(resumeId).subscribe({
+        next: (res: Blob) => {
+          const fileURL = window.URL.createObjectURL(res);
+          window.open(fileURL); // ✅ opens PDF
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Failed to load resume ❌');
+        }
+      });
   }
 
   uploadPhoto(): void {
@@ -220,6 +321,20 @@ export class CandidateProfileComponent {
   addLanguage(): void {
     this.showToast('Language added');
   }
+
+
+
+  // Backend API Calls
+  // getCandidate(email: string) {
+  //   this.authService.getCandidateProfile(email).subscribe({
+  //     next: (res) => {
+  //       this.candidate = res;
+  //     },
+  //     error: (err) => {
+  //       console.error(err);
+  //     }
+  //   });
+  // }
 }
 
 

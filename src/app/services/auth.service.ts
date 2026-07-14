@@ -109,14 +109,49 @@ export class AuthService {
 //=================================Job Searching wiery=================================
 
  
+// searchJobs(filters: {
+//   // keyword?: string;
+//   jobTitle?: string;
+//   jobLocation?: string;
+//   workMode?: string;
+//   experience?: number;
+//   salary?: number;
+//   industryType?: string;
+//   employmentTypes?: string[];
+// }) {
+
+//   console.log("Filters:", filters);
+
+//   let params = new HttpParams();
+
+//   Object.entries(filters).forEach(([key, value]) => {
+
+//     console.log(key, value);
+
+//     if (value !== null && value !== undefined && value !== '') {
+//       params = params.set(key, value.toString());
+//     }
+    
+
+//   });
+
+//   console.log("Params:", params.toString());
+
+//   return this.http.get<any>(
+//     `${this.baseUrl}/jobsearch`,
+//     { params }
+//   );
+// }
+
 searchJobs(filters: {
-  // keyword?: string;
   jobTitle?: string;
   jobLocation?: string;
-  workMode?: string;
+  workMode?: string[];
   experience?: number;
   salary?: number;
   industryType?: string;
+  employmentTypes?: string[];
+  categories?: string[];
 }) {
 
   console.log("Filters:", filters);
@@ -127,13 +162,33 @@ searchJobs(filters: {
 
     console.log(key, value);
 
-    if (value !== null && value !== undefined && value !== '') {
+    // Skip empty values
+    if (
+      value === null ||
+      value === undefined ||
+      value === '' ||
+      (Array.isArray(value) && value.length === 0)
+    ) {
+      return;
+    }
+
+    // Handle array parameters (employmentTypes)
+    if (Array.isArray(value)) {
+
+      value.forEach(item => {
+        params = params.append(key, item);
+      });
+
+    } else {
+
+      // Handle normal parameters
       params = params.set(key, value.toString());
+
     }
 
   });
 
-  console.log("Params:", params.toString());
+  console.log("Request URL Params:", params.toString());
 
   return this.http.get<any>(
     `${this.baseUrl}/jobsearch`,

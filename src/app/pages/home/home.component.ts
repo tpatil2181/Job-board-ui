@@ -58,6 +58,9 @@ export class HomeComponent implements OnInit {
 
 //========================Variable Declaration ==========================================
     jobs: Job[] = [];
+
+
+
     
     // isLoggedIn = false;
 
@@ -67,10 +70,14 @@ export class HomeComponent implements OnInit {
     
     jobTitle: string = '';
     jobLocation: string = '';
-    workMode: string = '';
+    // workMode: string = '';
+    selectedWorkModes: string[] = [];
     experience: number | null = null;
     salary: number | null = null;
     industryType: string = '';
+    selectedEmploymentTypes: string[] = [];
+    selectedCategories: string[] = [];
+
 
 //========================Searching Query work==========================================
 searchJobs() {
@@ -83,10 +90,12 @@ searchJobs() {
 
     jobTitle: this.jobTitle,
     jobLocation: this.jobLocation,
-    workMode: this.workMode,
+    workMode: this.selectedWorkModes,
     experience: this.experience ?? undefined,
     salary: this.salary ?? undefined,
-    industryType: this.industryType
+    industryType: this.industryType,
+    employmentTypes: this.selectedEmploymentTypes,
+    categories:this.selectedCategories
 
   }).subscribe({
       next: (response: any) => {
@@ -96,15 +105,6 @@ searchJobs() {
       this.jobs = response.content;   // ✅ Use content
 
     },
-
-
-    // next: (jobs) => {
-
-    //   this.jobs = jobs;
-      
-
-    // },
-
     error: (err) => {
 
       console.error(err);
@@ -115,7 +115,64 @@ searchJobs() {
 
 }
 
+onEmploymentTypeChange(type: string, checked: boolean) {
 
+    if (checked) {
+      this.selectedEmploymentTypes.push(type);
+    } else {
+      this.selectedEmploymentTypes =
+        this.selectedEmploymentTypes.filter(t => t !== type);
+    }
+
+    this.searchJobs();
+  }
+
+  clearEmploymentTypes() {
+    this.selectedEmploymentTypes = [];
+    this.searchJobs();
+  }
+
+  onWorkModeChange(mode: string, checked: boolean) {
+    if (checked) {
+      this.selectedWorkModes.push(mode);
+    } 
+    else {
+      this.selectedWorkModes =
+      this.selectedWorkModes.filter(m => m !== mode);
+    }
+    this.searchJobs();
+  }
+    clearWorkModes() {
+      this.selectedWorkModes = [];
+      this.searchJobs();
+    }
+
+ 
+
+onCategoryChange(category: string, checked: boolean) {
+
+  if (checked) {
+
+    this.selectedCategories.push(category);
+
+  } else {
+
+    this.selectedCategories =
+      this.selectedCategories.filter(c => c !== category);
+
+  }
+
+  this.searchJobs();
+
+}
+
+clearCategories() {
+
+  this.selectedCategories = [];
+
+  this.searchJobs();
+
+}
 
 
 
