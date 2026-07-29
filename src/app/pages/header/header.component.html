@@ -12,66 +12,73 @@
       <li><a [routerLink]="['/about']"     routerLinkActive="active">How It Works</a></li>
       <li><a [routerLink]="['/about']"     routerLinkActive="active">Career Advice</a></li>
     </ul>
+<div class="nav-actions">
+      <div *ngIf="!isLoggedIn" class="nav-actions">
+        <button (click)="goToLogin()" class="btn btn-outline">Sign In</button>
+        <button (click)="goToRegister()" class="btn btn-outline">Sign Up</button>
+        <button (click)="goToCompanyLogin()" class="btn btn-outline">Company Login</button>
+        <button (click)="goToCompanyRegister()" class="btn btn-outline">Company Registration</button>
 
-    <!-- Logged OUT -->
-    <div class="nav-actions" *ngIf="!isLoggedIn">
-      <a [routerLink]="['/login']"    class="btn btn-outline">Sign In</a>
-      <a [routerLink]="['/register']" class="btn btn-solid">Register</a>
-    </div>
+        <!-- <button (click)="goToCompanyLogin()" class="btn btn-outline">Sign In</button>
+        <button (click)="goToCompanyRegister()" class="btn btn-outline">Sign Up</button> -->
+      </div>
+      <div *ngIf="isLoggedIn" class="nav-actions">
+        <div class="profile-dropdown">
 
-    <!-- Logged IN -->
-    <div class="nav-actions" *ngIf="isLoggedIn">
-      <span class="welcome-text">Hi, {{ userName }}</span>
-      <a [routerLink]="[dashboardRoute]" class="btn btn-outline">Dashboard</a>
-      <button class="btn btn-solid" (click)="onLogout()">Logout</button>
+          <button class="profile-btn" (click)="isMenuOpen = !isMenuOpen">
+            <!-- <img src="assets/images/profile.png" alt="Profile" class="profile-image" /> -->
+
+            <span class="profile-name">
+              UserName
+              <!-- {{ localStorage.getItem('firstname') || 'User' }} -->
+            </span>
+
+            <span class="arrow">
+              ▼
+            </span>
+          </button>
+          <div class="dropdown-menu" *ngIf="isMenuOpen">
+
+            <button *ngFor="let item of menuItems" class="menu-item" type="button" (click)="onMenuClick(item.action)">
+              <span class="menu-icon">{{ item.icon }}</span>
+              <span>{{ item.label }}</span>
+            </button>
+
+          </div>
+          <!-- <div class="dropdown-menu" *ngIf="isMenuOpen"> -->
+
+          <!-- <a href="#" (click)="goToProfile()" class="menu-item">
+              👤 My Profile
+            </a> -->
+          <!-- <button class="menu-item" (click)="goToProfile()">
+              👤 My Profile
+            </button>
+
+           <button class="menu-item" (click)="goToAppliedJobs()">
+              📄 Applied Jobs
+            </button> -->
+
+          <!-- <a routerLink="/change-password" class="menu-item">
+              🔒 Change Password
+            </a> -->
+          <!-- <button class="menu-item" (click)="goToChnagePasswordPage()">
+              🔒 Change Password
+            </button>
+
+            <a routerLink="/settings" class="menu-item">
+              ⚙️ Settings
+            </a>
+
+          </div> -->
+
+        </div>
+        <!-- <button (click)="goToProfile()" class="btn btn-outline">My Profile </button> -->
+        <!-- <button (click)="logout()" class="btn btn-outline">Logout</button> -->
+      </div>
+      <!-- <button (click)="goTologin()" class="btn btn-outline">Sign In</button>
+                  <button (click)="goToRegister()" class="btn btn-outline">Sign Up</button>
+                  <a href="#" class="btn btn-solid">Post a Job</a> -->
     </div>
 
   </div>
 </nav>
-
-
-<!-- ===== HERO ===== -->
-<section class="hero" *ngIf="showHero">
-  <div class="container">
-
-    <h1>{{ heroTitle }}</h1>
-    <p class="hero-sub">{{ heroSubtitle }}</p>
-
-    <div class="search-box">
-      <input
-        type="text"
-        [(ngModel)]="searchQuery"
-        placeholder="Job title, skills, or company..."
-        (keydown.enter)="onSearch()"
-      />
-      <input
-        type="text"
-        [(ngModel)]="locationQuery"
-        placeholder="City or Remote"
-        (keydown.enter)="onSearch()"
-      />
-      <button (click)="onSearch()">Search Jobs</button>
-    </div>
-
-    <div class="hero-tags">
-      <span class="tag-label">Popular:</span>
-      <a
-        href="#"
-        *ngFor="let tag of popularTags"
-        (click)="onTagClick(tag, $event)"
-      >{{ tag }}</a>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- ===== STATS BAR ===== -->
-<div class="stats-bar" *ngIf="showStats">
-  <div class="stats-inner">
-    <div class="stat" *ngFor="let stat of stats">
-      <div class="stat-num">{{ stat.display }}</div>
-      <div class="stat-lbl">{{ stat.label }}</div>
-    </div>
-  </div>
-</div>

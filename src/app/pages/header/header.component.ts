@@ -1,17 +1,7 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, OnInit, HostListener} from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
-export interface StatItem {
-  value:   number;
-  suffix:  string;
-  label:   string;
-  display: string;
-}
-
-export interface SearchEvent {
-  query:    string;
-  location: string;
-}
 
 @Component({
   selector: 'app-header',
@@ -20,9 +10,7 @@ export interface SearchEvent {
 })
 export class HeaderComponent implements OnInit {
 
-  // ── NAVBAR inputs ──────────────────────────────────────
-  /** Pass true once user logs in */
-  @Input() isLoggedIn: boolean = false;
+  isMenuOpen = false;
 
   /** Display name shown in navbar e.g. "Hi, Rahul" */
   @Input() userName: string = '';
@@ -30,50 +18,127 @@ export class HeaderComponent implements OnInit {
   /** Controls which dashboard link to show */
   @Input() userRole: 'candidate' | 'employer' | '' = '';
 
-  // ── HERO inputs ────────────────────────────────────────
-  /** Set false to hide the hero section (e.g. on inner pages) */
-  @Input() showHero: boolean = true;
 
-  @Input() heroTitle: string = 'Find Your Next Job';
 
-  @Input() heroSubtitle: string =
-    'Search thousands of jobs from top companies across India and worldwide.';
-
-  @Input() popularTags: string[] = [
-    'Software Engineer',
-    'Product Manager',
-    'Data Analyst',
-    'UI/UX Designer',
-    'Remote Jobs',
-  ];
-
-  // ── STATS inputs ───────────────────────────────────────
-  /** Set false to hide the stats bar */
-  @Input() showStats: boolean = true;
-
-  @Input() stats: StatItem[] = [
-    { value: 48000, suffix: '+', label: 'Active Jobs',       display: '0' },
-    { value: 12000, suffix: '+', label: 'Companies Hiring',  display: '0' },
-    { value: 95000, suffix: '+', label: 'Candidates Placed', display: '0' },
-    { value: 50,    suffix: '+', label: 'Cities Covered',    display: '0' },
-  ];
-
-  // ── Output ─────────────────────────────────────────────
-  /** Emits search query to parent if parent wants to handle it */
-  @Output() searched = new EventEmitter<SearchEvent>();
-
-  // ── Internal state ─────────────────────────────────────
-  searchQuery   = '';
-  locationQuery = '';
-
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService,
+              private router: Router) {}
 
   ngOnInit(): void {
-    if (this.showStats) {
-      setTimeout(() => this.animateStats(), 300);
-    }
+    // if (this.showStats) {
+    //   setTimeout(() => this.animateStats(), 300);
+    // }
   }
 
+
+  // ── Navigation methods ─────────────────────────────────
+  goToLogin() {
+            // this.isLoggedIn = true; 
+        this.router.navigate(['login']);
+  }
+
+  logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('email');
+        // this.isLoggedIn = false; 
+        this.router.navigate(['/']);
+  }
+
+
+  goToRegister() {
+    this.router.navigate(['register']);
+  }
+
+   goToCompanyLogin(){
+    this.router.navigate(['/companyLogin']);
+  }
+
+   goToCompanyRegister(){
+    this.router.navigate(['/companyRegistration']);
+  }
+
+  get isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
+   goToProfile() {
+      this.router.navigate(['/JSProfile']);
+      // this.router.navigate(['/JSProfile']);
+
+    }
+
+  goToChnagePasswordPage() {
+      this.router.navigate(['/CandidateChangePass']);
+      // this.router.navigate(['/JSProfile']);
+
+    }
+    
+  goToAppliedJobs() {
+    this.router.navigate(['/applied-jobs']);
+  }
+
+    menuItems = [
+        {
+          label: 'My Profile',
+          icon: '👤',
+          action: 'profile'
+        },
+        {
+          label: 'Applied Jobs',
+          icon: '📄',
+          action: 'appliedJobs'
+        },
+        {
+          label: 'Change Password',
+          icon: '🔒',
+          action: 'changePassword'
+        },
+        {
+          label: 'Settings',
+          icon: '⚙️',
+          action: 'settings'
+        },
+        {
+          label: 'Logout',
+          icon: '🚪',
+          action: 'logout'
+        }
+      ];
+  
+  onMenuClick(action: string): void {
+    switch (action) {
+      case 'profile':
+        this.goToProfile();
+        break;
+  
+      case 'appliedJobs':
+        this.goToAppliedJobs();
+        break;
+  
+      case 'changePassword':
+        this.goToChnagePasswordPage();
+        break;
+  
+      case 'settings':
+        // this.goToSettings();
+        break;
+      case 'logout':
+        this.logout();
+        break;
+    }
+  
+    this.isMenuOpen = false;
+  }
+      @HostListener('document:click', ['$event'])
+      closeMenu(event: Event) {
+        const target = event.target as HTMLElement;
+  
+        if (!target.closest('.profile-dropdown')) {
+          this.isMenuOpen = false;
+        }
+      }
+// My Code end===========================
   // ── Computed ───────────────────────────────────────────
   get dashboardRoute(): string {
     return this.userRole === 'employer'
@@ -86,48 +151,5 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
     this.router.navigate(['/']);
-  }
-
-  // ── Hero methods ───────────────────────────────────────
-  onSearch(): void {
-    const payload: SearchEvent = {
-      query:    this.searchQuery.trim(),
-      location: this.locationQuery.trim(),
-    };
-    this.searched.emit(payload);
-    this.router.navigate(['/jobs'], {
-      queryParams: {
-        q:        payload.query    || null,
-        location: payload.location || null,
-      }
-    });
-  }
-
-  onTagClick(tag: string, event: Event): void {
-    event.preventDefault();
-    this.searchQuery = tag;
-    this.onSearch();
-  }
-
-  // ── Stats animation ────────────────────────────────────
-  private animateStats(): void {
-    this.stats.forEach(stat => {
-      const duration  = 1500;
-      const steps     = 60;
-      const interval  = duration / steps;
-      const increment = stat.value / steps;
-      let current = 0;
-      let step    = 0;
-
-      const timer = setInterval(() => {
-        step++;
-        current = Math.min(current + increment, stat.value);
-        stat.display = Math.floor(current).toLocaleString('en-IN') + stat.suffix;
-        if (step >= steps) {
-          stat.display = stat.value.toLocaleString('en-IN') + stat.suffix;
-          clearInterval(timer);
-        }
-      }, interval);
-    });
   }
 }
