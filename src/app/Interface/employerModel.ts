@@ -3,6 +3,13 @@
 // }
 export interface employer {}
 
+export interface registerEmployer {
+    employerName:string;
+    website:string;
+    email:string;
+    password:string;
+    contact:number;
+}
 
 export interface PostedJob {
   jobId: number;

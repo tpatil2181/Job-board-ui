@@ -1,178 +1,230 @@
-.job-details-container {
-  max-width: 1200px;
-  margin: 30px auto;
-  padding: 20px;
+:host {
+  --navy: #16305c;
+  --blue-deep: #1f4e8c;
+  --blue-bright: #2952a3;
+  --ink: #1e2a45;
+  --line: #e4e7eb;
+  --muted: #6b7280;
+  --page-bg: #f3f4f6;
+  --badge-blue-bg: #dbeafe;
+  --badge-blue-text: #1d4ed8;
+  --green-bg: #dcfce7;
+  --green-text: #15803d;
+
+  display: block;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  background: var(--page-bg);
+  min-height: 100vh;
 }
 
+* { box-sizing: border-box; }
+
+h1, h2 { font-family: 'Playfair Display', serif; margin: 0; }
+
+.job-details-container {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 36px 24px 70px;
+}
+
+/* ===== HEADER CARD ===== */
 .job-header-card {
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 30px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px 30px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 3px rgba(22, 48, 92, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+.job-header-card::before {
+  content: "";
+  position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+  background: linear-gradient(180deg, var(--blue-bright), var(--navy));
 }
 
 .job-main-info {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 20px;
 }
 
 .job-info h1 {
-  margin: 0;
-  font-size: 32px;
-  color: #111827;
+  font-size: 24px;
+  margin-bottom: 8px;
 }
 
 .company-info {
   display: flex;
-  gap: 16px;
-  margin-top: 10px;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
 }
-
 .company-name {
-  font-size: 18px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--blue-bright);
+}
+.rating {
+  font-size: 13px;
+  color: var(--muted);
   font-weight: 600;
 }
 
-.rating {
-  color: #f59e0b;
-}
-
 .job-meta {
-  margin-top: 15px;
-
   display: flex;
-  gap: 20px;
+  align-items: center;
+  gap: 18px;
   flex-wrap: wrap;
-
-  color: #4b5563;
+  font-size: 13.5px;
+  color: var(--ink);
 }
-
-.salary {
-  color: #16a34a;
+.job-meta .salary {
   font-weight: 700;
+  color: var(--green-text);
+  background: var(--green-bg);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
 }
 
+.company-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--page-bg);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
 .company-logo img {
-  width: 90px;
-  height: 90px;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .job-extra-info {
-  margin-top: 25px;
-
   display: flex;
-  gap: 40px;
-
-  padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  font-size: 13.5px;
+}
+.job-extra-info strong {
+  color: var(--muted);
+  font-weight: 600;
+  margin-right: 4px;
 }
 
+/* ===== APPLY CARD ===== */
 .apply-card {
-  margin-top: 20px;
-
-  background: white;
-  border-radius: 18px;
-
-  padding: 20px 30px;
-
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 26px;
+  margin-bottom: 22px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  box-shadow: 0 1px 3px rgba(22, 48, 92, 0.04);
+}
 
-  box-shadow: 0 4px 18px rgba(0,0,0,.06);
+.posted-date {
+  font-size: 13px;
+  color: var(--muted);
 }
 
 .action-buttons {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
 .primary-btn {
+  padding: 11px 26px;
   border: none;
-  background: #4f46e5;
-  color: white;
-
-  padding: 12px 24px;
-  border-radius: 10px;
-
+  border-radius: 8px;
+  background: var(--blue-bright);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
   cursor: pointer;
+  transition: background 0.15s;
 }
-
-.primary-btn:hover {
-  background: #4338ca;
-}
+.primary-btn:hover { background: var(--blue-deep); }
 
 .secondary-btn {
-  border: none;
-  background: #e5e7eb;
-  color: #111827;
-
-  padding: 12px 24px;
-  border-radius: 10px;
-
+  padding: 11px 22px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
+  transition: 0.15s;
+}
+.secondary-btn:hover {
+  border-color: var(--blue-bright);
+  color: var(--blue-bright);
 }
 
+/* ===== CONTENT CARDS ===== */
 .content-card {
-  margin-top: 20px;
-
-  background: white;
-  border-radius: 18px;
-
-  padding: 30px;
-
-  box-shadow: 0 4px 18px rgba(0,0,0,.06);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 3px rgba(22, 48, 92, 0.04);
 }
 
 .content-card h2 {
-  margin-bottom: 15px;
-  color: #111827;
+  font-size: 17px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 12px;
+  color: var(--navy);
 }
 
 .content-card p {
-  line-height: 1.8;
-  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.75;
+  color: #333d4f;
+  margin: 0;
+  white-space: pre-line;
 }
 
+/* ===== SKILLS ===== */
 .skills-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
 }
 
 .skill-chip {
-  padding: 10px 16px;
-
-  border-radius: 999px;
-
-  background: #eef2ff;
-  color: #4f46e5;
-
-  font-weight: 500;
+  background: var(--badge-blue-bg);
+  color: var(--badge-blue-text);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: 20px;
 }
 
-@media (max-width: 768px) {
-
-  .job-main-info,
-  .apply-card,
-  .job-extra-info {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
-
-  .company-logo {
-    margin-top: 15px;
-  }
-
-  .action-buttons {
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .action-buttons button {
-    width: 100%;
-  }
+@media (max-width: 640px) {
+  .job-details-container { padding: 24px 16px 60px; }
+  .job-header-card, .apply-card, .content-card { padding: 20px; }
+  .job-main-info { flex-direction: column-reverse; }
+  .apply-card { flex-direction: column; align-items: flex-start; }
+  .action-buttons { width: 100%; }
+  .action-buttons button { flex: 1; }
 }

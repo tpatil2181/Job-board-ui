@@ -33,11 +33,14 @@ import { Router } from '@angular/router';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Job, Company, Filters } from '../../Interface/models';
 import { AuthService } from '../../services/auth.service';
+import { SharedModule } from '../shared.module';
+
+
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,SharedModule],
   templateUrl: './home.component.html',
   styleUrls: ['home.component.scss'],
 
@@ -561,10 +564,13 @@ onMenuClick(action: string): void {
     this.router.navigate(['/companyLogin']);
   }
 
-  goToCompanyRegister(){
-    this.router.navigate(['/comapnyHome']);
+   goToCompanyRegister(){
+    this.router.navigate(['/companyRegistration']);
   }
 
+  // goToCompanyRegister(){
+  //   this.router.navigate(['/comapnyHome']);
+  // }
 }
 
 

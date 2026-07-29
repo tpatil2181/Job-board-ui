@@ -6,6 +6,8 @@ import { CandidateChangePassword } from '../Interface/Canditate/candidate-chagep
 import { AppliedJob, Candidate, JobApplication } from '../Interface/Canditate/candidate';
 import { PostedJob } from '../Interface/employerModel';
 import { HttpParams } from '@angular/common/http';
+import { registerEmployer } from '../Interface/employerModel';
+
 
 
 @Injectable({
@@ -18,6 +20,14 @@ export class AuthService {
   private candidateUrl ='http://localhost:8080/Hireflow/candidate'
 
   private employerUrl= 'http://localhost:8080/Hireflow/employer'
+
+  // codespace url
+// private baseUrl = 'https://curly-happiness-69gvp65gq79wcr55-8080.app.github.dev';
+
+// private candidateUrl = `${this.baseUrl}/Hireflow/candidate`;
+
+// private employerUrl = `${this.baseUrl}/Hireflow/employer`;
+
 
   // private employerNoAuthUrl ='http://localhost:8080/employer'
 
@@ -51,11 +61,11 @@ export class AuthService {
   }
 
   register(Candidate: CandidateRegistration): Observable<any> {
-        return this.http.post(`${this.baseUrl}/emp_register`, Candidate);
+        return this.http.post(`${this.baseUrl}/cnd_register`, Candidate);
   }
 
-  EmployerRegister(Candidate: CandidateRegistration): Observable<any> {
-    return this.http.post(`${this.baseUrl}/cnd_register`, Candidate);
+  EmployerRegister(Employer: registerEmployer): Observable<any> {
+    return this.http.post(`${this.baseUrl}/emp_register`, Employer);
   }
 
   getToken(): string | null {

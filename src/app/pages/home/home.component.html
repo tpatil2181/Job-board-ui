@@ -1,4 +1,5 @@
 <!-- NAVBAR -->
+<!-- <app-header></app-header> -->
 <nav class="navbar">
   <div class="nav-inner">
     <a href="#" class="logo">Hire<span>Flow</span></a>
@@ -101,6 +102,7 @@
 </section> -->
 <section class="hero">
   <div class="container">
+        <!-- <div *ngIf="!isLoggedIn" class="container"></div> -->
     <h1>Find Your Next Job</h1>
     <p>Search thousands of jobs from top companies across India and worldwide.</p>
 
@@ -136,6 +138,7 @@
 </section>
 
 <!-- STATS -->
+ <div *ngIf="!isLoggedIn">
 <div class="stats-bar">
   <div class="stats-inner">
     <div class="stat">
@@ -153,6 +156,7 @@
     <div class="stat">
       <div class="stat-num">{{ statCities }}+</div>
       <div class="stat-lbl">Cities Covered</div>
+      </div>
     </div>
   </div>
 </div>

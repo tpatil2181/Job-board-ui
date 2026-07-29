@@ -15,6 +15,8 @@ import {PostedJobsComponent} from './Employeer/posted-jobs/posted-jobs.component
 import {ApplicantListComponent} from './Employeer/applicant-list/applicant-list.component'
 import {AllApplicantWiseJobsComponent} from './Employeer/all-applicant-wise-jobs/all-applicant-wise-jobs.component'
 import {EmployerLoginComponent} from './Employeer/employer-login/employer-login.component'
+import { EmployerRegistrationComponent } from './Employeer/employer-registration/employer-registration.component';
+
 
 
 
@@ -33,6 +35,7 @@ export const routes: Routes = [
      { path: 'register', component: RegisterComponent },
      { path: 'companyLogin', component: EmployerLoginComponent},
      // { path: 'company Regostration', component: Company Registration },
+     { path: 'companyRegistration', component: EmployerRegistrationComponent },
      { path: 'job/:id', component: JobDescriptionComponent },
 
 
@@ -45,7 +48,8 @@ export const routes: Routes = [
   
 //================================Employer routs================================     
 
-     { path: 'comapnyHome', component: CompanyHomeComponent, canActivate: [authGuard]},
+     { path: 'comapnyHome', component: CompanyHomeComponent},
+     // { path: 'comapnyHome', component: CompanyHomeComponent, canActivate: [authGuard]},,
      { path: 'postJob', component: PostJobComponent,canActivate: [authGuard] },
      { path: 'postedJobs', component: PostedJobsComponent, canActivate: [authGuard] },
      { path: 'allAllicantsofperticularjobd', component: ApplicantListComponent, canActivate: [authGuard]},
