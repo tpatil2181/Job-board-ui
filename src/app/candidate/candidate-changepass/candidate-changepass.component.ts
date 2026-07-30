@@ -3,11 +3,12 @@ import { CandidateChangePassword } from '../../Interface/Canditate/candidate-cha
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { SharedModule } from "../../pages/shared.module";
 
 @Component({
   selector: 'app-candidate-chagepass',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SharedModule],
   templateUrl: './candidate-changepass.component.html',
   styleUrl: './candidate-changepass.component.css'
 })

@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { AppliedJob } from '../../Interface/Canditate/candidate';
+import { SharedModule } from '../../pages/shared.module';
 
 @Component({
   selector: 'app-applied-jobs',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,SharedModule],
   templateUrl: './applied-jobs.component.html',
   styleUrls: ['./applied-jobs.component.css']
 })

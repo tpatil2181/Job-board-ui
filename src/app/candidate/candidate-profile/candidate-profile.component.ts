@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Candidate } from '../../Interface/Canditate/candidate';
+import { SharedModule } from "../../pages/shared.module";
 
 
 export interface TimelineItem {
@@ -29,7 +30,7 @@ export interface LanguageItem {
 @Component({
   selector: 'app-candidate-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SharedModule],
   templateUrl: './candidate-profile.component.html',
   styleUrls: ['./candidate-profile.component.css']
 })
