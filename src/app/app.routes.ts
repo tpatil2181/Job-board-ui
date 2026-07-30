@@ -37,7 +37,7 @@ export const routes: Routes = [
      // { path: 'company Regostration', component: Company Registration },
      { path: 'companyRegistration', component: EmployerRegistrationComponent },
      { path: 'job/:id', component: JobDescriptionComponent },
-
+     //Demo change to push code from git hub codespace
 
 //================================Candidate routs================================     
      { path: 'JsHome', component: CandidateHomeComponent, canActivate: [authGuard] },
