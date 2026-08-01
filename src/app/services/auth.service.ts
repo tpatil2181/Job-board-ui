@@ -15,18 +15,18 @@ import { registerEmployer } from '../Interface/employerModel';
 })
 export class AuthService {
   
-  private baseUrl = 'http://localhost:8080';
+  // private baseUrl = 'http://localhost:8080';
 
-  private candidateUrl ='http://localhost:8080/Hireflow/candidate'
+  // private candidateUrl ='http://localhost:8080/Hireflow/candidate'
 
-  private employerUrl= 'http://localhost:8080/Hireflow/employer'
+  // private employerUrl= 'http://localhost:8080/Hireflow/employer'
 
   // codespace url
-  // private baseUrl = 'https://curly-happiness-69gvp65gq79wcr55-8080.app.github.dev';
+  private baseUrl = 'https://curly-happiness-69gvp65gq79wcr55-8080.app.github.dev';
 
-  // private candidateUrl = `${this.baseUrl}/Hireflow/candidate`;
+  private candidateUrl = `${this.baseUrl}/Hireflow/candidate`;
 
-  // private employerUrl = `${this.baseUrl}/Hireflow/employer`;
+  private employerUrl = `${this.baseUrl}/Hireflow/employer`;
 
 
   // private employerNoAuthUrl ='http://localhost:8080/employer'
