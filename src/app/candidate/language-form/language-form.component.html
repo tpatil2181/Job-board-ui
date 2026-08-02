@@ -1,0 +1,34 @@
+<div class="overlay" *ngIf="visible" (click)="onOverlayClick($event)">
+  <div class="form-card sm">
+
+    <div class="form-header">
+      <h3>{{ isEditMode ? 'Edit Language' : 'Add Language' }}</h3>
+      <button class="close-btn" (click)="onClose()">✕</button>
+    </div>
+
+    <form #langForm="ngForm" (ngSubmit)="onSave(langForm)" class="form-body">
+
+      <div class="form-group">
+        <label>Language <span class="req">*</span></label>
+        <input type="text" name="name" [(ngModel)]="form.name" required
+               placeholder="Ex: English">
+      </div>
+
+      <div class="form-group">
+        <label>Proficiency</label>
+        <select name="level" [(ngModel)]="form.level">
+          <option *ngFor="let l of levels" [value]="l">{{ l }}</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="onClose()">Cancel</button>
+        <button type="submit" class="btn-save" [disabled]="langForm.invalid">
+          {{ isEditMode ? 'Save Changes' : 'Add Language' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="overlay" *ngIf="visible" (click)="onOverlayClick($event)">
+  <div class="form-card">
+
+    <div class="form-header">
+      <h3>{{ isEditMode ? 'Edit Experience' : 'Add Experience' }}</h3>
+      <button class="close-btn" (click)="onClose()">✕</button>
+    </div>
+
+    <form #expForm="ngForm" (ngSubmit)="onSave(expForm)" class="form-body">
+
+      <div class="form-group">
+        <label>Job Title <span class="req">*</span></label>
+        <input type="text" name="title" [(ngModel)]="form.title" required
+               placeholder="Ex: Senior Product Designer">
+      </div>
+
+      <div class="form-group">
+        <label>Company <span class="req">*</span></label>
+        <input type="text" name="company" [(ngModel)]="form.company" required
+               placeholder="Ex: Zeta Finance">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Location</label>
+          <input type="text" name="location" [(ngModel)]="form.location" placeholder="Ex: Bengaluru">
+        </div>
+        <div class="form-group half">
+          <label>Work Mode</label>
+          <select name="workMode" [(ngModel)]="form.workMode">
+            <option value="" disabled selected>Select</option>
+            <option *ngFor="let m of workModes" [value]="m">{{ m }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Start Date</label>
+          <div class="inline-selects">
+            <select name="startMonth" [(ngModel)]="form.startMonth">
+              <option value="" disabled selected>Month</option>
+              <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+            </select>
+            <select name="startYear" [(ngModel)]="form.startYear">
+              <option value="" disabled selected>Year</option>
+              <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group half">
+          <label>End Date</label>
+          <div class="inline-selects">
+            <select name="endMonth" [(ngModel)]="form.endMonth" [disabled]="form.currentlyWorking">
+              <option value="" disabled selected>Month</option>
+              <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+            </select>
+            <select name="endYear" [(ngModel)]="form.endYear" [disabled]="form.currentlyWorking">
+              <option value="" disabled selected>Year</option>
+              <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="checkbox-row">
+        <input type="checkbox" id="currentlyWorking" name="currentlyWorking" [(ngModel)]="form.currentlyWorking">
+        <label for="currentlyWorking">I currently work here</label>
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea name="description" rows="3" [(ngModel)]="form.description"
+                  placeholder="Describe your key responsibilities and achievements"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="onClose()">Cancel</button>
+        <button type="submit" class="btn-save" [disabled]="expForm.invalid">
+          {{ isEditMode ? 'Save Changes' : 'Add Experience' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="overlay" *ngIf="visible" (click)="onOverlayClick($event)">
+  <div class="form-card">
+
+    <div class="form-header">
+      <h3>{{ isEditMode ? 'Edit Certification' : 'Add Certification' }}</h3>
+      <button class="close-btn" (click)="onClose()">✕</button>
+    </div>
+
+    <form #certForm="ngForm" (ngSubmit)="onSave(certForm)" class="form-body">
+
+      <div class="form-group">
+        <label>Certification Name <span class="req">*</span></label>
+        <input type="text" name="name" [(ngModel)]="form.name" required
+               placeholder="Ex: Certified UX Design Professional">
+      </div>
+
+      <div class="form-group">
+        <label>Issuing Organization <span class="req">*</span></label>
+        <input type="text" name="issuingOrg" [(ngModel)]="form.issuingOrg" required
+               placeholder="Ex: Google, via Coursera">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Issue Date</label>
+          <div class="inline-selects">
+            <select name="issueMonth" [(ngModel)]="form.issueMonth">
+              <option value="" disabled selected>Month</option>
+              <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+            </select>
+            <select name="issueYear" [(ngModel)]="form.issueYear">
+              <option value="" disabled selected>Year</option>
+              <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group half">
+          <label>Expiry Date</label>
+          <div class="inline-selects">
+            <select name="expiryMonth" [(ngModel)]="form.expiryMonth" [disabled]="!form.hasExpiry">
+              <option value="" disabled selected>Month</option>
+              <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+            </select>
+            <select name="expiryYear" [(ngModel)]="form.expiryYear" [disabled]="!form.hasExpiry">
+              <option value="" disabled selected>Year</option>
+              <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="checkbox-row">
+        <input type="checkbox" id="hasExpiry" name="hasExpiry" [(ngModel)]="form.hasExpiry">
+        <label for="hasExpiry">This credential expires</label>
+      </div>
+
+      <div class="form-group">
+        <label>Credential ID</label>
+        <input type="text" name="credentialId" [(ngModel)]="form.credentialId"
+               placeholder="Ex: ABC-123456">
+      </div>
+
+      <div class="form-group">
+        <label>Credential URL</label>
+        <input type="url" name="credentialUrl" [(ngModel)]="form.credentialUrl"
+               placeholder="https://...">
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="onClose()">Cancel</button>
+        <button type="submit" class="btn-save" [disabled]="certForm.invalid">
+          {{ isEditMode ? 'Save Changes' : 'Add Certification' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

@@ -1,0 +1,112 @@
+:host {
+  --navy: #16305c;
+  --blue-bright: #2952a3;
+  --blue-deep: #1f4e8c;
+  --ink: #1e2a45;
+  --line: #e4e7eb;
+  --muted: #6b7280;
+
+  display: block;
+  font-family: 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 48, 92, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.confirm-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 32px 26px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 50px rgba(22, 48, 92, 0.25);
+  text-align: center;
+  animation: pop-in 0.15s ease-out;
+}
+
+@keyframes pop-in {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.confirm-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.confirm-icon.danger {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.confirm-icon.primary {
+  background: #dbeafe;
+  color: var(--blue-bright);
+}
+
+h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px;
+  color: var(--navy);
+  margin: 0 0 10px;
+}
+
+p {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0 0 26px;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.confirm-actions button {
+  flex: 1;
+  padding: 11px 0;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-cancel {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  color: var(--ink);
+}
+.btn-cancel:hover {
+  border-color: var(--blue-bright);
+  color: var(--blue-bright);
+}
+
+.btn-confirm {
+  border: none;
+  color: #fff;
+}
+
+.btn-confirm.danger { background: #dc2626; }
+.btn-confirm.danger:hover { background: #b91c1c; }
+
+.btn-confirm.primary { background: var(--blue-bright); }
+.btn-confirm.primary:hover { background: var(--blue-deep); }

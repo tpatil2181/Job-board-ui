@@ -34,6 +34,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { Job, Company, Filters } from '../../Interface/models';
 import { AuthService } from '../../services/auth.service';
 import { SharedModule } from '../shared.module';
+import { AlertService } from '../../services/alert.service.service';
 
 
 
@@ -50,7 +51,8 @@ export class HomeComponent implements OnInit {
 
    constructor(
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private alertService: AlertService
       ) {}
 
     ngOnInit(): void {
@@ -59,6 +61,7 @@ export class HomeComponent implements OnInit {
     // this.isLoggedIn = this.authService.isLoggedIn();
   }
 
+  
 //========================Variable Declaration ==========================================
     jobs: Job[] = [];
 
@@ -85,7 +88,6 @@ export class HomeComponent implements OnInit {
 //========================Searching Query work==========================================
 searchJobs() {
   console.log("Search button clicked");
-
   this.authService.searchJobs({
 
     // keyword: this.keyword, use when search on any keword is implemented
@@ -109,6 +111,7 @@ searchJobs() {
 
     },
     error: (err) => {
+      this.alertService.error("Something went wrong");
 
       console.error(err);
 
@@ -234,6 +237,11 @@ clearCategories() {
   // }
 
   viewJob(jobId: number) {
+
+    if (!this.isLoggedIn) {
+    this.router.navigate(['/login']);
+    return;
+  }
 
     this.router.navigate(['/job', jobId]);
 }

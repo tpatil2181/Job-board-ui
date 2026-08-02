@@ -1,0 +1,77 @@
+:host {
+  --ink: #1e2a45;
+  --muted: #6b7280;
+
+  display: block;
+  font-family: 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 10px;
+  border: 1px solid;
+}
+
+.alert-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.alert-body { flex: 1; min-width: 0; }
+.alert-title { font-size: 14.5px; font-weight: 700; margin-bottom: 3px; }
+.alert-text { font-size: 13px; line-height: 1.6; }
+
+.alert-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+.alert-close:hover { opacity: 1; }
+
+/* ===== ERROR ===== */
+.alert.error {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #b91c1c;
+}
+.alert.error .alert-icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* ===== SUCCESS ===== */
+.alert.success {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #15803d;
+}
+.alert.success .alert-icon {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+/* ===== WARNING ===== */
+.alert.warning {
+  background: #fffbeb;
+  border-color: #fcd34d;
+  color: #b45309;
+}
+.alert.warning .alert-icon {
+  background: #fef3c7;
+  color: #b45309;
+}

@@ -20,15 +20,11 @@
     </div>
 
     <div class="profile-info">
-      <h1
-        [attr.contenteditable]="isEditingProfile"
-        (input)="onNameInput($event)"
-        [class.editing]="isEditingProfile">{{ name }}</h1>
-        <!-- [class.editing]="isEditingProfile">{{ candidate.first_name }} {{ candidate.last_name }}</h1> -->
+      <h1 [attr.contenteditable]="isEditingProfile" (input)="onNameInput($event)" [class.editing]="isEditingProfile">{{
+        name }}</h1>
+      <!-- [class.editing]="isEditingProfile">{{ candidate.first_name }} {{ candidate.last_name }}</h1> -->
 
-      <div class="role"
-        [attr.contenteditable]="isEditingProfile"
-        (input)="onRoleInput($event)"
+      <div class="role" [attr.contenteditable]="isEditingProfile" (input)="onRoleInput($event)"
         [class.editing]="isEditingProfile">{{ role }}</div>
 
       <div class="meta">
@@ -39,7 +35,9 @@
 
       <div class="strength-wrap">
         <div class="strength-top"><span>Profile strength</span><span>{{ profileStrength }}%</span></div>
-        <div class="strength-bar"><div class="strength-fill" [style.width.%]="profileStrength"></div></div>
+        <div class="strength-bar">
+          <div class="strength-fill" [style.width.%]="profileStrength"></div>
+        </div>
       </div>
     </div>
 
@@ -65,13 +63,11 @@
             {{ isEditingAbout ? '💾 Save' : '✏️ Edit' }}
           </button>
         </div>
-        <p class="about-text"
-          [attr.contenteditable]="isEditingAbout"
-          (input)="onAboutInput($event)"
+        <p class="about-text" [attr.contenteditable]="isEditingAbout" (input)="onAboutInput($event)"
           [class.editing]="isEditingAbout">{{ aboutText }}</p>
       </div>
 
-      <!-- Experience -->
+      <!-- Experience
       <div class="card">
         <div class="card-head">
           <h2><span class="ico">💼</span> Experience</h2>
@@ -88,13 +84,37 @@
             <button class="ctrl-btn danger" (click)="removeItem(experience, exp, 'Experience')">🗑️</button>
           </div>
         </div>
+      </div> -->
+
+      <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">💼</span> Experience</h2>
+          <button class="icon-btn" (click)="openAddExperience()">+ Add</button>
+        </div>
+        <div class="item" *ngFor="let exp of experience">
+          <div class="item-icon">{{ exp.icon }}</div>
+          <div class="item-body">
+            <div class="item-title">{{ exp.title }}</div>
+            <div class="item-sub">{{ exp.subtitle }}</div>
+          </div>
+          <div class="item-controls">
+            <button class="ctrl-btn" (click)="openEditExperience(exp)">✏️</button>
+            <!-- <button class="ctrl-btn danger" (click)="removeItem(experience, exp, 'Experience')">🗑️</button> -->
+            <button class="ctrl-btn danger" (click)="removeExperience(1)">🗑️</button>
+          </div>
+        </div>
       </div>
+
+      <!-- Experience Add/Edit modal -->
+      <app-experience-form [visible]="showExpForm" [editData]="selectedExperience" (save)="onExperienceSaved($event)"
+        (close)="showExpForm = false">
+      </app-experience-form>
 
       <!-- Education -->
       <div class="card">
         <div class="card-head">
           <h2><span class="ico">🎓</span> Education</h2>
-          <button class="icon-btn" (click)="addItem('education')">+ Add</button>
+          <button class="icon-btn" (click)="openAddEducation()">+ Add</button>
         </div>
         <div class="item" *ngFor="let edu of education">
           <div class="item-icon">{{ edu.icon }}</div>
@@ -103,14 +123,21 @@
             <div class="item-sub">{{ edu.subtitle }}</div>
           </div>
           <div class="item-controls">
-            <button class="ctrl-btn" (click)="editItem('education')">✏️</button>
-            <button class="ctrl-btn danger" (click)="removeItem(education, edu, 'Education')">🗑️</button>
+            <button class="ctrl-btn" (click)="openEditEducation(edu)">✏️</button>
+            <!-- <button class="ctrl-btn danger" (click)="removeItem(education, edu, 'Education')">🗑️</button> -->
+            <button class="ctrl-btn danger" (click)="removeEducation(1)">🗑️</button>
           </div>
         </div>
       </div>
 
+      <!-- Education Add/Edit modal -->
+      <app-education-form [visible]="showEduForm" [editData]="selectedEducation" (save)="onEducationSaved($event)"
+        (close)="showEduForm = false">
+      </app-education-form>
+
+
       <!-- Projects -->
-      <div class="card">
+      <!-- <div class="card">
         <div class="card-head">
           <h2><span class="ico">📁</span> Projects</h2>
           <button class="icon-btn" (click)="addItem('project')">+ Add</button>
@@ -127,9 +154,34 @@
             <button class="ctrl-btn danger" (click)="removeItem(projects, proj, 'Project')">🗑️</button>
           </div>
         </div>
+      </div> -->
+
+      <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">📁</span> Projects</h2>
+          <button class="icon-btn" (click)="openAddProject()">+ Add</button>
+        </div>
+        <div class="item" *ngFor="let proj of projects">
+          <div class="item-icon">{{ proj.icon }}</div>
+          <div class="item-body">
+            <div class="item-title">{{ proj.title }}</div>
+            <div class="item-desc" *ngIf="proj.description">{{ proj.description }}</div>
+            <a class="item-link" *ngIf="proj.link" [href]="proj.link">View case study →</a>
+          </div>
+          <div class="item-controls">
+            <button class="ctrl-btn" (click)="openEditProject(proj)">✏️</button>
+            <!-- <button class="ctrl-btn danger" (click)="removeItem(projects, proj, 'Project')">🗑️</button> -->
+            <button class="ctrl-btn danger" (click)="removeProject(1)">🗑️</button>
+          </div>
+        </div>
       </div>
 
-      <!-- Certifications -->
+      <!-- Project Add/Edit modal -->
+      <app-project-form [visible]="showProjectForm" [editData]="selectedProject" (save)="onProjectSaved($event)"
+        (close)="showProjectForm = false">
+      </app-project-form>
+
+      <!-- Certifications
       <div class="card">
         <div class="card-head">
           <h2><span class="ico">🏅</span> Certifications</h2>
@@ -147,6 +199,31 @@
           </div>
         </div>
       </div>
+    </div> -->
+
+      <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">🏅</span> Certifications</h2>
+          <button class="icon-btn" (click)="openAddCertification()">+ Add</button>
+        </div>
+        <div class="item" *ngFor="let cert of certifications">
+          <div class="item-icon">{{ cert.icon }}</div>
+          <div class="item-body">
+            <div class="item-title">{{ cert.title }}</div>
+            <div class="item-sub">{{ cert.subtitle }}</div>
+          </div>
+          <div class="item-controls">
+            <button class="ctrl-btn" (click)="openEditCertification(cert)">✏️</button>
+            <!-- <button class="ctrl-btn danger" (click)="removeItem(certifications, cert, 'Certification')">🗑️</button> -->
+            <button class="ctrl-btn danger" (click)="removeCertification(1)">🗑️</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Certification Add/Edit modal -->
+      <app-certification-form [visible]="showCertForm" [editData]="selectedCertification"
+        (save)="onCertificationSaved($event)" (close)="showCertForm = false">
+      </app-certification-form>
     </div>
 
     <!-- SIDE COLUMN -->
@@ -167,7 +244,7 @@
           </div>
         </div>
         <input type="file" #resumeInput hidden accept=".pdf,.doc,.docx" (change)="updateResume()">
-        <button class="btn-primary full-width"(click)="resumeInput.click()"> Update Resume</button>
+        <button class="btn-primary full-width" (click)="resumeInput.click()"> Update Resume</button>
       </div>
 
       <!-- Skills -->
@@ -185,18 +262,30 @@
       </div>
 
       <!-- Languages -->
-      <div class="card">
-        <div class="card-head">
-          <h2><span class="ico">🌐</span> Languages</h2>
-          <button class="icon-btn" (click)="addLanguage()">+ Add</button>
-        </div>
-        <div class="lang-list">
-          <div class="lang-item" *ngFor="let lang of languages">
-            <b>{{ lang.name }}</b>
-            <span class="lang-level">{{ lang.level }}</span>
-          </div>
-        </div>
+     <div class="card">
+  <div class="card-head">
+    <h2><span class="ico">🌐</span> Languages</h2>
+    <button class="icon-btn" (click)="openAddLanguage()">+ Add</button>
+  </div>
+  <div class="lang-list">
+    <div class="lang-item" *ngFor="let lang of languages">
+      <b>{{ lang.name }}</b>
+      <span class="lang-level">{{ lang.level }}</span>
+      <div class="item-controls">
+        <button class="ctrl-btn" (click)="openEditLanguage(lang)">✏️</button>
+        <button class="ctrl-btn danger" (click)="removeLanguage(lang)">🗑️</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Language Add/Edit modal -->
+<app-language-form
+  [visible]="showLangForm"
+  [editData]="selectedLanguage"
+  (save)="onLanguageSaved($event)"
+  (close)="showLangForm = false">
+</app-language-form>
     </div>
 
   </div>

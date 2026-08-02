@@ -1,0 +1,36 @@
+<!-- <div class="alert" [ngClass]="type">
+  <div class="alert-icon">{{ icon }}</div>
+  <div class="alert-body">
+    <div class="alert-title" *ngIf="title">{{ title }}</div>
+    <div class="alert-text" *ngIf="message">{{ message }}</div>
+  </div>
+  <button class="alert-close" *ngIf="dismissible" (click)="close()">✕</button>
+</div> -->
+
+
+<div class="alert" *ngIf="visible" [ngClass]="type">
+
+  <div class="alert-icon">{{ icon }}</div>
+
+  <div class="alert-body">
+
+    <div class="alert-title" *ngIf="title">
+      {{ title }}
+    </div>
+
+    <div class="alert-text" *ngIf="message">
+      {{ message }}
+    </div>
+
+  </div>
+
+  <button
+      class="alert-close"
+      *ngIf="dismissible"
+      (click)="close()">
+
+      ✕
+
+  </button>
+
+</div>

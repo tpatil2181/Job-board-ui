@@ -1,0 +1,14 @@
+<div class="overlay" *ngIf="visible" (click)="onOverlayClick($event)">
+  <div class="confirm-modal">
+    <div class="confirm-icon" [ngClass]="variant">{{ resolvedIcon }}</div>
+    <h3>{{ title }}</h3>
+    <p>{{ message }}</p>
+    <div class="confirm-actions">
+      <button class="btn-cancel" (click)="onCancel()">{{ cancelLabel }}</button>
+      <button
+        class="btn-confirm"
+        [ngClass]="variant"
+        (click)="onConfirm()">{{ confirmLabel }}</button>
+    </div>
+  </div>
+</div>

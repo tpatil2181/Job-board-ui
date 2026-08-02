@@ -1,16 +1,33 @@
 <div class="sidebar">
 
   <!-- Profile Section -->
-  <div class="profile">
+  <!-- <div class="profile">
     <div class="avatar">
       {{ this.name.charAt(0) }}
     </div>
     <h3>{{ this.name }}</h3>
     <p>{{ this.role }}</p>
+  </div> -->
+
+   <div class="profile">
+    <div class="company-logo">
+        <img [src]="this.name  || 'assets/images/company-placeholder.png'" alt="Company Logo" />
+      </div>
+    <h3>{{ this.name }}</h3>
+    <p>{{ this.role }}</p>
   </div>
 
 
-  
+  <!-- <div class="profile">
+    <div class="avatar">
+      <div class="company-logo">
+        <img [src]="this.name  || 'assets/images/company-placeholder.png'" alt="Company Logo" />
+      </div>
+    </div>
+  </div> -->
+
+
+
   <!-- Menu -->
   <ul class="menu">
     <li routerLink="/postJob" routerLinkActive="active">Post job</li>

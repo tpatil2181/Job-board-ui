@@ -4,24 +4,28 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { AppliedJob } from '../../Interface/Canditate/candidate';
 import { SharedModule } from '../../pages/shared.module';
+import { ConfirmDialogService } from '../../services/confirm-dialog.service';
+import { AlertService } from '../../services/alert.service.service';
 
 @Component({
   selector: 'app-applied-jobs',
   standalone: true,
-  imports: [CommonModule,SharedModule],
+  imports: [CommonModule, SharedModule],
   templateUrl: './applied-jobs.component.html',
   styleUrls: ['./applied-jobs.component.css']
 })
 export class AppliedJobsComponent {
 
-  
+
   appliedJobs: AppliedJob[] = [];
 
   constructor(
-          private authService: AuthService,
-          private router: Router
-        ) {}
-  
+    private authService: AuthService,
+    private router: Router,
+    private confirmDialogService: ConfirmDialogService,
+    private alertService: AlertService
+  ) { }
+
 
   ngOnInit(): void {
     this.loadAppliedJobs();
@@ -33,15 +37,15 @@ export class AppliedJobsComponent {
   //   // alert('Withdraw clicked for ' + job.jobTitle);
   // }
 
-    trackByJob(_: number, job: AppliedJob): number {
-      return job.applyid;
-    }
-  
+  trackByJob(_: number, job: AppliedJob): number {
+    return job.applyid;
+  }
 
-    
+
+
   loadAppliedJobs() {
     this.authService.getAppliedJobs().subscribe({
-      next: (data:AppliedJob[]) => {
+      next: (data: AppliedJob[]) => {
 
         console.log("Complete Response:", data);
         console.log("Is Array:", Array.isArray(data));
@@ -49,53 +53,81 @@ export class AppliedJobsComponent {
         this.appliedJobs = data;
 
         console.log("Applied Jobs:", this.appliedJobs);
-        
+
       },
-        error: (err) => {
-          console.error(err);
-        }
-      });
-    } 
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
+
+
 
   onWithdraw(applicationId: number): void {
 
-    if (!confirm('Are you sure you want to withdraw this application?')) {
-      return;
-    }
+    this.confirmDialogService.confirm({
 
-    this.authService.withdrawJobApplication(applicationId).subscribe({
+      title: 'Withdraw Application',
 
-      next: (response) => {
+      message: 'Are you sure you want to withdraw this application?',
 
-        alert('Application withdrawn successfully ✅');
+      variant: 'danger',
 
-        // Remove the withdrawn application from the list
-        this.appliedJobs = this.appliedJobs.filter(
-          job => job.applyid !== applicationId
-        );
+      confirmLabel: 'Withdraw',
 
-        console.log(response);
+      cancelLabel: 'Cancel'
 
-      },
+    }).subscribe(result => {
 
-      error: (err) => {
+      if (!result) {
+        return;
+      }
 
-        console.error(err);
+      this.authService.withdrawJobApplication(applicationId).subscribe({
 
-        if (err.error) {
-          alert(err.error);
-        } else {
-          alert('Failed to withdraw application ❌');
+        next: (response) => {
+
+          this.alertService.success(
+            'Application withdrawn successfully.'
+          );
+
+          // Remove the withdrawn application from the list
+          this.appliedJobs = this.appliedJobs.filter(
+            job => job.applyid !== applicationId
+          );
+
+          console.log(response);
+
+        },
+
+        error: (err) => {
+
+          console.error(err);
+
+          if (err.error) {
+
+            this.alertService.error(err.error);
+
+          } else {
+
+            this.alertService.error(
+              'Failed to withdraw application.'
+            );
+
+          }
+
         }
 
-      }
+      });
 
     });
 
-    } 
+  }
 }
 
-  
+
+
 
 
 

@@ -1,0 +1,106 @@
+<div class="overlay" *ngIf="visible" (click)="onOverlayClick($event)">
+  <div class="edu-card">
+
+    <div class="edu-header">
+      <h3>{{ isEditMode ? 'Edit Education' : 'Add Education' }}</h3>
+      <button class="close-btn" (click)="onClose()">✕</button>
+    </div>
+
+    <form #eduForm="ngForm" (ngSubmit)="onSave(eduForm)" class="edu-body">
+
+      <div class="form-group">
+        <label>School <span class="req">*</span></label>
+        <input
+          type="text"
+          name="school"
+          [(ngModel)]="form.school"
+          required
+          placeholder="Ex: National Institute of Design">
+      </div>
+
+      <div class="form-group">
+        <label>Degree</label>
+        <input
+          type="text"
+          name="degree"
+          [(ngModel)]="form.degree"
+          placeholder="Ex: Bachelor's">
+      </div>
+
+      <div class="form-group">
+        <label>Field of Study</label>
+        <input
+          type="text"
+          name="fieldOfStudy"
+          [(ngModel)]="form.fieldOfStudy"
+          placeholder="Ex: Communication Design">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Start Date</label>
+          <div class="inline-selects">
+            <select name="startMonth" [(ngModel)]="form.startMonth">
+              <option value="" disabled selected>Month</option>
+              <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+            </select>
+            <select name="startYear" [(ngModel)]="form.startYear">
+              <option value="" disabled selected>Year</option>
+              <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group half">
+          <label>End Date (or expected)</label>
+          <div class="inline-selects">
+            <select name="endMonth" [(ngModel)]="form.endMonth" [disabled]="form.currentlyStudying">
+              <option value="" disabled selected>Month</option>
+              <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+            </select>
+            <select name="endYear" [(ngModel)]="form.endYear" [disabled]="form.currentlyStudying">
+              <option value="" disabled selected>Year</option>
+              <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="checkbox-row">
+        <input
+          type="checkbox"
+          id="currentlyStudying"
+          name="currentlyStudying"
+          [(ngModel)]="form.currentlyStudying">
+        <label for="currentlyStudying">I am currently studying here</label>
+      </div>
+
+      <div class="form-group">
+        <label>Grade</label>
+        <input
+          type="text"
+          name="grade"
+          [(ngModel)]="form.grade"
+          placeholder="Ex: 8.7 CGPA">
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea
+          name="description"
+          rows="3"
+          [(ngModel)]="form.description"
+          placeholder="Add relevant coursework, achievements, or activities"></textarea>
+      </div>
+
+      <div class="edu-actions">
+        <button type="button" class="btn-cancel" (click)="onClose()">Cancel</button>
+        <button type="submit" class="btn-save" [disabled]="eduForm.invalid">
+          {{ isEditMode ? 'Save Changes' : 'Add Education' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

@@ -5,6 +5,7 @@ import { JobApplication } from '../../Interface/Canditate/candidate';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Job, Company, Filters } from '../../Interface/models';
+import { AlertService } from '../../services/alert.service.service';
 
 export interface DemoJob {
   jobTitle: string;
@@ -32,6 +33,18 @@ export interface DemoJob {
   styleUrl: './job-description.component.css'
 })
 export class JobDescriptionComponent {
+
+  constructor(
+        private authService: AuthService,
+        private router: Router,
+        private route: ActivatedRoute,
+        private alertService: AlertService
+      ) {}
+
+    isLoggedIn = true; 
+
+    jobIdformList!: number;
+    Ojob: Job | null = null;
 
   // Demo
 
@@ -70,18 +83,11 @@ Experience with cloud platforms such as AWS or Azure is a plus.`,
 
 
 
-    isLoggedIn = true; 
-
-    jobIdformList!: number;
-    Ojob: Job | null = null;
 
 
 
-    constructor(
-        private authService: AuthService,
-        private router: Router,
-        private route: ActivatedRoute,
-      ) {}
+
+    
 
        // Role: string | null = localStorage.getItem('role');
     // if (this.Role === 'null') {
