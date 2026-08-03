@@ -35,82 +35,128 @@ import { Job, Company, Filters } from '../../Interface/models';
 import { AuthService } from '../../services/auth.service';
 import { SharedModule } from '../shared.module';
 import { AlertService } from '../../services/alert.service.service';
+import { ExperienceFilterDTO, JobSearchDTO } from '../../Interface/Application/job_search';
 
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule,SharedModule],
+  imports: [CommonModule, FormsModule, SharedModule],
   templateUrl: './home.component.html',
   styleUrls: ['home.component.scss'],
 
 })
 export class HomeComponent implements OnInit {
-  
 
-   constructor(
-        private authService: AuthService,
-        private router: Router,
-        private alertService: AlertService
-      ) {}
 
-    ngOnInit(): void {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private alertService: AlertService
+  ) { }
+
+  ngOnInit(): void {
     this.animateCounters();
     this.loadJobs();
     // this.isLoggedIn = this.authService.isLoggedIn();
   }
 
-  
-//========================Variable Declaration ==========================================
-    jobs: Job[] = [];
+
+  //========================Variable Declaration ==========================================
+  jobs: Job[] = [];
 
 
 
-    
-    // isLoggedIn = false;
+
+  // isLoggedIn = false;
 
 
-    // keyword: string = '';
+  // keyword: string = '';
 
-    
+
+  // jobTitle: string = '';
+  // jobLocation: string = '';
+  // // workMode: string = '';
+  // selectedWorkModes: string[] = [];
+  // experience: number | null = null;
+  // salary: number | null = null;
+  // industryType: string = '';
+  // selectedEmploymentTypes: string[] = [];
+  // selectedCategories: string[] = [];
+
+  //================ Search Variables ===================
+
+
+//================ New Search Variables ===================
     jobTitle: string = '';
+
     jobLocation: string = '';
-    // workMode: string = '';
+
+    employerName: string = '';
+
     selectedWorkModes: string[] = [];
-    experience: number | null = null;
-    salary: number | null = null;
-    industryType: string = '';
+
     selectedEmploymentTypes: string[] = [];
-    selectedCategories: string[] = [];
+
+    selectedIndustryTypes: string[] = [];
+
+    selectedExperiences: ExperienceFilterDTO[] = [];
+
+    minSalary: number | null = null;
+
+    maxSalary: number | null = null;
+
+    datePosted: string = '';
 
 
-//========================Searching Query work==========================================
-searchJobs() {
+
+
+
+  //======================== New Searching Query work==========================================
+
+ searchJobs() {
+
   console.log("Search button clicked");
-  this.authService.searchJobs({
 
-    // keyword: this.keyword, use when search on any keword is implemented
-
+  const filters: JobSearchDTO = {
 
     jobTitle: this.jobTitle,
-    jobLocation: this.jobLocation,
-    workMode: this.selectedWorkModes,
-    experience: this.experience ?? undefined,
-    salary: this.salary ?? undefined,
-    industryType: this.industryType,
-    employmentTypes: this.selectedEmploymentTypes,
-    categories:this.selectedCategories
 
-  }).subscribe({
-      next: (response: any) => {
+    jobLocation: this.jobLocation,
+
+    employerName: this.employerName,
+
+    workModes: this.selectedWorkModes,
+
+    employmentTypes: this.selectedEmploymentTypes,
+
+    industryTypes: this.selectedIndustryTypes,
+
+    experiences: this.selectedExperiences,
+
+    minSalary: this.minSalary ?? undefined,
+
+    maxSalary: this.maxSalary ?? undefined,
+
+    datePosted: this.datePosted || undefined
+
+  };
+
+  console.log(filters);
+
+  this.authService.searchJobs(filters).subscribe({
+
+    next: (response: any) => {
 
       console.log(response);
 
-      this.jobs = response.content;   // ✅ Use content
+      this.jobs = response.content;
 
     },
+
     error: (err) => {
+
       this.alertService.error("Something went wrong");
 
       console.error(err);
@@ -121,50 +167,17 @@ searchJobs() {
 
 }
 
+
 onEmploymentTypeChange(type: string, checked: boolean) {
-
-    if (checked) {
-      this.selectedEmploymentTypes.push(type);
-    } else {
-      this.selectedEmploymentTypes =
-        this.selectedEmploymentTypes.filter(t => t !== type);
-    }
-
-    this.searchJobs();
-  }
-
-  clearEmploymentTypes() {
-    this.selectedEmploymentTypes = [];
-    this.searchJobs();
-  }
-
-  onWorkModeChange(mode: string, checked: boolean) {
-    if (checked) {
-      this.selectedWorkModes.push(mode);
-    } 
-    else {
-      this.selectedWorkModes =
-      this.selectedWorkModes.filter(m => m !== mode);
-    }
-    this.searchJobs();
-  }
-    clearWorkModes() {
-      this.selectedWorkModes = [];
-      this.searchJobs();
-    }
-
- 
-
-onCategoryChange(category: string, checked: boolean) {
 
   if (checked) {
 
-    this.selectedCategories.push(category);
+    this.selectedEmploymentTypes.push(type);
 
   } else {
 
-    this.selectedCategories =
-      this.selectedCategories.filter(c => c !== category);
+    this.selectedEmploymentTypes =
+      this.selectedEmploymentTypes.filter(t => t !== type);
 
   }
 
@@ -172,32 +185,269 @@ onCategoryChange(category: string, checked: boolean) {
 
 }
 
-clearCategories() {
+clearEmploymentTypes() {
 
-  this.selectedCategories = [];
+  this.selectedEmploymentTypes = [];
 
   this.searchJobs();
 
 }
 
 
+onWorkModeChange(mode: string, checked: boolean) {
 
-//======================== Backend Api Calls==========================================
+  if (checked) {
+
+    this.selectedWorkModes.push(mode);
+
+  } else {
+
+    this.selectedWorkModes =
+      this.selectedWorkModes.filter(m => m !== mode);
+
+  }
+
+  this.searchJobs();
+
+}
+
+clearWorkModes() {
+
+  this.selectedWorkModes = [];
+
+  this.searchJobs();
+
+}
+
+onIndustryTypeChange(type: string, checked: boolean) {
+
+  if (checked) {
+
+    this.selectedIndustryTypes.push(type);
+
+  } else {
+
+    this.selectedIndustryTypes =
+      this.selectedIndustryTypes.filter(t => t !== type);
+
+  }
+
+  this.searchJobs();
+
+}
+
+clearIndustryTypes() {
+
+  this.selectedIndustryTypes = [];
+
+  this.searchJobs();
+
+}
+
+onExperienceChange(min: number, max: number, checked: boolean) {
+
+  if (checked) {
+
+    this.selectedExperiences.push({
+
+      minExperience: min,
+
+      maxExperience: max
+
+    });
+
+  } else {
+
+    this.selectedExperiences =
+      this.selectedExperiences.filter(exp =>
+
+        !(exp.minExperience === min &&
+          exp.maxExperience === max)
+
+      );
+
+  }
+
+  this.searchJobs();
+
+}
+isExperienceChecked(min: number, max: number): boolean {
+
+  return this.selectedExperiences.some(exp =>
+    exp.minExperience === min &&
+    exp.maxExperience === max
+  );
+
+}
+
+clearExperiences() {
+
+  this.selectedExperiences = [];
+
+  this.searchJobs();
+
+}
+
+clearSalary() {
+
+  this.minSalary = null;
+
+  this.maxSalary = null;
+
+  this.searchJobs();
+
+}
+
+clearDatePosted() {
+
+  this.datePosted = '';
+
+  this.searchJobs();
+
+}
+
+// onCategoryChange(category: string, checked: boolean) {
+
+//   if (checked) {
+
+//     this.selectedCategories.push(category);
+
+//   } else {
+
+//     this.selectedCategories =
+//       this.selectedCategories.filter(c => c !== category);
+
+//   }
+
+//   this.searchJobs();
+
+// }
+
+// clearCategories() {
+
+//   this.selectedCategories = [];
+
+//   this.searchJobs();
+
+// }
+
+
+
+
+
+  //========================Old Running Searching Query work==========================================
+  // searchJobs() {
+  //   console.log("Search button clicked");
+  //   this.authService.searchJobs({
+
+  //     // keyword: this.keyword, use when search on any keword is implemented
+
+
+  //     jobTitle: this.jobTitle,
+  //     jobLocation: this.jobLocation,
+  //     workMode: this.selectedWorkModes,
+  //     experience: this.experience ?? undefined,
+  //     salary: this.salary ?? undefined,
+  //     industryType: this.industryType,
+  //     employmentTypes: this.selectedEmploymentTypes,
+  //     categories:this.selectedCategories
+
+  //   }).subscribe({
+  //       next: (response: any) => {
+
+  //       console.log(response);
+
+  //       this.jobs = response.content;   // ✅ Use content
+
+  //     },
+  //     error: (err) => {
+  //       this.alertService.error("Something went wrong");
+
+  //       console.error(err);
+
+  //     }
+
+  //   });
+
+  // }
+
+  // onEmploymentTypeChange(type: string, checked: boolean) {
+
+  //     if (checked) {
+  //       this.selectedEmploymentTypes.push(type);
+  //     } else {
+  //       this.selectedEmploymentTypes =
+  //         this.selectedEmploymentTypes.filter(t => t !== type);
+  //     }
+
+  //     this.searchJobs();
+  //   }
+
+  //   clearEmploymentTypes() {
+  //     this.selectedEmploymentTypes = [];
+  //     this.searchJobs();
+  //   }
+
+  //   onWorkModeChange(mode: string, checked: boolean) {
+  //     if (checked) {
+  //       this.selectedWorkModes.push(mode);
+  //     } 
+  //     else {
+  //       this.selectedWorkModes =
+  //       this.selectedWorkModes.filter(m => m !== mode);
+  //     }
+  //     this.searchJobs();
+  //   }
+  //     clearWorkModes() {
+  //       this.selectedWorkModes = [];
+  //       this.searchJobs();
+  //     }
+
+
+
+  // onCategoryChange(category: string, checked: boolean) {
+
+  //   if (checked) {
+
+  //     this.selectedCategories.push(category);
+
+  //   } else {
+
+  //     this.selectedCategories =
+  //       this.selectedCategories.filter(c => c !== category);
+
+  //   }
+
+  //   this.searchJobs();
+
+  // }
+
+  // clearCategories() {
+
+  //   this.selectedCategories = [];
+
+  //   this.searchJobs();
+
+  // }
+
+
+
+  //======================== Backend Api Calls==========================================
 
 
 
   goToLogin() {
-            // this.isLoggedIn = true; 
-        this.router.navigate(['login']);
+    // this.isLoggedIn = true; 
+    this.router.navigate(['login']);
   }
 
   logout() {
-      localStorage.removeItem('token');
-      localStorage.removeItem('role');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('email');
-        // this.isLoggedIn = false; 
-        this.router.navigate(['/']);
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('email');
+    // this.isLoggedIn = false; 
+    this.router.navigate(['/']);
   }
 
 
@@ -208,7 +458,7 @@ clearCategories() {
   get isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
-  
+
 
   loadJobs() {
     this.authService.getAllJobs().subscribe({
@@ -224,7 +474,7 @@ clearCategories() {
         console.error(err);
       }
     });
-  } 
+  }
 
   // viewJob(id: number): void {
   //   const job = this.jobs.find(j => j.jobId === id);
@@ -239,14 +489,12 @@ clearCategories() {
   viewJob(jobId: number) {
 
     if (!this.isLoggedIn) {
-    this.router.navigate(['/login']);
-    return;
-  }
+      this.router.navigate(['/login']);
+      return;
+    }
 
     this.router.navigate(['/job', jobId]);
-}
-  
-  
+  }
 
 
 
@@ -254,85 +502,87 @@ clearCategories() {
 
 
 
-//========================UI Logic==========================================
+
+
+  //========================UI Logic==========================================
 
 
   isMenuOpen = false;
 
 
   goToProfile() {
-      this.router.navigate(['/JSProfile']);
-      // this.router.navigate(['/JSProfile']);
+    this.router.navigate(['/JSProfile']);
+    // this.router.navigate(['/JSProfile']);
 
-    }
-
-  goToChnagePasswordPage() {
-      this.router.navigate(['/CandidateChangePass']);
-      // this.router.navigate(['/JSProfile']);
-
-    }
-
-    menuItems = [
-      {
-        label: 'My Profile',
-        icon: '👤',
-        action: 'profile'
-      },
-      {
-        label: 'Applied Jobs',
-        icon: '📄',
-        action: 'appliedJobs'
-      },
-      {
-        label: 'Change Password',
-        icon: '🔒',
-        action: 'changePassword'
-      },
-      {
-        label: 'Settings',
-        icon: '⚙️',
-        action: 'settings'
-      },
-      {
-        label: 'Logout',
-        icon: '🚪',
-        action: 'logout'
-      }
-    ];
-
-onMenuClick(action: string): void {
-  switch (action) {
-    case 'profile':
-      this.goToProfile();
-      break;
-
-    case 'appliedJobs':
-      this.goToAppliedJobs();
-      break;
-
-    case 'changePassword':
-      this.goToChnagePasswordPage();
-      break;
-
-    case 'settings':
-      // this.goToSettings();
-      break;
-    case 'logout':
-      this.logout();
-      break;
   }
 
-  this.isMenuOpen = false;
-}
-    @HostListener('document:click', ['$event'])
-    closeMenu(event: Event) {
-      const target = event.target as HTMLElement;
+  goToChnagePasswordPage() {
+    this.router.navigate(['/CandidateChangePass']);
+    // this.router.navigate(['/JSProfile']);
 
-      if (!target.closest('.profile-dropdown')) {
-        this.isMenuOpen = false;
-      }
+  }
+
+  menuItems = [
+    {
+      label: 'My Profile',
+      icon: '👤',
+      action: 'profile'
+    },
+    {
+      label: 'Applied Jobs',
+      icon: '📄',
+      action: 'appliedJobs'
+    },
+    {
+      label: 'Change Password',
+      icon: '🔒',
+      action: 'changePassword'
+    },
+    {
+      label: 'Settings',
+      icon: '⚙️',
+      action: 'settings'
+    },
+    {
+      label: 'Logout',
+      icon: '🚪',
+      action: 'logout'
     }
-      
+  ];
+
+  onMenuClick(action: string): void {
+    switch (action) {
+      case 'profile':
+        this.goToProfile();
+        break;
+
+      case 'appliedJobs':
+        this.goToAppliedJobs();
+        break;
+
+      case 'changePassword':
+        this.goToChnagePasswordPage();
+        break;
+
+      case 'settings':
+        // this.goToSettings();
+        break;
+      case 'logout':
+        this.logout();
+        break;
+    }
+
+    this.isMenuOpen = false;
+  }
+  @HostListener('document:click', ['$event'])
+  closeMenu(event: Event) {
+    const target = event.target as HTMLElement;
+
+    if (!target.closest('.profile-dropdown')) {
+      this.isMenuOpen = false;
+    }
+  }
+
   // ── Data ──
   // allJobs: Job[] = [
   //   { id:1,  title:'Senior Software Engineer',  company:'Infosys',    location:'Bengaluru', type:'Full-time',  mode:'hybrid',  exp:'senior',  cat:'tech',      salary:'₹18–24 LPA',  logo:'I', color:'#007CC3', isNew:true,  posted:'Today',      applicants:87  },
@@ -349,21 +599,21 @@ onMenuClick(action: string): void {
   //   { id:12, title:'Software Intern',            company:'Ola',        location:'Bengaluru', type:'Internship', mode:'onsite',  exp:'fresher', cat:'tech',      salary:'₹15–25k/mo',  logo:'O', color:'#1C1C1C', isNew:true,  posted:'Today',      applicants:312 },
   // ];
 
-  
+
 
   companies: Company[] = [
-    { name:'Infosys',    logo:'I', color:'#007CC3', jobs:142 },
-    { name:'TCS',        logo:'T', color:'#1C3B6E', jobs:210 },
-    { name:'Wipro',      logo:'W', color:'#341c5c', jobs:98  },
-    { name:'Flipkart',   logo:'F', color:'#F74F00', jobs:67  },
-    { name:'Zomato',     logo:'Z', color:'#E23744', jobs:34  },
-    { name:'Razorpay',   logo:'R', color:'#2D81F7', jobs:28  },
-    { name:'Swiggy',     logo:'S', color:'#FC8019', jobs:45  },
-    { name:'Freshworks', logo:'F', color:'#25c16f', jobs:52  },
-    { name:'HCL Tech',   logo:'H', color:'#0076CE', jobs:89  },
-    { name:'HDFC Bank',  logo:'H', color:'#004C97', jobs:61  },
-    { name:'Ola',        logo:'O', color:'#1C1C1C', jobs:39  },
-    { name:"Byju's",     logo:'B', color:'#8A2BE2', jobs:23  },
+    { name: 'Infosys', logo: 'I', color: '#007CC3', jobs: 142 },
+    { name: 'TCS', logo: 'T', color: '#1C3B6E', jobs: 210 },
+    { name: 'Wipro', logo: 'W', color: '#341c5c', jobs: 98 },
+    { name: 'Flipkart', logo: 'F', color: '#F74F00', jobs: 67 },
+    { name: 'Zomato', logo: 'Z', color: '#E23744', jobs: 34 },
+    { name: 'Razorpay', logo: 'R', color: '#2D81F7', jobs: 28 },
+    { name: 'Swiggy', logo: 'S', color: '#FC8019', jobs: 45 },
+    { name: 'Freshworks', logo: 'F', color: '#25c16f', jobs: 52 },
+    { name: 'HCL Tech', logo: 'H', color: '#0076CE', jobs: 89 },
+    { name: 'HDFC Bank', logo: 'H', color: '#004C97', jobs: 61 },
+    { name: 'Ola', logo: 'O', color: '#1C1C1C', jobs: 39 },
+    { name: "Byju's", logo: 'B', color: '#8A2BE2', jobs: 23 },
   ];
 
   // ── State ──
@@ -396,14 +646,14 @@ onMenuClick(action: string): void {
   // Popular search tags
   popularSearches = ['Software Engineer', 'Product Manager', 'Data Analyst', 'UI UX Designer', 'Remote'];
 
- 
+
 
   // ── Counter Animation ──
   animateCounters(): void {
     this.animateCount('activeJobs', 48000, 0);
-    this.animateCount('companies',  12000, 200);
-    this.animateCount('placed',     95000, 400);
-    this.animateCount('cities',     50,    600);
+    this.animateCount('companies', 12000, 200);
+    this.animateCount('placed', 95000, 400);
+    this.animateCount('cities', 50, 600);
   }
 
   animateCount(key: string, target: number, delay: number): void {
@@ -414,9 +664,9 @@ onMenuClick(action: string): void {
         n = Math.min(n + step, target);
         switch (key) {
           case 'activeJobs': this.statActiveJobs = Math.floor(n); break;
-          case 'companies':  this.statCompanies  = Math.floor(n); break;
-          case 'placed':     this.statPlaced     = Math.floor(n); break;
-          case 'cities':     this.statCities     = Math.floor(n); break;
+          case 'companies': this.statCompanies = Math.floor(n); break;
+          case 'placed': this.statPlaced = Math.floor(n); break;
+          case 'cities': this.statCities = Math.floor(n); break;
         }
         if (n >= target) clearInterval(interval);
       }, 16);
@@ -433,10 +683,10 @@ onMenuClick(action: string): void {
 
   fillSearch(tag: string) {
 
-  this.jobTitle = tag;
-  this.searchJobs();
+    this.jobTitle = tag;
+    this.searchJobs();
 
-}
+  }
 
   // fillSearch(val: string): void {
   //   this.searchQuery = val;
@@ -484,7 +734,7 @@ onMenuClick(action: string): void {
       // if (this.filters.cats.length  && !this.filters.cats.includes(j.cat))   return false;
       // if (this.filters.location && !j.location.toLowerCase().includes(this.filters.location.toLowerCase())) return false;
       // if (this.filters.query && !j.title.toLowerCase().includes(this.filters.query.toLowerCase())
-                            //  && !j.company.toLowerCase().includes(this.filters.query.toLowerCase())) return false;
+      //  && !j.company.toLowerCase().includes(this.filters.query.toLowerCase())) return false;
       return true;
     });
 
@@ -556,7 +806,7 @@ onMenuClick(action: string): void {
     return job.jobId;
   }
 
-//==================================================================
+  //==================================================================
 
 
   // jobs: Job[] = [];
@@ -567,12 +817,12 @@ onMenuClick(action: string): void {
   }
 
 
-//===========================Emplolyer=======================================
-  goToCompanyLogin(){
+  //===========================Emplolyer=======================================
+  goToCompanyLogin() {
     this.router.navigate(['/companyLogin']);
   }
 
-   goToCompanyRegister(){
+  goToCompanyRegister() {
     this.router.navigate(['/companyRegistration']);
   }
 

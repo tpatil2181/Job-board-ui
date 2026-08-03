@@ -7,6 +7,7 @@ import { AppliedJob, Candidate, JobApplication } from '../Interface/Canditate/ca
 import { PostedJob } from '../Interface/employerModel';
 import { HttpParams } from '@angular/common/http';
 import { registerEmployer } from '../Interface/employerModel';
+import { JobSearchDTO } from '../Interface/Application/job_search';
 
 
 
@@ -52,9 +53,34 @@ export class AuthService {
 
 //================================App Service================================
 
-  getAllJobs(): Observable<Job[]> {
-        return this.http.get<Job[]>(`${this.baseUrl}/jobsearch`);
-  }
+
+ getAllJobs(
+  pageNo: number = 1,
+  pageSize: number = 5,
+  sortBy: string = 'jobId',
+  sortDir: string = 'ASE'
+): Observable<any> {
+
+  const filters: JobSearchDTO = {};
+
+  let params = new HttpParams()
+    .set('pageNo', pageNo)
+    .set('pageSize', pageSize)
+    .set('sortBy', sortBy)
+    .set('sortDir', sortDir);
+
+  return this.http.post<any>(
+    `${this.baseUrl}/jobsearch`,
+    filters,
+    { params }
+  );
+
+}
+
+
+  // getAllJobs(): Observable<Job[]> {
+  //       return this.http.get<Job[]>(`${this.baseUrl}/jobsearch`);
+  // }
 
   login(CandidateLog: CandidateLogin): Observable<any> {
         return this.http.post(`${this.baseUrl}/cnd_login`, CandidateLog);
@@ -153,58 +179,95 @@ export class AuthService {
 //   );
 // }
 
-searchJobs(filters: {
-  jobTitle?: string;
-  jobLocation?: string;
-  workMode?: string[];
-  experience?: number;
-  salary?: number;
-  industryType?: string;
-  employmentTypes?: string[];
-  categories?: string[];
-}) {
+
+// New Search job service start
+//==================Running Job Search service with JobSearchDTO==================
+searchJobs(
+  filters: JobSearchDTO,
+  pageNo: number = 1,
+  pageSize: number = 5,
+  sortBy: string = 'jobId',
+  sortDir: string = 'ASE'
+) {
 
   console.log("Filters:", filters);
 
-  let params = new HttpParams();
-
-  Object.entries(filters).forEach(([key, value]) => {
-
-    console.log(key, value);
-
-    // Skip empty values
-    if (
-      value === null ||
-      value === undefined ||
-      value === '' ||
-      (Array.isArray(value) && value.length === 0)
-    ) {
-      return;
-    }
-
-    // Handle array parameters (employmentTypes)
-    if (Array.isArray(value)) {
-
-      value.forEach(item => {
-        params = params.append(key, item);
-      });
-
-    } else {
-
-      // Handle normal parameters
-      params = params.set(key, value.toString());
-
-    }
-
-  });
+  let params = new HttpParams()
+    .set('pageNo', pageNo)
+    .set('pageSize', pageSize)
+    .set('sortBy', sortBy)
+    .set('sortDir', sortDir);
 
   console.log("Request URL Params:", params.toString());
+  console.log("Request Body:", filters);
 
-  return this.http.get<any>(
+  return this.http.post<any>(
     `${this.baseUrl}/jobsearch`,
+    filters,
     { params }
   );
+
 }
+
+
+// New Search job service end
+
+
+//==================Running Job Search service with multiple filters and array parameters==================
+// searchJobs(filters: {
+//   jobTitle?: string;
+//   jobLocation?: string;
+//   workMode?: string[];
+//   experience?: number;
+//   salary?: number;
+//   industryType?: string;
+//   employmentTypes?: string[];
+//   categories?: string[];
+// }) {
+
+//   console.log("Filters:", filters);
+
+//   let params = new HttpParams();
+
+//   Object.entries(filters).forEach(([key, value]) => {
+
+//     console.log(key, value);
+
+//     // Skip empty values
+//     if (
+//       value === null ||
+//       value === undefined ||
+//       value === '' ||
+//       (Array.isArray(value) && value.length === 0)
+//     ) {
+//       return;
+//     }
+
+//     // Handle array parameters (employmentTypes)
+//     if (Array.isArray(value)) {
+
+//       value.forEach(item => {
+//         params = params.append(key, item);
+//       });
+
+//     } else {
+
+//       // Handle normal parameters
+//       params = params.set(key, value.toString());
+
+//     }
+
+//   });
+
+//   console.log("Request URL Params:", params.toString());
+
+//   return this.http.get<any>(
+//     `${this.baseUrl}/jobsearch`,
+//     { params }
+//   );
+// }
+
+//==================Running Job Search service with multiple filters and array parameters==================
 
 
 
