@@ -639,3 +639,44 @@ a:hover { text-decoration: underline; }
   text-align: center;
   font-size: 17px;
 }
+
+//Bookmark Button
+.bookmark-btn {
+
+  width: 40px;
+  height: 40px;
+
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 50%;
+
+  transition: .25s ease;
+}
+
+.bookmark-btn:hover {
+
+  background: #f3f4f6;
+
+}
+
+.bookmark-btn .material-icons {
+
+  font-size: 28px;
+  color: #9ca3af;
+
+  transition: .25s ease;
+
+}
+
+.bookmark-btn.saved .material-icons {
+
+  color: #4f46e5;
+
+}
