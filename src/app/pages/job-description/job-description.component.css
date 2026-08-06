@@ -220,6 +220,8 @@ h1, h2 { font-family: 'Playfair Display', serif; margin: 0; }
   border-radius: 20px;
 }
 
+
+
 @media (max-width: 640px) {
   .job-details-container { padding: 24px 16px 60px; }
   .job-header-card, .apply-card, .content-card { padding: 20px; }
@@ -228,3 +230,4 @@ h1, h2 { font-family: 'Playfair Display', serif; margin: 0; }
   .action-buttons { width: 100%; }
   .action-buttons button { flex: 1; }
 }
+

@@ -24,10 +24,10 @@
       </div>
 
       <div class="company-logo">
-        <img
+        <!-- <img
           [src]="job?.companyLogo || 'assets/images/company-placeholder.png'"
           alt="Company Logo"
-        />
+        /> -->
       </div>
 
     </div>
@@ -69,22 +69,31 @@
   </div>
 
   <!-- Job Summary -->
+  <!-- <div class="content-card" *ngIf="job?.jobDescription">
+    <h2>Job Summary</h2>
+    <p>{{ job?.jobDescription }}</p>
+  </div> -->
+
+  <!-- Responsibilities -->
+  <!-- <div class="content-card" *ngIf="job?.jobResponsibilities">
+    <h2>Responsibilities</h2>
+    <p>{{ job?.jobResponsibilities }}</p>
+  </div> -->
+
+  <!-- Qualifications -->
+  <!-- <div class="content-card" *ngIf="job?.jobQualifications">
+    <h2>Qualifications</h2>
+    <p>{{ job?.jobQualifications }}</p>
+  </div> -->
+
   <div class="content-card" *ngIf="job?.jobDescription">
     <h2>Job Summary</h2>
     <p>{{ job?.jobDescription }}</p>
+    
+    <!-- <p>{{ job?.jobResponsibilities }}</p>
+    <p>{{ job?.jobQualifications }}</p> -->
   </div>
 
-  <!-- Responsibilities -->
-  <div class="content-card" *ngIf="job?.jobResponsibilities">
-    <h2>Responsibilities</h2>
-    <p>{{ job?.jobResponsibilities }}</p>
-  </div>
-
-  <!-- Qualifications -->
-  <div class="content-card" *ngIf="job?.jobQualifications">
-    <h2>Qualifications</h2>
-    <p>{{ job?.jobQualifications }}</p>
-  </div>
 
   <!-- Skills -->
   <!-- <div class="content-card" *ngIf="job?.skills?.length">
