@@ -1,5 +1,9 @@
 <!-- app/shared/components/header/header.component.html -->
 
+<head>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
 <!-- ===== NAVBAR ===== -->
 <nav class="navbar">
   <div class="nav-inner">
@@ -7,12 +11,12 @@
     <a [routerLink]="['/']" class="logo">Hire<span>Flow</span></a>
 
     <ul class="nav-links">
-      <li><a [routerLink]="['/jobs']"      routerLinkActive="active">Find Jobs</a></li>
+      <li><a [routerLink]="['/jobs']" routerLinkActive="active">Find Jobs</a></li>
       <li><a [routerLink]="['/companies']" routerLinkActive="active">Companies</a></li>
-      <li><a [routerLink]="['/about']"     routerLinkActive="active">How It Works</a></li>
-      <li><a [routerLink]="['/about']"     routerLinkActive="active">Career Advice</a></li>
+      <li><a [routerLink]="['/about']" routerLinkActive="active">How It Works</a></li>
+      <li><a [routerLink]="['/about']" routerLinkActive="active">Career Advice</a></li>
     </ul>
-<div class="nav-actions">
+    <div class="nav-actions">
       <div *ngIf="!isLoggedIn" class="nav-actions">
         <button (click)="goToLogin()" class="btn btn-outline">Sign In</button>
         <button (click)="goToRegister()" class="btn btn-outline">Sign Up</button>
@@ -23,57 +27,41 @@
         <button (click)="goToCompanyRegister()" class="btn btn-outline">Sign Up</button> -->
       </div>
       <div *ngIf="isLoggedIn" class="nav-actions">
+
+        <!-- Notification Bell -->
+        <div class="notification-wrapper">
+          <button class="notification-btn">
+
+            <span class="material-symbols-outlined notification-icon">
+              notifications
+            </span>
+
+            <span class="notification-count">12</span>
+
+          </button>
+        </div>
+
         <div class="profile-dropdown">
 
           <button class="profile-btn" (click)="isMenuOpen = !isMenuOpen">
-            <!-- <img src="assets/images/profile.png" alt="Profile" class="profile-image" /> -->
-
             <span class="profile-name">
               UserName
-              <!-- {{ localStorage.getItem('firstname') || 'User' }} -->
             </span>
 
             <span class="arrow">
               ▼
             </span>
           </button>
-          <div class="dropdown-menu" *ngIf="isMenuOpen">
 
+          <div class="dropdown-menu" *ngIf="isMenuOpen">
             <button *ngFor="let item of menuItems" class="menu-item" type="button" (click)="onMenuClick(item.action)">
               <span class="menu-icon">{{ item.icon }}</span>
               <span>{{ item.label }}</span>
             </button>
-
           </div>
-          <!-- <div class="dropdown-menu" *ngIf="isMenuOpen"> -->
-
-          <!-- <a href="#" (click)="goToProfile()" class="menu-item">
-              👤 My Profile
-            </a> -->
-          <!-- <button class="menu-item" (click)="goToProfile()">
-              👤 My Profile
-            </button>
-
-           <button class="menu-item" (click)="goToAppliedJobs()">
-              📄 Applied Jobs
-            </button> -->
-
-          <!-- <a routerLink="/change-password" class="menu-item">
-              🔒 Change Password
-            </a> -->
-          <!-- <button class="menu-item" (click)="goToChnagePasswordPage()">
-              🔒 Change Password
-            </button>
-
-            <a routerLink="/settings" class="menu-item">
-              ⚙️ Settings
-            </a>
-
-          </div> -->
 
         </div>
-        <!-- <button (click)="goToProfile()" class="btn btn-outline">My Profile </button> -->
-        <!-- <button (click)="logout()" class="btn btn-outline">Logout</button> -->
+
       </div>
       <!-- <button (click)="goTologin()" class="btn btn-outline">Sign In</button>
                   <button (click)="goToRegister()" class="btn btn-outline">Sign Up</button>
