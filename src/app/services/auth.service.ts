@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { CandidateLogin, CandidateRegistration, Job } from '../Interface/models';
 import { CandidateChangePassword } from '../Interface/Canditate/candidate-chagepass';
 import { AppliedJob, Candidate, JobApplication } from '../Interface/Canditate/candidate';
-import { PostedJob } from '../Interface/employerModel';
+import { PostedJob, PostJob } from '../Interface/employerModel';
 import { HttpParams } from '@angular/common/http';
 import { registerEmployer } from '../Interface/employerModel';
 import { JobSearchDTO } from '../Interface/Application/job_search';
@@ -334,14 +334,11 @@ getEmployerProfile() {
   getPostedJobs(employerId: number): Observable<PostedJob[]> {
       return this.http.get<PostedJob[]>(`${this.employerUrl}/AllPostedJobs/${employerId}`);
       // return this.http.get<PostedJob[]>(`${this.employerNoAuthUrl}/allAppliedJobs/${employerId}`);
-
   }
 
-
-
-
-
-
+  postJob(job: PostJob): Observable<PostJob> {
+    return this.http.post<PostJob>(`${this.employerUrl}/postJob`, job);
+  }
 
 }
 

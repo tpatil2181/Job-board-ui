@@ -48,6 +48,7 @@ export class PostJobComponent {
 
   submitJob() {
     console.log('Job Posted:', this.job);
+      
     // 👉 call backend API here
   }
 }
