@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+import { AlertService } from '../../services/alert.service.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-post-job',
@@ -32,6 +35,14 @@ export class PostJobComponent {
   educationInput = '';
   skillInput = '';
 
+
+    constructor(
+          private authService: AuthService,
+          private router: Router,
+          private route: ActivatedRoute,
+          private alertService: AlertService
+        ) {}
+
   addEducation() {
     if (this.educationInput.trim()) {
       this.job.education.push(this.educationInput.trim());
@@ -48,7 +59,23 @@ export class PostJobComponent {
 
   submitJob() {
     console.log('Job Posted:', this.job);
-      
+     this.authService.postJob(this.job).subscribe({
+      next: (res) => {
+        console.log(res);
+         this.alertService.success("Job Posted Successful ✅");
+        // alert('Applied Successful ✅');
+      },
+      error: (err) => {
+        console.error(err);
+        
+        if (err.error && err.error.message) {
+          this.alertService.error(err.error.message);
+        } else {
+           this.alertService.error("Something went wrong");
+          // alert('Something went wrong ❌');
+        }
+      }
+    });
     // 👉 call backend API here
   }
 }

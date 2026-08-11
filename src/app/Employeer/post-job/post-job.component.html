@@ -1,107 +1,374 @@
-<div class="container">
-  <h2>Post a Job</h2>
+<div class="post-job-page">
 
-  <form class="form-grid" (ngSubmit)="submitJob()">
+  <div class="post-job-container">
 
-    <div class="form-group">
-      <label>Job Title</label>
-      <input [(ngModel)]="job.jobTitle" name="jobTitle">
-    </div>
-
-    <div class="form-group">
-      <label>Company</label>
-      <input [(ngModel)]="job.company" name="company">
-    </div>
-
-    <div class="form-group">
-      <label>Location</label>
-      <input [(ngModel)]="job.location" name="location">
-    </div>
-
-    <div class="form-group">
-      <label>Experience Required</label>
-      <input [(ngModel)]="job.experience" name="experience">
-    </div>
-
-    <div class="form-group">
-      <label>Work Mode</label>
-      <input [(ngModel)]="job.workmode" name="workmode">
-    </div>
-
-    <div class="form-group">
-      <label>Number of Openings</label>
-      <input [(ngModel)]="job.openings" name="openings">
-    </div>
-
-    <div class="form-group">
-      <label>Salary From</label>
-      <input [(ngModel)]="job.salaryFrom" name="salaryFrom">
-    </div>
-
-    <div class="form-group">
-      <label>Salary To</label>
-      <input [(ngModel)]="job.salaryTo" name="salaryTo">
-    </div>
-
-    <div class="form-group full">
-      <label>Job Description</label>
-      <input [(ngModel)]="job.description" name="description">
-    </div>
-
-    <div class="form-group">
-      <label>Role</label>
-      <input [(ngModel)]="job.role" name="role">
-    </div>
-
-    <div class="form-group">
-      <label>Department</label>
-      <input [(ngModel)]="job.department" name="department">
-    </div>
-
-    <div class="form-group">
-      <label>Industry Type</label>
-      <input [(ngModel)]="job.industry" name="industry">
-    </div>
-
-    <div class="form-group">
-      <label>Employment Type</label>
-      <input [(ngModel)]="job.employmentType" name="employmentType">
-    </div>
-
-    <div class="form-group">
-      <label>Role Category</label>
-      <input [(ngModel)]="job.roleCategory" name="roleCategory">
-    </div>
-
-    <!-- Education -->
-    <div class="form-group full">
-      <label>Education</label>
-      <div class="button-row">
-        <input [(ngModel)]="educationInput" name="educationInput">
-        <button type="button" class="secondary" (click)="addEducation()">Add</button>
-      </div>
-
+    <!-- Header -->
+    <div class="page-header">
       <div>
-        <span *ngFor="let edu of job.education">• {{edu}} </span>
+        <h1>Post a Job</h1>
+        <p>Create a new opportunity and find the right candidate.</p>
       </div>
     </div>
 
-    <!-- Skills -->
-    <div class="form-group full">
-      <label>Skills</label>
-      <div class="button-row">
-        <input [(ngModel)]="skillInput" name="skillInput">
-        <button type="button" class="secondary" (click)="addSkill()">Add</button>
+    <form class="job-form" (ngSubmit)="submitJob()">
+
+      <!-- ================= BASIC INFORMATION ================= -->
+
+      <div class="form-section">
+
+        <div class="section-header">
+          <h2>Basic Information</h2>
+          <p>Provide the basic details about the position.</p>
+        </div>
+
+        <div class="form-grid">
+
+          <!-- Job Title -->
+          <div class="form-group full">
+            <label>Job Title <span>*</span></label>
+
+            <input
+              type="text"
+              [(ngModel)]="job.jobTitle"
+              name="jobTitle"
+              placeholder="e.g. Java Full Stack Developer"
+              required>
+          </div>
+
+          <!-- Role -->
+          <div class="form-group">
+            <label>Role <span>*</span></label>
+
+            <input
+              type="text"
+              [(ngModel)]="job.role"
+              name="role"
+              placeholder="e.g. Software Developer"
+              required>
+          </div>
+
+          <!-- Industry -->
+          <div class="form-group">
+            <label>Industry Type <span>*</span></label>
+
+            <select
+              [(ngModel)]="job.industryType"
+              name="industryType"
+              required>
+
+              <option value="">Select Industry</option>
+              <option value="Information Technology">
+                Information Technology
+              </option>
+              <option value="Banking & Finance">
+                Banking & Finance
+              </option>
+              <option value="Healthcare">
+                Healthcare
+              </option>
+              <option value="Education">
+                Education
+              </option>
+              <option value="E-Commerce">
+                E-Commerce
+              </option>
+              <option value="Manufacturing">
+                Manufacturing
+              </option>
+
+            </select>
+          </div>
+
+        </div>
+
       </div>
 
-      <div>
-        <span *ngFor="let skill of job.skills">• {{skill}} </span>
+
+      <!-- ================= LOCATION & WORK ================= -->
+
+      <div class="form-section">
+
+        <div class="section-header">
+          <h2>Work Details</h2>
+          <p>Tell candidates where and how they will work.</p>
+        </div>
+
+        <div class="form-grid">
+
+          <!-- Work Mode -->
+          <div class="form-group">
+            <label>Work Mode <span>*</span></label>
+
+            <select
+              [(ngModel)]="job.workMode"
+              name="workMode"
+              required>
+
+              <option value="">Select Work Mode</option>
+              <option value="REMOTE">Remote</option>
+              <option value="HYBRID">Hybrid</option>
+              <option value="ONSITE">On-site</option>
+
+            </select>
+          </div>
+
+
+          <!-- Location -->
+          <div class="form-group">
+            <label>Job Location <span>*</span></label>
+
+            <input
+              type="text"
+              [(ngModel)]="job.jobLocation"
+              name="jobLocation"
+              placeholder="e.g. Pune, Maharashtra"
+              required>
+          </div>
+
+
+          <!-- Employment Type -->
+          <div class="form-group">
+            <label>Employment Type <span>*</span></label>
+
+            <select
+              [(ngModel)]="job.employmentType"
+              name="employmentType"
+              required>
+
+              <option value="">Select Employment Type</option>
+              <option value="Full Time">Full Time</option>
+              <option value="Part Time">Part Time</option>
+              <option value="Contract">Contract</option>
+              <option value="Internship">Internship</option>
+
+            </select>
+          </div>
+
+
+          <!-- Openings -->
+          <div class="form-group">
+            <label>Number of Openings <span>*</span></label>
+
+            <input
+              type="number"
+              [(ngModel)]="job.noOfOpenings"
+              name="noOfOpenings"
+              min="1"
+              placeholder="e.g. 3"
+              required>
+          </div>
+
+        </div>
+
       </div>
-    </div>
 
-    <div class="form-group full">
-      <button type="submit">Post Job</button>
-    </div>
 
-  </form>
+      <!-- ================= EXPERIENCE & SALARY ================= -->
+
+      <div class="form-section">
+
+        <div class="section-header">
+          <h2>Experience & Salary</h2>
+          <p>Specify the required experience and salary range.</p>
+        </div>
+
+        <div class="form-grid">
+
+          <!-- Minimum Experience -->
+          <div class="form-group">
+            <label>Minimum Experience (Years) <span>*</span></label>
+
+            <input
+              type="number"
+              [(ngModel)]="job.minExperience"
+              name="minExperience"
+              min="0"
+              placeholder="e.g. 2"
+              required>
+          </div>
+
+
+          <!-- Maximum Experience -->
+          <div class="form-group">
+            <label>Maximum Experience (Years) <span>*</span></label>
+
+            <input
+              type="number"
+              [(ngModel)]="job.maxExperience"
+              name="maxExperience"
+              min="0"
+              placeholder="e.g. 5"
+              required>
+          </div>
+
+
+          <!-- Minimum Salary -->
+          <div class="form-group">
+            <label>Minimum Salary (₹ / Year) <span>*</span></label>
+
+            <input
+              type="number"
+              [(ngModel)]="job.minSalary"
+              name="minSalary"
+              min="0"
+              placeholder="e.g. 600000"
+              required>
+          </div>
+
+
+          <!-- Maximum Salary -->
+          <div class="form-group">
+            <label>Maximum Salary (₹ / Year) <span>*</span></label>
+
+            <input
+              type="number"
+              [(ngModel)]="job.maxSalary"
+              name="maxSalary"
+              min="0"
+              placeholder="e.g. 1100000"
+              required>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= EDUCATION ================= -->
+
+      <div class="form-section">
+
+        <div class="section-header">
+          <h2>Education</h2>
+          <p>Specify the educational qualification required for this job.</p>
+        </div>
+
+        <div class="form-group">
+
+          <label>Required Education <span>*</span></label>
+
+          <select
+            [(ngModel)]="job.educations"
+            name="educations"
+            required>
+
+            <option value="">Select Education</option>
+
+            <option value="B.E./B.Tech">
+              B.E./B.Tech
+            </option>
+
+            <option value="BCA">
+              BCA
+            </option>
+
+            <option value="MCA">
+              MCA
+            </option>
+
+            <option value="B.Sc">
+              B.Sc
+            </option>
+
+            <option value="M.Sc">
+              M.Sc
+            </option>
+
+            <option value="MBA">
+              MBA
+            </option>
+
+            <option value="Bachelor's Degree">
+              Bachelor's Degree
+            </option>
+
+            <option value="Master's Degree">
+              Master's Degree
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= JOB DESCRIPTION ================= -->
+
+      <div class="form-section">
+
+        <div class="section-header">
+          <h2>Job Description</h2>
+          <p>Describe the responsibilities and requirements for this position.</p>
+        </div>
+
+        <div class="form-group">
+
+          <label>Job Description <span>*</span></label>
+
+          <textarea
+            [(ngModel)]="job.jobDescription"
+            name="jobDescription"
+            rows="8"
+            placeholder="Describe the role, responsibilities, requirements, skills and expectations..."
+            required>
+          </textarea>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= JOB STATUS ================= -->
+
+      <div class="form-section">
+
+        <div class="section-header">
+          <h2>Job Status</h2>
+          <p>Choose the current status of this job posting.</p>
+        </div>
+
+        <div class="form-group">
+
+          <label>Status</label>
+
+          <select
+            [(ngModel)]="job.status"
+            name="status">
+
+            <option value="OPEN">Open</option>
+            <option value="CLOSED">Closed</option>
+            <option value="PAUSED">Paused</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= ACTIONS ================= -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn-secondary">
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="btn-primary">
+
+          Post Job
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
 </div>

@@ -17,7 +17,7 @@
         <div class="job-meta">
           <span>💼 {{ job?.minExperience }} - {{ job?.maxExperience }} Years</span>
           <span class="salary" *ngIf="job?.minSalary && job?.maxSalary">
-            ₹ {{ job?.minSalary | number }} - ₹ {{ job?.maxSalary | number }}
+            ₹ {{ job?.minSalary | number }} -  {{ job?.maxSalary | number }} LPA
           </span>
         </div>
 
