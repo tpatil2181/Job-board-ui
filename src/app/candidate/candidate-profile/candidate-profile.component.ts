@@ -46,9 +46,11 @@ export class CandidateProfileComponent {
   profileImage: any;
   resume: any;
 
+  candidate: Candidate | null = null;
 
-  candidate = this.authService.getLoggedInCandidate();
-  candidateemail: string = localStorage.getItem('email') || '';
+
+  // candidate = this.authService.getLoggedInCandidate();
+  // candidateemail: string = localStorage.getItem('email') || '';
   usrId: number = localStorage.getItem('userId') ? Number(localStorage.getItem('userId')) : 0;
 
   // candidate: Candidate = {
@@ -65,7 +67,7 @@ export class CandidateProfileComponent {
   //         skills:'', 
   //     };
 
-  ngOnInit() {
+  // ngOnInit() {
     // ✅ get ID from URL
     // const email = this.route.snapshot.paramMap.get('email');
 
@@ -74,7 +76,20 @@ export class CandidateProfileComponent {
     // if (email) {
     //   this.getCandidate(email);
     // }
-  }
+  // }
+
+
+ngOnInit(): void {
+
+  this.authService.candidate$.subscribe(candidate => {
+
+    this.candidate = candidate;
+
+    console.log('Candidate:', this.candidate);
+
+  });
+
+}
 
 
 
@@ -232,10 +247,21 @@ export class CandidateProfileComponent {
 
   // ---- resume ----
 
+  // selectedFile!: File;
+  // onFileSelected(event: any) {
+  //   this.selectedFile = event.target.files[0];
+  // }
   selectedFile!: File;
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
+
+onResumeChange(event: any): void {
+
+  this.selectedFile = event.target.files[0];
+
+  if (this.selectedFile) {
+    this.updateResume();
   }
+
+}
 
   updateResume(): void {
     // this.selectedFile = event.target.files[0];
@@ -276,8 +302,8 @@ export class CandidateProfileComponent {
   }
 
   viewResume(): void {
-    const resumeId = this.candidate.resumeId;
-    console.error("Resume id is " + this.candidate.first_name);
+    const resumeId = this.candidate?.resumeId;
+    console.error("Resume id is " + this.candidate?.firstName + " " + this.candidate?.lastName + " " + resumeId);
     // ✅ MUST check
     if (!resumeId) {
       console.error('Resume ID is missing ❌');

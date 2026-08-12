@@ -29,7 +29,8 @@ export class PostJobComponent {
     employmentType: '',
     roleCategory: '',
     education: [],
-    skills: []
+    skills: [],
+    dateTimestampProvider: new Date().toISOString().slice(0, 19)
   };
 
   educationInput = '';

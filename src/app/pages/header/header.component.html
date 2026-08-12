@@ -45,7 +45,7 @@
 
           <button class="profile-btn" (click)="isMenuOpen = !isMenuOpen">
             <span class="profile-name">
-              UserName
+              {{ candidate?.firstName || 'User' }}
             </span>
 
             <span class="arrow">

@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, HostListener} from '@angular/core';
+import { Component, Input, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { Candidate } from '../../Interface/Canditate/candidate';
 
 
 @Component({
@@ -20,29 +21,49 @@ export class HeaderComponent implements OnInit {
 
 
 
-  constructor(private authService: AuthService,
-              private router: Router) {}
+  // constructor(private authService: AuthService,
+  //             private router: Router) {}
+
+  // ngOnInit(): void {
+  // if (this.showStats) {
+  //   setTimeout(() => this.animateStats(), 300);
+  // }
+  // }
+
+  candidate: Candidate | null = null;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    // if (this.showStats) {
-    //   setTimeout(() => this.animateStats(), 300);
-    // }
+
+    this.authService.candidate$.subscribe(candidate => {
+
+      this.candidate = candidate;
+
+      console.log('Navbar candidate:', this.candidate);
+
+    });
+
   }
 
 
   // ── Navigation methods ─────────────────────────────────
   goToLogin() {
-            // this.isLoggedIn = true; 
-        this.router.navigate(['login']);
+    // this.isLoggedIn = true; 
+    this.router.navigate(['login']);
   }
 
   logout() {
-      localStorage.removeItem('token');
-      localStorage.removeItem('role');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('email');
-        // this.isLoggedIn = false; 
-        this.router.navigate(['/']);
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('email');
+    localStorage.removeItem('candidate');
+    // this.isLoggedIn = false; 
+    this.router.navigate(['/']);
   }
 
 
@@ -50,11 +71,11 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['register']);
   }
 
-   goToCompanyLogin(){
+  goToCompanyLogin() {
     this.router.navigate(['/companyLogin']);
   }
 
-   goToCompanyRegister(){
+  goToCompanyRegister() {
     this.router.navigate(['/companyRegistration']);
   }
 
@@ -62,64 +83,64 @@ export class HeaderComponent implements OnInit {
     return this.authService.isLoggedIn();
   }
 
-   goToProfile() {
-      this.router.navigate(['/JSProfile']);
-      // this.router.navigate(['/JSProfile']);
+  goToProfile() {
+    this.router.navigate(['/JSProfile']);
+    // this.router.navigate(['/JSProfile']);
 
-    }
+  }
 
   goToChnagePasswordPage() {
-      this.router.navigate(['/CandidateChangePass']);
-      // this.router.navigate(['/JSProfile']);
+    this.router.navigate(['/CandidateChangePass']);
+    // this.router.navigate(['/JSProfile']);
 
-    }
-    
+  }
+
   goToAppliedJobs() {
     this.router.navigate(['/applied-jobs']);
   }
 
-    menuItems = [
-        {
-          label: 'My Profile',
-          icon: '👤',
-          action: 'profile'
-        },
-        {
-          label: 'Applied Jobs',
-          icon: '📄',
-          action: 'appliedJobs'
-        },
-        {
-          label: 'Change Password',
-          icon: '🔒',
-          action: 'changePassword'
-        },
-        {
-          label: 'Settings',
-          icon: '⚙️',
-          action: 'settings'
-        },
-        {
-          label: 'Logout',
-          icon: '🚪',
-          action: 'logout'
-        }
-      ];
-  
+  menuItems = [
+    {
+      label: 'My Profile',
+      icon: '👤',
+      action: 'profile'
+    },
+    {
+      label: 'Applied Jobs',
+      icon: '📄',
+      action: 'appliedJobs'
+    },
+    {
+      label: 'Change Password',
+      icon: '🔒',
+      action: 'changePassword'
+    },
+    {
+      label: 'Settings',
+      icon: '⚙️',
+      action: 'settings'
+    },
+    {
+      label: 'Logout',
+      icon: '🚪',
+      action: 'logout'
+    }
+  ];
+
   onMenuClick(action: string): void {
     switch (action) {
       case 'profile':
         this.goToProfile();
         break;
-  
+
       case 'appliedJobs':
         this.goToAppliedJobs();
         break;
-  
+
       case 'changePassword':
         this.goToChnagePasswordPage();
         break;
-  
+
       case 'settings':
         // this.goToSettings();
         break;
@@ -127,18 +148,18 @@ export class HeaderComponent implements OnInit {
         this.logout();
         break;
     }
-  
+
     this.isMenuOpen = false;
   }
-      @HostListener('document:click', ['$event'])
-      closeMenu(event: Event) {
-        const target = event.target as HTMLElement;
-  
-        if (!target.closest('.profile-dropdown')) {
-          this.isMenuOpen = false;
-        }
-      }
-// My Code end===========================
+  @HostListener('document:click', ['$event'])
+  closeMenu(event: Event) {
+    const target = event.target as HTMLElement;
+
+    if (!target.closest('.profile-dropdown')) {
+      this.isMenuOpen = false;
+    }
+  }
+  // My Code end===========================
   // ── Computed ───────────────────────────────────────────
   get dashboardRoute(): string {
     return this.userRole === 'employer'

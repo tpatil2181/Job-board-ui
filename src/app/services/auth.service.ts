@@ -11,16 +11,17 @@ import { JobSearchDTO } from '../Interface/Application/job_search';
 
 
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  
+
   private baseUrl = 'http://localhost:8080';
 
-  private candidateUrl ='http://localhost:8080/Hireflow/candidate'
+  private candidateUrl = 'http://localhost:8080/Hireflow/candidate'
 
-  private employerUrl= 'http://localhost:8080/Hireflow/employer'
+  private employerUrl = 'http://localhost:8080/Hireflow/employer'
 
   // codespace url
   // private baseUrl = 'https://curly-happiness-69gvp65gq79wcr55-8080.app.github.dev';
@@ -33,49 +34,76 @@ export class AuthService {
   // private employerNoAuthUrl ='http://localhost:8080/employer'
 
 
+
+
+//=====================demo Varuiable to store candidate data========================
   // private candidateSubject = new BehaviorSubject<Candidate | null>(null);
 
   // candidate$ = this.candidateSubject.asObservable();
 
+  
+  //  private candidateSubject = new BehaviorSubject<Candidate | null>(
+  //     JSON.parse(localStorage.getItem('candidate') || 'null')
+  //   );
+
+  // candidate$ = this.candidateSubject.asObservable();
+
+
   userId: number = 0;
-
- private candidateSubject = new BehaviorSubject<Candidate | null>(
-    JSON.parse(localStorage.getItem('candidate') || 'null')
-  );
-
-  candidate$ = this.candidateSubject.asObservable();
-
-
 
   constructor(private http: HttpClient) { }
 
 
+  private candidateSubject = new BehaviorSubject<Candidate | null>(this.getCandidateFromStorage());
+  candidate$ = this.candidateSubject.asObservable();
 
-//================================App Service================================
+  private getCandidateFromStorage(): Candidate | null {
+
+    const data = localStorage.getItem('candidate');
+
+    if (!data) {
+      return null;
+    }
+
+    try {
+
+      return JSON.parse(data);
+
+    } catch {
+
+      return null;
+
+    }
+
+  }
 
 
- getAllJobs(
-  pageNo: number = 1,
-  pageSize: number = 5,
-  sortBy: string = 'jobId',
-  sortDir: string = 'ASE'
-): Observable<any> {
 
-  const filters: JobSearchDTO = {};
+  //================================App Service================================
 
-  let params = new HttpParams()
-    .set('pageNo', pageNo)
-    .set('pageSize', pageSize)
-    .set('sortBy', sortBy)
-    .set('sortDir', sortDir);
 
-  return this.http.post<any>(
-    `${this.baseUrl}/jobsearch`,
-    filters,
-    { params }
-  );
+  getAllJobs(
+    pageNo: number = 1,
+    pageSize: number = 5,
+    sortBy: string = 'jobId',
+    sortDir: string = 'ASE'
+  ): Observable<any> {
 
-}
+    const filters: JobSearchDTO = {};
+
+    let params = new HttpParams()
+      .set('pageNo', pageNo)
+      .set('pageSize', pageSize)
+      .set('sortBy', sortBy)
+      .set('sortDir', sortDir);
+
+    return this.http.post<any>(
+      `${this.baseUrl}/jobsearch`,
+      filters,
+      { params }
+    );
+
+  }
 
 
   // getAllJobs(): Observable<Job[]> {
@@ -83,11 +111,11 @@ export class AuthService {
   // }
 
   login(CandidateLog: CandidateLogin): Observable<any> {
-        return this.http.post(`${this.baseUrl}/cnd_login`, CandidateLog);
+    return this.http.post(`${this.baseUrl}/cnd_login`, CandidateLog);
   }
 
   register(Candidate: CandidateRegistration): Observable<any> {
-        return this.http.post(`${this.baseUrl}/cnd_register`, Candidate);
+    return this.http.post(`${this.baseUrl}/cnd_register`, Candidate);
   }
 
   EmployerRegister(Employer: registerEmployer): Observable<any> {
@@ -120,13 +148,38 @@ export class AuthService {
     this.candidateSubject.next(null);
   }
 
-  setCandidate(candidate: Candidate) {
-      localStorage.setItem('candidate',JSON.stringify(candidate));
-      this.candidateSubject.next(candidate);
+
+  // Store/update candidate
+  // setCandidate(candidate: Candidate): void {
+  //   console.log('Setting beherival candidate:', candidate);
+  //   this.candidateSubject.next(candidate);
+
+  // }
+
+  // Get current candidate synchronously
+  getCandidate(): Candidate | null {
+
+    return this.candidateSubject.value;
+
   }
 
+  // Clear candidate during logout
+  clearCandidate(): void {
+
+    this.candidateSubject.next(null);
+
+  }
+
+  setCandidate(candidate: Candidate) {
+    localStorage.setItem('candidate', JSON.stringify(candidate));
+    this.candidateSubject.next(candidate);
+  }
+  // Store/update candidate
+
+
+
   getCandidateOfAngularApp(): Candidate | null {
-      return this.candidateSubject.value;
+    return this.candidateSubject.value;
   }
   // getCandidate(email: string): Observable<Candidate> {
   //   return this.http.get<Candidate>(`${this.baseUrl}/candidate/${email}`);
@@ -138,148 +191,148 @@ export class AuthService {
   }
 
   getJobById(jobId: number): Observable<Job> {
-    return this.http.get<Job>(`${this.baseUrl}/job/${jobId}`);  
+    return this.http.get<Job>(`${this.baseUrl}/job/${jobId}`);
   }
 
 
-//=================================Job Searching wiery=================================
-
- 
-// searchJobs(filters: {
-//   // keyword?: string;
-//   jobTitle?: string;
-//   jobLocation?: string;
-//   workMode?: string;
-//   experience?: number;
-//   salary?: number;
-//   industryType?: string;
-//   employmentTypes?: string[];
-// }) {
-
-//   console.log("Filters:", filters);
-
-//   let params = new HttpParams();
-
-//   Object.entries(filters).forEach(([key, value]) => {
-
-//     console.log(key, value);
-
-//     if (value !== null && value !== undefined && value !== '') {
-//       params = params.set(key, value.toString());
-//     }
-    
-
-//   });
-
-//   console.log("Params:", params.toString());
-
-//   return this.http.get<any>(
-//     `${this.baseUrl}/jobsearch`,
-//     { params }
-//   );
-// }
+  //=================================Job Searching wiery=================================
 
 
-// New Search job service start
-//==================Running Job Search service with JobSearchDTO==================
-searchJobs(
-  filters: JobSearchDTO,
-  pageNo: number = 1,
-  pageSize: number = 5,
-  sortBy: string = 'jobId',
-  sortDir: string = 'ASE'
-) {
+  // searchJobs(filters: {
+  //   // keyword?: string;
+  //   jobTitle?: string;
+  //   jobLocation?: string;
+  //   workMode?: string;
+  //   experience?: number;
+  //   salary?: number;
+  //   industryType?: string;
+  //   employmentTypes?: string[];
+  // }) {
 
-  console.log("Filters:", filters);
+  //   console.log("Filters:", filters);
 
-  let params = new HttpParams()
-    .set('pageNo', pageNo)
-    .set('pageSize', pageSize)
-    .set('sortBy', sortBy)
-    .set('sortDir', sortDir);
+  //   let params = new HttpParams();
 
-  console.log("Request URL Params:", params.toString());
-  console.log("Request Body:", filters);
+  //   Object.entries(filters).forEach(([key, value]) => {
 
-  return this.http.post<any>(
-    `${this.baseUrl}/jobsearch`,
-    filters,
-    { params }
-  );
+  //     console.log(key, value);
 
-}
+  //     if (value !== null && value !== undefined && value !== '') {
+  //       params = params.set(key, value.toString());
+  //     }
 
 
-// New Search job service end
+  //   });
+
+  //   console.log("Params:", params.toString());
+
+  //   return this.http.get<any>(
+  //     `${this.baseUrl}/jobsearch`,
+  //     { params }
+  //   );
+  // }
 
 
-//==================Running Job Search service with multiple filters and array parameters==================
-// searchJobs(filters: {
-//   jobTitle?: string;
-//   jobLocation?: string;
-//   workMode?: string[];
-//   experience?: number;
-//   salary?: number;
-//   industryType?: string;
-//   employmentTypes?: string[];
-//   categories?: string[];
-// }) {
+  // New Search job service start
+  //==================Running Job Search service with JobSearchDTO==================
+  searchJobs(
+    filters: JobSearchDTO,
+    pageNo: number = 1,
+    pageSize: number = 5,
+    sortBy: string = 'jobId',
+    sortDir: string = 'ASE'
+  ) {
 
-//   console.log("Filters:", filters);
+    console.log("Filters:", filters);
 
-//   let params = new HttpParams();
+    let params = new HttpParams()
+      .set('pageNo', pageNo)
+      .set('pageSize', pageSize)
+      .set('sortBy', sortBy)
+      .set('sortDir', sortDir);
 
-//   Object.entries(filters).forEach(([key, value]) => {
+    console.log("Request URL Params:", params.toString());
+    console.log("Request Body:", filters);
 
-//     console.log(key, value);
+    return this.http.post<any>(
+      `${this.baseUrl}/jobsearch`,
+      filters,
+      { params }
+    );
 
-//     // Skip empty values
-//     if (
-//       value === null ||
-//       value === undefined ||
-//       value === '' ||
-//       (Array.isArray(value) && value.length === 0)
-//     ) {
-//       return;
-//     }
-
-//     // Handle array parameters (employmentTypes)
-//     if (Array.isArray(value)) {
-
-//       value.forEach(item => {
-//         params = params.append(key, item);
-//       });
-
-//     } else {
-
-//       // Handle normal parameters
-//       params = params.set(key, value.toString());
-
-//     }
-
-//   });
-
-//   console.log("Request URL Params:", params.toString());
-
-//   return this.http.get<any>(
-//     `${this.baseUrl}/jobsearch`,
-//     { params }
-//   );
-// }
-
-//==================Running Job Search service with multiple filters and array parameters==================
-
-
-
-//=================================Candidate Spacific Request=================================
-
-getCandidateProfile() {
-      // console.log('Loading candidate profile...');
-      // console.log(localStorage.getItem('token'));
-      return this.http.post<any>(`${this.candidateUrl}/profile`,null);
   }
 
-uploadResume(file: File, candidateId: number) {
+
+  // New Search job service end
+
+
+  //==================Running Job Search service with multiple filters and array parameters==================
+  // searchJobs(filters: {
+  //   jobTitle?: string;
+  //   jobLocation?: string;
+  //   workMode?: string[];
+  //   experience?: number;
+  //   salary?: number;
+  //   industryType?: string;
+  //   employmentTypes?: string[];
+  //   categories?: string[];
+  // }) {
+
+  //   console.log("Filters:", filters);
+
+  //   let params = new HttpParams();
+
+  //   Object.entries(filters).forEach(([key, value]) => {
+
+  //     console.log(key, value);
+
+  //     // Skip empty values
+  //     if (
+  //       value === null ||
+  //       value === undefined ||
+  //       value === '' ||
+  //       (Array.isArray(value) && value.length === 0)
+  //     ) {
+  //       return;
+  //     }
+
+  //     // Handle array parameters (employmentTypes)
+  //     if (Array.isArray(value)) {
+
+  //       value.forEach(item => {
+  //         params = params.append(key, item);
+  //       });
+
+  //     } else {
+
+  //       // Handle normal parameters
+  //       params = params.set(key, value.toString());
+
+  //     }
+
+  //   });
+
+  //   console.log("Request URL Params:", params.toString());
+
+  //   return this.http.get<any>(
+  //     `${this.baseUrl}/jobsearch`,
+  //     { params }
+  //   );
+  // }
+
+  //==================Running Job Search service with multiple filters and array parameters==================
+
+
+
+  //=================================Candidate Spacific Request=================================
+
+  getCandidateProfile() {
+    // console.log('Loading candidate profile...');
+    // console.log(localStorage.getItem('token'));
+    return this.http.post<any>(`${this.candidateUrl}/profile`, null);
+  }
+
+  uploadResume(file: File, candidateId: number) {
     const formData = new FormData();
 
     formData.append('file', file);   // key = "file"
@@ -288,23 +341,23 @@ uploadResume(file: File, candidateId: number) {
     return this.http.post(`${this.candidateUrl}/uploadResume/${candidateId}`, formData);
   }
 
-getResume(resumeId:number):Observable<Blob>{
+  getResume(resumeId: number): Observable<Blob> {
     return this.http.get(`${this.candidateUrl}/resume/${resumeId}`, {
-    responseType: 'blob'
+      responseType: 'blob'
     });
   }
 
-jobApplicationRequest(jobApplication: JobApplication): Observable<any> {
+  jobApplicationRequest(jobApplication: JobApplication): Observable<any> {
     // console.log('Sending Data:', jobApplication);  //Remove this letter for security resone it is printing data on console
     return this.http.post(`${this.candidateUrl}/jobApplication`, jobApplication);
   }
 
-getAppliedJobs(): Observable<AppliedJob[]> {
-      return this.http.get<AppliedJob[]>(`${this.candidateUrl}/allAppliedJobs`);
-      // localhost:8080/Hireflow/candidate/allAppliedJobs
+  getAppliedJobs(): Observable<AppliedJob[]> {
+    return this.http.get<AppliedJob[]>(`${this.candidateUrl}/allAppliedJobs`);
+    // localhost:8080/Hireflow/candidate/allAppliedJobs
   }
 
-withdrawJobApplication(applicationId: number): Observable<string> {
+  withdrawJobApplication(applicationId: number): Observable<string> {
     return this.http.delete(
       `${this.candidateUrl}/withdrawAppln/${applicationId}`,
       {
@@ -313,7 +366,7 @@ withdrawJobApplication(applicationId: number): Observable<string> {
     );
   }
 
-changePassword(CandidateChangepass: CandidateChangePassword): Observable<any> {
+  changePassword(CandidateChangepass: CandidateChangePassword): Observable<any> {
     return this.http.post(`${this.candidateUrl}/changePass `, CandidateChangepass);
   }
 
@@ -321,19 +374,19 @@ changePassword(CandidateChangepass: CandidateChangePassword): Observable<any> {
 
 
 
-//=================================Employeer Spacific Request=================================
+  //=================================Employeer Spacific Request=================================
 
 
-getEmployerProfile() {
-      // console.log('Loading candidate profile...');
-      // console.log(localStorage.getItem('token'));
-      return this.http.post<any>(`${this.employerUrl}/comapnyHome`,null);
+  getEmployerProfile() {
+    // console.log('Loading candidate profile...');
+    // console.log(localStorage.getItem('token'));
+    return this.http.post<any>(`${this.employerUrl}/comapnyHome`, null);
   }
 
 
   getPostedJobs(employerId: number): Observable<PostedJob[]> {
-      return this.http.get<PostedJob[]>(`${this.employerUrl}/AllPostedJobs/${employerId}`);
-      // return this.http.get<PostedJob[]>(`${this.employerNoAuthUrl}/allAppliedJobs/${employerId}`);
+    return this.http.get<PostedJob[]>(`${this.employerUrl}/AllPostedJobs/${employerId}`);
+    // return this.http.get<PostedJob[]>(`${this.employerNoAuthUrl}/allAppliedJobs/${employerId}`);
   }
 
   postJob(job: PostJob): Observable<PostJob> {

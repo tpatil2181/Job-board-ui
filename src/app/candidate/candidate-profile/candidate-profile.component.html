@@ -15,13 +15,14 @@
   <!-- PROFILE SUMMARY BAR -->
   <div class="profile-bar">
     <div class="avatar-wrap">
-      <div class="avatar">{{ avatarInitials }}</div>
+      <!-- <div class="avatar">{{ avatarInitials }}</div> -->
+      <div class="avatar">{{candidate?.firstName?.charAt(0)||''}}{{candidate?.lastName?.charAt(0)||''}}</div>
       <div class="avatar-edit" (click)="uploadPhoto()">📷</div>
     </div>
-
+ 
     <div class="profile-info">
       <h1 [attr.contenteditable]="isEditingProfile" (input)="onNameInput($event)" [class.editing]="isEditingProfile">{{
-        name }}</h1>
+         candidate?.firstName }} {{candidate?.lastName}}</h1>
       <!-- [class.editing]="isEditingProfile">{{ candidate.first_name }} {{ candidate.last_name }}</h1> -->
 
       <div class="role" [attr.contenteditable]="isEditingProfile" (input)="onRoleInput($event)"
@@ -238,13 +239,29 @@
           <div class="resume-file">
             <div class="resume-icon">📄</div>
             <div>
-              <div class="resume-name">{{ resumeFileName }}</div>
+              <!-- <div class="resume-name">{{ resumeFileName }}</div> -->
+              <div class="resume-name">{{ candidate?.firstName + ' ' + candidate?.lastName}} Resume</div>
               <div class="resume-updated">{{ resumeUpdatedLabel }}</div>
             </div>
           </div>
         </div>
-        <input type="file" #resumeInput hidden accept=".pdf,.doc,.docx" (change)="updateResume()">
-        <button class="btn-primary full-width" (click)="resumeInput.click()"> Update Resume</button>
+        <!-- <input type="file" #resumeInput hidden accept=".pdf" (change)="updateResume()">
+        <button class="btn-primary full-width" (click)="resumeInput.click()"> Update Resume</button> -->
+        <input
+  type="file"
+  #resumeInput
+  hidden
+  accept=".pdf,.doc,.docx"
+  (change)="onResumeChange($event)">
+
+<button
+  type="button"
+  class="btn-primary full-width"
+  (click)="resumeInput.click()">
+  Update Resume
+</button>
+        
+
       </div>
 
       <!-- Skills -->

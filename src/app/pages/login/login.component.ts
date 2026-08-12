@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CandidateLogin } from '../../Interface/models';
 import { AuthService } from '../../services/auth.service';
+import { Candidate } from '../../Interface/Canditate/candidate';
 
 @Component({
   selector: 'app-login',
@@ -20,10 +21,11 @@ export class LoginComponent {
       password: ''
     };
 
-
+   
   constructor(
       private authService: AuthService,
-      private router: Router
+      private router: Router,
+      
     ) {}
 
   // constructor(private router: Router) {}
@@ -85,9 +87,11 @@ export class LoginComponent {
 //       });
 // }
 
+
 login() {
   this.authService.login(this.candidateLog).subscribe({
     next: (response) => {
+    // Store candidate globally
 
       localStorage.setItem('token', response.token);
       localStorage.setItem('role', response.role);
@@ -98,6 +102,8 @@ login() {
         next: (candidate) => {
 
           this.authService.setCandidate(candidate);
+          
+          
 
           console.log('Profile Loaded:', candidate);
 
