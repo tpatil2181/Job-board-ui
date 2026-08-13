@@ -19,8 +19,8 @@ export class EmployerRegistrationComponent {
   
     // ✅ Interface object
     candidate: CandidateRegistration = {
-      first_name: '',
-      last_name: '',
+      firstName: '',
+      lastName: '',
       mobNo: '',
       email: '',
       password: ''

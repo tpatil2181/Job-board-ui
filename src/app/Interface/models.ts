@@ -1,6 +1,6 @@
 export interface CandidateRegistration {
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   mobNo: string;
   email: string;
   password: string;

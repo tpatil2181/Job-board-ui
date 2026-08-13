@@ -245,6 +245,31 @@ ngOnInit(): void {
     this.aboutText = (event.target as HTMLElement).innerText.trim();
   }
 
+//=========================================Helper Methods=========================================
+//temparary use this function letter return respective value of which part of object is updated like education ,resume, certifiaction
+  // refreshCandidate() is use in every function which needs api call
+  refreshCandidate(): void {
+
+  this.authService.getCandidateProfile().subscribe({
+
+    next: (candidate) => {
+
+      this.authService.setCandidate(candidate);
+
+    },
+
+    error: (err) => {
+
+      console.error('Failed to refresh candidate:', err);
+
+    }
+
+  });
+
+}
+// ==================================================================================
+
+
   // ---- resume ----
 
   // selectedFile!: File;
@@ -283,6 +308,8 @@ onResumeChange(event: any): void {
       next: (res) => {
         console.log(res);
         alert('Resume uploaded successfully ✅');
+        this.refreshCandidate();
+
       },
       error: (err) => {
         console.error(err);

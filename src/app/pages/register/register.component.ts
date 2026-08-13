@@ -16,8 +16,8 @@ export class RegisterComponent {
 
   // ✅ Interface object
   candidate: CandidateRegistration = {
-    first_name: '',
-    last_name: '',
+    firstName: '',
+    lastName: '',
     mobNo: '',
     email: '',
     password: ''
