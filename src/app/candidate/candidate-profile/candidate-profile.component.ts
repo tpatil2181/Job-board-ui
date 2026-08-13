@@ -51,7 +51,9 @@ export class CandidateProfileComponent {
 
   // candidate = this.authService.getLoggedInCandidate();
   // candidateemail: string = localStorage.getItem('email') || '';
-  usrId: number = localStorage.getItem('userId') ? Number(localStorage.getItem('userId')) : 0;
+  // usrId: number = localStorage.getItem('userId') ? Number(localStorage.getItem('userId')) : 0;
+  cand: Candidate = JSON.parse(localStorage.getItem('candidate') || '{}');
+  usrId: number = this.cand.candidateId || 0;
 
   // candidate: Candidate = {
   //        first_name: '',
@@ -289,6 +291,8 @@ onResumeChange(event: any): void {
 }
 
   updateResume(): void {
+        console.log("User Id is getting",this.usrId);
+
     // this.selectedFile = event.target.files[0];
     if (!this.selectedFile) {
       alert('Please select a file');
@@ -308,13 +312,15 @@ onResumeChange(event: any): void {
       next: (res) => {
         console.log(res);
         alert('Resume uploaded successfully ✅');
-        this.refreshCandidate();
+        console.log("Resume uploaded");
+        // this.refreshCandidate();
 
       },
       error: (err) => {
         console.error(err);
 
         if (err.error && err.error.message) {
+          console.log("IN error massage of uploade resume");
           alert(err.error.message);
         } else {
           // alert('Something went wrong ❌');
