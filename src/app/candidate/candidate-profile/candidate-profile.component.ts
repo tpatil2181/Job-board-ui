@@ -313,7 +313,7 @@ onResumeChange(event: any): void {
         console.log(res);
         alert('Resume uploaded successfully ✅');
         console.log("Resume uploaded");
-        // this.refreshCandidate();
+        this.refreshCandidate();
 
       },
       error: (err) => {
