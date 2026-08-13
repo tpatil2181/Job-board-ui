@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CandidateLogin, CandidateRegistration, Job } from '../Interface/models';
 import { CandidateChangePassword } from '../Interface/Canditate/candidate-chagepass';
-import { AppliedJob, Candidate, JobApplication } from '../Interface/Canditate/candidate';
+import { AppliedJob, Candidate, JobApplication, language } from '../Interface/Canditate/candidate';
 import { PostedJob, PostJob } from '../Interface/employerModel';
 import { HttpParams } from '@angular/common/http';
 import { registerEmployer } from '../Interface/employerModel';
@@ -17,18 +17,18 @@ import { JobSearchDTO } from '../Interface/Application/job_search';
 })
 export class AuthService {
 
-  // private baseUrl = 'http://localhost:8080';
+  private baseUrl = 'http://localhost:8080';
 
-  // private candidateUrl = 'http://localhost:8080/Hireflow/candidate'
+  private candidateUrl = 'http://localhost:8080/Hireflow/candidate'
 
-  // private employerUrl = 'http://localhost:8080/Hireflow/employer'
+  private employerUrl = 'http://localhost:8080/Hireflow/employer'
 
   // codespace url
-  private baseUrl = 'https://curly-happiness-69gvp65gq79wcr55-8080.app.github.dev';
+  // private baseUrl = 'https://curly-happiness-69gvp65gq79wcr55-8080.app.github.dev';
 
-  private candidateUrl = `${this.baseUrl}/Hireflow/candidate`;
+  // private candidateUrl = `${this.baseUrl}/Hireflow/candidate`;
 
-  private employerUrl = `${this.baseUrl}/Hireflow/employer`;
+  // private employerUrl = `${this.baseUrl}/Hireflow/employer`;
 
 
   // private employerNoAuthUrl ='http://localhost:8080/employer'
@@ -371,6 +371,24 @@ export class AuthService {
     return this.http.post(`${this.candidateUrl}/changePass `, CandidateChangepass);
   }
 
+
+
+              //------------------Language Service------------------
+  addLanguage(lang: language): Observable<any> {
+    return this.http.post(`${this.candidateUrl}/addlang`, lang );
+  }
+
+  deleteLanguage(languageId: number): Observable<any> {
+    return this.http.delete(`${this.candidateUrl}/deletelang/${languageId}`);
+  }
+
+  updateLanguage(lang: language): Observable<any> {
+    return this.http.put(`${this.candidateUrl}/updatelang`, lang);
+  }
+
+  getLanguages(): Observable<language[]> {
+    return this.http.get<language[]>(`${this.candidateUrl}/getlang`);
+  }
 
 
 

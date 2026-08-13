@@ -12,6 +12,7 @@ import { ExperienceEntry, ExperienceFormComponent } from '../experience-form/exp
 import { CertificationEntry, CertificationFormComponent } from '../certification-form/certification-form.component';
 import { ProjectEntry, ProjectFormComponent } from '../project-form/project-form.component';
 import { LanguageEntry, LanguageFormComponent } from '../language-form/language-form.component';
+import {language} from "../../Interface/Canditate/candidate";
 
 
 export interface TimelineItem {
@@ -27,10 +28,10 @@ export interface SkillTag {
   variant: 'blue' | 'gray';
 }
 
-export interface LanguageItem {
-  name: string;
-  level: string;
-}
+// export interface LanguageItem {
+//   name: string;
+//   level: string;
+// }
 
 
 
@@ -47,6 +48,11 @@ export class CandidateProfileComponent {
   resume: any;
 
   candidate: Candidate | null = null;
+  // Education: EducationEntry[] = [];
+  // Experience: ExperienceEntry[] = [];
+  // Certification: CertificationEntry[] = [];
+  // Project: ProjectEntry[] = [];
+  // backendlanguages: language[] = [];
 
 
   // candidate = this.authService.getLoggedInCandidate();
@@ -92,6 +98,30 @@ ngOnInit(): void {
   });
 
 }
+//===============================Load APIs on load profile page=================================
+
+  // loadE
+
+  // loadLanguage() {
+  //   this.authService.getLanguages().subscribe({
+  //     next: (data: language[]) => {
+
+  //       console.log("Complete Response:", data);
+  //       console.log("Is Array:", Array.isArray(data));
+
+  //       this.backendlanguages = data;
+
+  //       console.log("Backend Languages:", this.backendlanguages);
+
+  //     },
+  //     error: (err) => {
+  //       this.alertService.error('Failed to load languages');
+  //       // console.error(err);
+  //     }
+  //   });
+  // }
+
+//==================================================================
 
 
 
@@ -102,6 +132,8 @@ ngOnInit(): void {
     private alertService: AlertService,
     private confirmDialogService: ConfirmDialogService
   ) { }
+
+
   //============================ My Code And variables END============================
 
   // ---- profile summary ----
@@ -201,11 +233,11 @@ ngOnInit(): void {
   ];
 
   // ---- languages ----
-  languages: LanguageItem[] = [
-    { name: 'English', level: 'Professional' },
-    { name: 'Hindi', level: 'Native' },
-    { name: 'Marathi', level: 'Native' }
-  ];
+  // languages: LanguageItem[] = [
+  //   { name: 'English', level: 'Professional' },
+  //   { name: 'Hindi', level: 'Native' },
+  //   { name: 'Marathi', level: 'Native' }
+  // ];
 
   // ---- toast ----
   toastMessage = '';
@@ -991,38 +1023,138 @@ onResumeChange(event: any): void {
     this.selectedLanguage = null;
     this.showLangForm = true;
   }
+  
 
   // 5) Open modal in "Edit" mode — LanguageItem { name, level } maps almost
   //    directly onto LanguageEntry { name, level }, no parsing needed.
-  openEditLanguage(lang: LanguageItem): void {
+  openEditLanguage(lang: language): void {
     this.selectedLanguage = {
-      id: (lang as any).id, // add an `id` field to LanguageItem if you don't have one yet
-      name: lang.name,
-      level: lang.level as LanguageEntry['level']
+      langId: lang.langId,
+      language: lang.language,
+      proficiency: lang.proficiency,
+      candidateId: lang.candidateId
     };
+
     this.showLangForm = true;
+
+}
+
+onLanguageSavedBackend(entry: LanguageEntry): void {
+
+  if (!this.candidate) {
+    return;
   }
 
+  const lang: language = {
+    langId: entry.langId,
+    language: entry.language,
+    proficiency: entry.proficiency,
+    candidateId: this.candidate.candidateId
+  };
+
+  // ADD
+  if (!entry.langId) {
+
+    this.authService
+      .addLanguage( lang)
+      .subscribe({
+
+        next: (res) => {
+
+          this.refreshCandidate();
+          // this.authService.setCandidate(updatedCandidate);
+          this.showLangForm = false;
+          
+
+        },
+
+        error: (err) => {
+
+          console.error('Error adding language:', err);
+
+        }
+
+      });
+
+    return;
+  }
+
+
+  // UPDATE
+  this.authService
+    .updateLanguage( lang)
+    .subscribe({
+
+      // next: (updatedCandidate) => {
+      next: (res) => {
+
+      
+        this.refreshCandidate();
+        // this.authService.setCandidate(updatedCandidate);
+        this.showLangForm = false;
+
+      },
+
+      error: (err) => {
+
+        console.error('Error updating language:', err);
+
+      }
+
+    });
+
+}
+removeLanguage(lang: language): void {
+
+  if (!lang.langId) {
+    return;
+  }
+//For deleting language refresh candidate is working but the same code is not working for add and update language.
+  this.authService
+    .deleteLanguage(lang.langId)
+    .subscribe({
+
+      // next: (updatedCandidate) => {
+         next: (res) => {
+
+        // console.log('Language deleted:', updatedCandidate);
+        this.refreshCandidate();
+
+        // Update shared Candidate
+        // this.authService.setCandidate(updatedCandidate);
+
+      },
+
+      error: (err) => {
+
+        console.error('Error deleting language:', err);
+
+      }
+
+    });
+
+}
+
   // 6) Handle the form's (save) event — updates or adds to the languages array.
-  onLanguageSaved(entry: LanguageEntry): void {
-    const existingIndex = this.languages.findIndex((l: any) => l.id === entry.id);
+  onLanguageSaved(entry: language): void {
+    // const existingIndex = this.languages.findIndex((l: any) => l.id === entry.id);
 
-    if (existingIndex > -1) {
-      this.languages[existingIndex] = { ...this.languages[existingIndex], name: entry.name, level: entry.level };
-    } else {
-      this.languages.push({ name: entry.name, level: entry.level, id: Date.now() } as LanguageItem);
-    }
+    // if (existingIndex > -1) {
+    //   this.languages[existingIndex] = { ...this.languages[existingIndex], name: entry.name, level: entry.level };
+    // } else {
+    //   this.candidate?.languagesanguages.push({ name: entry.language, level: entry.proficiency, id: Date.now() } as LanguageItem);
+    // }
 
-    this.showLangForm = false;
-    this.showToast(existingIndex > -1 ? 'Language updated' : 'Language added');
+    // this.showLangForm = false;
+    // this.showToast(existingIndex > -1 ? 'Language updated' : 'Language added');
   }
 
   // 7) Simple remove handler (Languages didn't use the generic removeItem() helper
   //    since lang-list isn't a TimelineItem[] array)
-  removeLanguage(lang: LanguageItem): void {
-    this.languages = this.languages.filter((l: any) => l !== lang);
-    this.showToast('Language removed');
-  }
+  // removeLanguage(lang: language): void {
+    // this.languages = this.languages.filter((l: any) => l !== lang);
+    // this.showToast('Language removed');
+  // }
 
 
 

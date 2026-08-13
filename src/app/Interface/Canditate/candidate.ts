@@ -20,6 +20,7 @@ export interface Candidate {
   educations: Education[];
   experiences: Experience[];
   certifications: Certification[];
+  languages: language[];
   skills: Skill[];
 
   resumeId: number | null;
@@ -75,6 +76,13 @@ export interface Certification {
   credentialId?: string;
   credentialUrl?: string;
 
+  candidateId: number;
+}
+
+export interface language {
+  langId?: number;
+  language: string;
+  proficiency: string;
   candidateId: number;
 }
 

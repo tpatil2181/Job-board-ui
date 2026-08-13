@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export interface LanguageEntry {
-  id?: number;
-  name: string;
-  level: 'Basic' | 'Conversational' | 'Professional' | 'Native';
+  langId?: number;
+  language: string;
+  proficiency: string;
+  candidateId?: number;
 }
 
 @Component({
@@ -23,7 +24,7 @@ export class LanguageFormComponent implements OnChanges {
   @Output() save = new EventEmitter<LanguageEntry>();
   @Output() close = new EventEmitter<void>();
 
-  levels: LanguageEntry['level'][] = ['Basic', 'Conversational', 'Professional', 'Native'];
+  levels: LanguageEntry['proficiency'][] = ['BASIC', 'CONVERSATIONAL', 'PROFESSIONAL', 'NATIVE'];
 
   form: LanguageEntry = this.emptyForm();
 
@@ -39,8 +40,8 @@ export class LanguageFormComponent implements OnChanges {
 
   emptyForm(): LanguageEntry {
     return {
-      name: '',
-      level: 'Conversational'
+      language: '',
+      proficiency: 'CONVERSATIONAL'
     };
   }
 

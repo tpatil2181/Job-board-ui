@@ -285,9 +285,9 @@
     <button class="icon-btn" (click)="openAddLanguage()">+ Add</button>
   </div>
   <div class="lang-list">
-    <div class="lang-item" *ngFor="let lang of languages">
-      <b>{{ lang.name }}</b>
-      <span class="lang-level">{{ lang.level }}</span>
+    <div class="lang-item" *ngFor="let lang of  candidate?.languages">
+      <b>{{ lang.language }}</b>
+      <span class="lang-level">{{ lang.proficiency }}</span>
       <div class="item-controls">
         <button class="ctrl-btn" (click)="openEditLanguage(lang)">✏️</button>
         <button class="ctrl-btn danger" (click)="removeLanguage(lang)">🗑️</button>
@@ -300,7 +300,7 @@
 <app-language-form
   [visible]="showLangForm"
   [editData]="selectedLanguage"
-  (save)="onLanguageSaved($event)"
+  (save)="onLanguageSavedBackend($event)"
   (close)="showLangForm = false">
 </app-language-form>
     </div>
