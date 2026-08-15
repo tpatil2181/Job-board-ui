@@ -8,11 +8,13 @@ import { SharedModule } from "../../pages/shared.module";
 import { EducationFormComponent, EducationEntry } from '../education-form/education-form.component';
 import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 import { AlertService } from '../../services/alert.service.service';
-import { ExperienceEntry, ExperienceFormComponent } from '../experience-form/experience-form.component';
+// import { ExperienceEntry, ExperienceFormComponent } from '../experience-form/experience-form.component';
+import { ExperienceFormComponent } from '../experience-form/experience-form.component';
 import { CertificationEntry, CertificationFormComponent } from '../certification-form/certification-form.component';
 import { ProjectEntry, ProjectFormComponent } from '../project-form/project-form.component';
 import { LanguageEntry, LanguageFormComponent } from '../language-form/language-form.component';
 import {language} from "../../Interface/Canditate/candidate";
+import { Education, Experience, Certification, Skill } from '../../Interface/Canditate/candidate';
 
 
 export interface TimelineItem {
@@ -33,7 +35,10 @@ export interface SkillTag {
 //   level: string;
 // }
 
-
+ export interface entityIcons{
+    educationicon: '🎓',
+    projecticon:'📁'
+  }
 
 @Component({
   selector: 'app-candidate-profile',
@@ -167,24 +172,27 @@ ngOnInit(): void {
     { label: 'HTML/CSS', variant: 'gray' }
   ];
 
+
+ 
+
   // ---- experience ----
-  experience: TimelineItem[] = [
-    {
-      icon: 'Z',
-      title: 'Senior Product Designer',
-      subtitle: 'Zeta Finance · Bengaluru · Mar 2023 — Present'
-    },
-    {
-      icon: 'M',
-      title: 'Product Designer',
-      subtitle: 'Meesho · Bengaluru · Jul 2020 — Feb 2023'
-    },
-    {
-      icon: 'S',
-      title: 'UI/UX Design Intern',
-      subtitle: 'Swiggy · Bengaluru · Jan 2020 — Jun 2020'
-    }
-  ];
+  // experience: TimelineItem[] = [
+  //   {
+  //     icon: 'Z',
+  //     title: 'Senior Product Designer',
+  //     subtitle: 'Zeta Finance · Bengaluru · Mar 2023 — Present'
+  //   },
+  //   {
+  //     icon: 'M',
+  //     title: 'Product Designer',
+  //     subtitle: 'Meesho · Bengaluru · Jul 2020 — Feb 2023'
+  //   },
+  //   {
+  //     icon: 'S',
+  //     title: 'UI/UX Design Intern',
+  //     subtitle: 'Swiggy · Bengaluru · Jan 2020 — Jun 2020'
+  //   }
+  // ];
 
   // ---- education ----
   education: TimelineItem[] = [
@@ -602,58 +610,168 @@ onResumeChange(event: any): void {
   // ... your existing fields (name, role, skills, education, etc.) stay unchanged ...
 
   // 3) New state for the Experience modal
+  // showExpForm = false;
+  // selectedExperience: ExperienceEntry | null = null;
+
   showExpForm = false;
-  selectedExperience: ExperienceEntry | null = null;
+  selectedExperience: Experience | null = null;
 
   // 4) Open modal in "Add" mode
+  // openAddExperience(): void {
+  //   this.selectedExperience = null;
+  //   this.showExpForm = true;
+  // }
+
   openAddExperience(): void {
-    this.selectedExperience = null;
-    this.showExpForm = true;
-  }
+
+  this.selectedExperience = null;
+  this.showExpForm = true;
+
+}
 
   // 5) Open modal in "Edit" mode — maps your existing TimelineItem (icon/title/subtitle)
   //    into the richer ExperienceEntry shape the form expects.
-  openEditExperience(exp: TimelineItem): void {
-    const parsed = this.parseExpSubtitle(exp.subtitle);
-    this.selectedExperience = {
-      id: (exp as any).id, // add an `id` field to TimelineItem if you don't have one yet
-      title: exp.title,
-      company: parsed.company,
-      location: parsed.location,
-      workMode: parsed.workMode,
-      startMonth: parsed.startMonth,
-      startYear: parsed.startYear,
-      endMonth: parsed.endMonth,
-      endYear: parsed.endYear,
-      currentlyWorking: parsed.endYear.toLowerCase() === 'present',
-      description: ''
-    };
-    this.showExpForm = true;
-  }
+  // openEditExperience(exp: TimelineItem): void {
+  //   const parsed = this.parseExpSubtitle(exp.subtitle);
+  //   this.selectedExperience = {
+  //     id: (exp as any).id, // add an `id` field to TimelineItem if you don't have one yet
+  //     title: exp.title,
+  //     company: parsed.company,
+  //     location: parsed.location,
+  //     workMode: parsed.workMode,
+  //     startMonth: parsed.startMonth,
+  //     startYear: parsed.startYear,
+  //     endMonth: parsed.endMonth,
+  //     endYear: parsed.endYear,
+  //     currentlyWorking: parsed.endYear.toLowerCase() === 'present',
+  //     description: ''
+  //   };
+  //   this.showExpForm = true;
+  // }
+
+  openEditExperience(exp: Experience): void {
+
+  this.selectedExperience = {
+    ...exp
+  };
+
+  this.showExpForm = true;
+
+}
 
   // 6) Handle the form's (save) event — converts the ExperienceEntry back
   //    into your TimelineItem shape and pushes/updates the experience array.
-  onExperienceSaved(entry: ExperienceEntry): void {
-    const datePart = `${entry.startMonth} ${entry.startYear} — ${entry.currentlyWorking ? 'Present' : entry.endMonth + ' ' + entry.endYear}`;
-    const parts = [entry.company, entry.location, entry.workMode, datePart].filter(p => p && p.trim().length);
-    const subtitle = parts.join(' · ');
+  // onExperienceSaved(entry: ExperienceEntry): void {
+  //   const datePart = `${entry.startMonth} ${entry.startYear} — ${entry.currentlyWorking ? 'Present' : entry.endMonth + ' ' + entry.endYear}`;
+  //   const parts = [entry.company, entry.location, entry.workMode, datePart].filter(p => p && p.trim().length);
+  //   const subtitle = parts.join(' · ');
 
-    const existingIndex = this.experience.findIndex((e: any) => e.id === entry.id);
+  //   const existingIndex = this.experience.findIndex((e: any) => e.id === entry.id);
 
-    if (existingIndex > -1) {
-      this.experience[existingIndex] = { ...this.experience[existingIndex], title: entry.title, subtitle };
-    } else {
-      this.experience.unshift({
-        icon: entry.company.charAt(0).toUpperCase(),
-        title: entry.title,
-        subtitle,
-        id: Date.now() // simple unique id for future edits
-      } as TimelineItem);
-    }
+  //   if (existingIndex > -1) {
+  //     this.experience[existingIndex] = { ...this.experience[existingIndex], title: entry.title, subtitle };
+  //   } else {
+  //     this.experience.unshift({
+  //       icon: entry.company.charAt(0).toUpperCase(),
+  //       title: entry.title,
+  //       subtitle,
+  //       id: Date.now() // simple unique id for future edits
+  //     } as TimelineItem);
+  //   }
 
-    this.showExpForm = false;
-    this.showToast(existingIndex > -1 ? 'Experience updated' : 'Experience added');
+  //   this.showExpForm = false;
+  //   this.showToast(existingIndex > -1 ? 'Experience updated' : 'Experience added');
+  // }
+
+  onExperienceSaved(entry: Experience): void {
+
+  if (!this.candidate) {
+    return;
   }
+
+
+  // ==============================
+  // ADD EXPERIENCE
+  // ==============================
+
+  if (!entry.candExpId) {
+
+    entry.candidateId = this.candidate.candidateId;
+
+    this.authService
+      .addExperience( entry)
+      .subscribe({
+
+        next: (res) => {
+
+          console.log('Experience added:', res);
+
+          // this.authService.setCandidate(updatedCandidate);
+          this.refreshCandidate();
+
+          this.showExpForm = false;
+
+          this.alertService.success(
+            'Experience added successfully.'
+          );
+
+        },
+
+        error: (err) => {
+
+          console.error('Error adding experience:', err);
+
+          this.alertService.error(
+            err?.error?.message ||
+            'Failed to add experience.'
+          );
+
+        }
+
+      });
+
+    return;
+  }
+
+
+  // ==============================
+  // UPDATE EXPERIENCE
+  // ==============================
+
+  this.authService
+    .updateExperience(entry)
+    .subscribe({
+
+      next: (response) => {
+
+        console.log('Experience updated:', response);
+
+        // this.authService.setCandidate(response);
+
+        this.refreshCandidate();
+
+        this.showExpForm = false;
+
+        this.alertService.success(
+          'Experience updated successfully.'
+        );
+
+      },
+
+      error: (err) => {
+
+        console.error('Error updating experience:', err);
+
+        this.alertService.error(
+          err?.error?.message ||
+          'Failed to update experience.'
+        );
+
+      }
+
+    });
+
+}
 
   // ---- helper used only to bridge TimelineItem <-> ExperienceEntry when editing ----
   private parseExpSubtitle(subtitle: string): {
@@ -679,7 +797,7 @@ onResumeChange(event: any): void {
     };
   }
 
-  removeExperience(applicationId: number): void {
+  removeExperience(candExpId: number): void {
 
     this.confirmDialogService.confirm({
 
@@ -699,42 +817,44 @@ onResumeChange(event: any): void {
         return;
       }
 
-      // this.authService.withdrawJobApplication(applicationId).subscribe({
+      this.authService.deleteExperience(candExpId).subscribe({
 
-      //   next: (response) => {
+        next: (response) => {
 
-      //     this.alertService.success(
-      //       'Application withdrawn successfully.'
-      //     );
+          this.refreshCandidate();
 
-      //     // Remove the withdrawn application from the list
-      //     this.appliedJobs = this.appliedJobs.filter(
-      //       job => job.applyid !== applicationId
-      //     );
+          this.alertService.success(
+            'Experience Deleted successfully.'
+          );
 
-      //     console.log(response);
+          // Remove the withdrawn application from the list
+          // this.appliedJobs = this.appliedJobs.filter(
+          //   job => job.applyid !== applicationId
+          // );
 
-      //   },
+          console.log(response);
 
-      //   error: (err) => {
+        },
 
-      //     console.error(err);
+        error: (err) => {
 
-      //     if (err.error) {
+          console.error(err);
 
-      //       this.alertService.error(err.error);
+          if (err.error) {
 
-      //     } else {
+            this.alertService.error(err.error);
 
-      //       this.alertService.error(
-      //         'Failed to withdraw application.'
-      //       );
+          } else {
 
-      //     }
+            this.alertService.error(
+              'Failed to withdraw application.'
+            );
 
-      //   }
+          }
 
-      // });
+        }
+
+      });
 
     });
 
@@ -1082,7 +1202,7 @@ onLanguageSavedBackend(entry: LanguageEntry): void {
 
   // UPDATE
   this.authService
-    .updateLanguage( lang)
+    .updateLanguage(lang)
     .subscribe({
 
       // next: (updatedCandidate) => {

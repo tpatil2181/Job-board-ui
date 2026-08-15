@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CandidateLogin, CandidateRegistration, Job } from '../Interface/models';
 import { CandidateChangePassword } from '../Interface/Canditate/candidate-chagepass';
-import { AppliedJob, Candidate, JobApplication, language } from '../Interface/Canditate/candidate';
+import { AppliedJob, Candidate, Education, Experience, JobApplication, language } from '../Interface/Canditate/candidate';
 import { PostedJob, PostJob } from '../Interface/employerModel';
 import { HttpParams } from '@angular/common/http';
 import { registerEmployer } from '../Interface/employerModel';
@@ -372,8 +372,97 @@ export class AuthService {
   }
 
 
+  //------------------Experience Service------------------
 
-              //------------------Language Service------------------
+  addExperience( experience: Experience): Observable<any> {
+    console.log("Sending DATA:", experience)
+    return this.http.post(`${this.candidateUrl}/experience`, experience);
+  }
+
+  updateExperience(experience: Experience): Observable<any> {
+    return this.http.post(`${this.candidateUrl}/updateExperience`, experience);
+  }
+
+  deleteExperience(candExpId: number ): Observable<any> {
+    return this.http.delete(`${this.candidateUrl}/experience/${candExpId}`);
+  }
+
+  // getExperience(): Observable<language[]> {
+  //   return this.http.get<language[]>(`${this.candidateUrl}/getlang`);
+  // }
+
+
+  //------------------Education Service------------------
+
+  // addEducation(education: Education): Observable<any> {
+  //   return this.http.post(`${this.candidateUrl}/addEducation`, education);
+  // }
+
+  // updateEducation(education: Education): Observable<any> {
+  //   return this.http.put(`${this.candidateUrl}/updateEducation`, education);
+  // }
+
+  // deleteEducation(educationId: number): Observable<any> {
+  //   return this.http.delete(`${this.candidateUrl}/deleteEducation/${educationId}`);
+  // }
+
+  // getEducation(): Observable<Education[]> {
+  //   return this.http.get<Education[]>(`${this.candidateUrl}/getEducation`);
+  // }
+
+
+
+
+
+  //------------------Projects Service------------------
+
+  // addProject(project: any): Observable<any> {
+  //   return this.http.post(`${this.candidateUrl}/addProject`, project);
+  // }
+  
+  // updateProject(project: any): Observable<any> {
+  //   return this.http.put(`${this.candidateUrl}/updateProject`, project);
+  // }
+
+  // deleteProject(projectId: number): Observable<any> {
+  //   return this.http.delete(`${this.candidateUrl}/deleteProject/${projectId}`);
+  // }
+
+  // getProjects(): Observable<any[]> {
+  //   return this.http.get<any[]>(`${this.candidateUrl}/getProjects`);
+  // }
+
+
+
+
+
+
+  //------------------Certificates  Service------------------
+
+  // addCertificate(cert: any): Observable<any> {
+  //   return this.http.post(`${this.candidateUrl}/addCertificate`, cert);
+  // }
+
+  // updateCertificate(cert: any): Observable<any> {
+  //   return this.http.put(`${this.candidateUrl}/updateCertificate`, cert);
+  // }
+
+  // deleteCertificate(certId: number): Observable<any> {
+  //   return this.http.delete(`${this.candidateUrl}/deleteCertificate/${certId}`);
+  // }
+
+  // getCertificates(): Observable<any[]> {
+  //   return this.http.get<any[]>(`${this.candidateUrl}/getCertificates`);
+  // }
+
+
+
+
+
+
+
+
+  //------------------Language Service------------------
   addLanguage(lang: language): Observable<any> {
     return this.http.post(`${this.candidateUrl}/addlang`, lang );
   }

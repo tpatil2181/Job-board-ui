@@ -46,23 +46,43 @@ export interface Education {
   candidateId: number;
 }
 
-export interface Experience {
-  experienceId: number;
 
+export interface Experience {
+  candExpId?: number;
+  candidateId?: number;
   companyName: string;
   jobTitle: string;
-  employmentType: string;
+  location: string;
+  workMode: string;
+  smonth: string;
+  syear: number;
+  // emonth?: string;
+  // eyear?: number;
 
-  startDate: string;
-  endDate: string | null;
-
-  currentlyWorking: boolean;
-
-  location?: string;
-  description?: string;
-
-  candidateId: number;
+  emonth: string | null;
+  eyear: number | null;
+  // joiningDate: Date;
+  // endingDate: Date;
+  isCurrentCompanny: boolean;
+  aboutJobProfile: string;
 }
+// export interface Experience {
+//   experienceId: number;
+
+//   companyName: string;
+//   jobTitle: string;
+//   employmentType: string;
+
+//   startDate: string;
+//   endDate: string | null;
+
+//   currentlyWorking: boolean;
+
+//   location?: string;
+//   description?: string;
+
+//   candidateId: number;
+// }
 
 export interface Certification {
   certificationId: number;

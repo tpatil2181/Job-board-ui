@@ -92,16 +92,18 @@
           <h2><span class="ico">💼</span> Experience</h2>
           <button class="icon-btn" (click)="openAddExperience()">+ Add</button>
         </div>
-        <div class="item" *ngFor="let exp of experience">
-          <div class="item-icon">{{ exp.icon }}</div>
+        <div class="item" *ngFor="let exp of candidate?.experiences">
+          <!-- <div class="item-icon">{{ exp.icon }}</div> -->
+          <div class="item-icon">{{ exp.candExpId }}</div>
           <div class="item-body">
-            <div class="item-title">{{ exp.title }}</div>
-            <div class="item-sub">{{ exp.subtitle }}</div>
+            <div class="item-title">{{ exp.jobTitle }}</div>
+            <!-- <div class="item-sub">{{ exp.subtitle }}</div> -->
+            <div class="item-sub">{{ exp.companyName }}, {{exp.location}}, {{exp.smonth}} {{exp.syear}} - </div>
           </div>
           <div class="item-controls">
             <button class="ctrl-btn" (click)="openEditExperience(exp)">✏️</button>
             <!-- <button class="ctrl-btn danger" (click)="removeItem(experience, exp, 'Experience')">🗑️</button> -->
-            <button class="ctrl-btn danger" (click)="removeExperience(1)">🗑️</button>
+            <button class="ctrl-btn danger" (click)="removeExperience(exp.candExpId||0)">🗑️</button>
           </div>
         </div>
       </div>
@@ -110,6 +112,7 @@
       <app-experience-form [visible]="showExpForm" [editData]="selectedExperience" (save)="onExperienceSaved($event)"
         (close)="showExpForm = false">
       </app-experience-form>
+      
 
       <!-- Education -->
       <div class="card">
