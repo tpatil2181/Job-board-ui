@@ -142,7 +142,7 @@ months =[
 
       college: '',
 
-      FieldOfStudy:'',
+      fieldOfStudy:'',
       
       smonth: '',
 

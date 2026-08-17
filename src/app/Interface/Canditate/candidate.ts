@@ -40,7 +40,7 @@ export interface Education {
   educationId?: number;
   degree: string;
   college: string;
-  FieldOfStudy:string;
+  fieldOfStudy :string;
   smonth: string;
   syear: number;
   emonth: string | null;

@@ -121,7 +121,7 @@
           <button class="icon-btn" (click)="openAddEducation()">+ Add</button>
         </div>
         <div class="item" *ngFor="let edu of candidate?.educations">
-          <div class="item-icon">{{ edu.educationId }}</div>
+          <div class="item-icon">🎓</div>
           <div class="item-body">
             <div class="item-title">{{ edu.degree }}</div>
             <div class="item-sub">{{ edu.college }}</div>
@@ -166,7 +166,7 @@
           <button class="icon-btn" (click)="openAddProject()">+ Add</button>
         </div>
         <div class="item" *ngFor="let proj of candidate?.projects">
-          <div class="item-icon">{{ proj.projectId }}</div>
+          <div class="item-icon">📁</div>
           <div class="item-body">
             <div class="item-title">{{ proj.ProjectTitle }}</div>
             <div class="item-desc" *ngIf="proj.discription">{{ proj.discription }}</div>
@@ -211,7 +211,7 @@
           <button class="icon-btn" (click)="openAddCertification()">+ Add</button>
         </div>
         <div class="item" *ngFor="let cert of candidate?.certifications">
-          <div class="item-icon">{{ cert.candidateId }}</div>
+          <div class="item-icon">🏅</div>
           <div class="item-body">
             <div class="item-title">{{ cert.certificateName }}</div>
             <div class="item-sub">{{ cert.issueingOrganization }}</div>

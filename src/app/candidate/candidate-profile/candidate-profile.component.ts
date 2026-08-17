@@ -473,7 +473,7 @@ onResumeChange(event: any): void {
   // showEduForm = false;
   // selectedEducation: EducationEntry | null = null;
 
-   showEduForm = false;
+    showEduForm = false;
     selectedEducation: Education | null = null;
 
   // 4) Open modal in "Add" mode
@@ -564,7 +564,7 @@ onResumeChange(event: any): void {
           // this.authService.setCandidate(updatedCandidate);
           this.refreshCandidate();
 
-          this.showExpForm = false;
+          this.showEduForm = false;
 
           this.alertService.success(
             'Education added successfully.'
@@ -605,7 +605,7 @@ onResumeChange(event: any): void {
 
         this.refreshCandidate();
 
-        this.showExpForm = false;
+        this.showEduForm = false;
 
         this.alertService.success(
           'Education updated successfully.'
