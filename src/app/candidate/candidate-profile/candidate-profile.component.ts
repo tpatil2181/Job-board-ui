@@ -3,15 +3,18 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { Candidate } from '../../Interface/Canditate/candidate';
+import { Candidate, Project } from '../../Interface/Canditate/candidate';
 import { SharedModule } from "../../pages/shared.module";
-import { EducationFormComponent, EducationEntry } from '../education-form/education-form.component';
+// import { EducationFormComponent, EducationEntry } from '../education-form/education-form.component';
+import { EducationFormComponent } from '../education-form/education-form.component';
 import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 import { AlertService } from '../../services/alert.service.service';
 // import { ExperienceEntry, ExperienceFormComponent } from '../experience-form/experience-form.component';
 import { ExperienceFormComponent } from '../experience-form/experience-form.component';
-import { CertificationEntry, CertificationFormComponent } from '../certification-form/certification-form.component';
-import { ProjectEntry, ProjectFormComponent } from '../project-form/project-form.component';
+// import { CertificationEntry, CertificationFormComponent } from '../certification-form/certification-form.component';
+import { CertificationFormComponent } from '../certification-form/certification-form.component';
+// import { ProjectEntry, ProjectFormComponent } from '../project-form/project-form.component';
+import { ProjectFormComponent } from '../project-form/project-form.component';
 import { LanguageEntry, LanguageFormComponent } from '../language-form/language-form.component';
 import {language} from "../../Interface/Canditate/candidate";
 import { Education, Experience, Certification, Skill } from '../../Interface/Canditate/candidate';
@@ -227,18 +230,18 @@ ngOnInit(): void {
   ];
 
   // ---- certifications ----
-  certifications: TimelineItem[] = [
-    {
-      icon: '🏅',
-      title: 'Certified UX Design Professional',
-      subtitle: 'Google · via Coursera · 2023'
-    },
-    {
-      icon: '🏅',
-      title: 'Design Systems Certification',
-      subtitle: 'Interaction Design Foundation · 2021'
-    }
-  ];
+  // certifications: TimelineItem[] = [
+  //   {
+  //     icon: '🏅',
+  //     title: 'Certified UX Design Professional',
+  //     subtitle: 'Google · via Coursera · 2023'
+  //   },
+  //   {
+  //     icon: '🏅',
+  //     title: 'Design Systems Certification',
+  //     subtitle: 'Interaction Design Foundation · 2021'
+  //   }
+  // ];
 
   // ---- languages ----
   // languages: LanguageItem[] = [
@@ -467,8 +470,11 @@ onResumeChange(event: any): void {
 
 
   //====================================================Eduaction Releted Code====================================================
-  showEduForm = false;
-  selectedEducation: EducationEntry | null = null;
+  // showEduForm = false;
+  // selectedEducation: EducationEntry | null = null;
+
+   showEduForm = false;
+    selectedEducation: Education | null = null;
 
   // 4) Open modal in "Add" mode
   openAddEducation(): void {
@@ -478,49 +484,152 @@ onResumeChange(event: any): void {
 
   // 5) Open modal in "Edit" mode — maps your existing TimelineItem (icon/title/subtitle)
   //    into the richer EducationEntry shape the form expects.
-  openEditEducation(edu: TimelineItem): void {
-    const parsed = this.parseEduSubtitle(edu.subtitle);
+  // openEditEducation(edu: TimelineItem): void {
+  //   const parsed = this.parseEduSubtitle(edu.subtitle);
+  //   this.selectedEducation = {
+  //     id: (edu as any).id, // add an `id` field to TimelineItem if you don't have one yet
+  //     school: parsed.school,
+  //     degree: this.extractDegree(edu.title),
+  //     fieldOfStudy: this.extractFieldOfStudy(edu.title),
+  //     startMonth: '',
+  //     startYear: parsed.startYear,
+  //     endMonth: '',
+  //     endYear: parsed.endYear,
+  //     currentlyStudying: parsed.endYear.toLowerCase() === 'present',
+  //     grade: '',
+  //     description: ''
+  //   };
+  //   this.showEduForm = true;
+  // }
+
+
+  
+  openEditEducation(edu: Education): void {
+
     this.selectedEducation = {
-      id: (edu as any).id, // add an `id` field to TimelineItem if you don't have one yet
-      school: parsed.school,
-      degree: this.extractDegree(edu.title),
-      fieldOfStudy: this.extractFieldOfStudy(edu.title),
-      startMonth: '',
-      startYear: parsed.startYear,
-      endMonth: '',
-      endYear: parsed.endYear,
-      currentlyStudying: parsed.endYear.toLowerCase() === 'present',
-      grade: '',
-      description: ''
+      ...edu
     };
+
     this.showEduForm = true;
+
   }
 
   // 6) Handle the form's (save) event — converts the EducationEntry back
   //    into your TimelineItem shape and pushes/updates the education array.
-  onEducationSaved(entry: EducationEntry): void {
-    const subtitle = `${entry.school} · ${entry.startYear} — ${entry.currentlyStudying ? 'Present' : entry.endYear}`;
-    const title = entry.fieldOfStudy ? `${entry.degree}, ${entry.fieldOfStudy}` : entry.degree;
+  // onEducationSaved(entry: EducationEntry): void {
+  //   const subtitle = `${entry.school} · ${entry.startYear} — ${entry.currentlyStudying ? 'Present' : entry.endYear}`;
+  //   const title = entry.fieldOfStudy ? `${entry.degree}, ${entry.fieldOfStudy}` : entry.degree;
 
-    const existingIndex = this.education.findIndex((e: any) => e.id === entry.id);
+  //   const existingIndex = this.education.findIndex((e: any) => e.id === entry.id);
 
-    if (existingIndex > -1) {
-      this.education[existingIndex] = { ...this.education[existingIndex], title, subtitle };
-    } else {
-      this.education.push({
-        icon: '🎓',
-        title,
-        subtitle,
-        id: Date.now() // simple unique id for future edits
-      } as TimelineItem);
-    }
+  //   if (existingIndex > -1) {
+  //     this.education[existingIndex] = { ...this.education[existingIndex], title, subtitle };
+  //   } else {
+  //     this.education.push({
+  //       icon: '🎓',
+  //       title,
+  //       subtitle,
+  //       id: Date.now() // simple unique id for future edits
+  //     } as TimelineItem);
+  //   }
 
-    this.showEduForm = false;
-    this.showToast(existingIndex > -1 ? 'Education updated' : 'Education added');
+  //   this.showEduForm = false;
+  //   this.showToast(existingIndex > -1 ? 'Education updated' : 'Education added');
+  // }
+
+
+  onEducationSaved(entry: Education): void {
+
+  if (!this.candidate) {
+    return;
   }
 
 
-  removeEducation(applicationId: number): void {
+  // ==============================
+  // ADD EDUCATION
+  // ==============================
+
+  if (!entry.educationId) {
+
+    entry.candidateId = this.candidate.candidateId;
+
+    this.authService
+      .addEducation( entry)
+      .subscribe({
+
+        next: (res) => {
+
+          console.log('Education added:', res);
+
+          // this.authService.setCandidate(updatedCandidate);
+          this.refreshCandidate();
+
+          this.showExpForm = false;
+
+          this.alertService.success(
+            'Education added successfully.'
+          );
+
+        },
+
+        error: (err) => {
+
+          console.error('Error adding education:', err);
+
+          this.alertService.error(
+            err?.error?.message ||
+            'Failed to add education.'
+          );
+
+        }
+
+      });
+
+    return;
+  }
+
+
+  // ==============================
+  // UPDATE EDUCATION
+  // ==============================
+
+  this.authService
+    .updateEducation(entry)
+    .subscribe({
+
+      next: (response) => {
+
+        console.log('Education updated:', response);
+
+        // this.authService.setCandidate(response);
+
+        this.refreshCandidate();
+
+        this.showExpForm = false;
+
+        this.alertService.success(
+          'Education updated successfully.'
+        );
+
+      },
+
+      error: (err) => {
+
+        console.error('Error updating education:', err);
+
+        this.alertService.error(
+          err?.error?.message ||
+          'Failed to update education.'
+        );
+
+      }
+
+    });
+
+}
+
+
+  removeEducation(educationId: number): void {
 
     this.confirmDialogService.confirm({
 
@@ -539,43 +648,44 @@ onResumeChange(event: any): void {
       if (!result) {
         return;
       }
+      this.authService.deleteEducation(educationId).subscribe({
 
-      // this.authService.withdrawJobApplication(applicationId).subscribe({
+        next: (response) => {
 
-      //   next: (response) => {
+          this.refreshCandidate();
 
-      //     this.alertService.success(
-      //       'Application withdrawn successfully.'
-      //     );
+          this.alertService.success(
+            'Education Deleted successfully.'
+          );
 
-      //     // Remove the withdrawn application from the list
-      //     this.appliedJobs = this.appliedJobs.filter(
-      //       job => job.applyid !== applicationId
-      //     );
+          // Remove the withdrawn application from the list
+          // this.appliedJobs = this.appliedJobs.filter(
+          //   job => job.applyid !== applicationId
+          // );
 
-      //     console.log(response);
+          console.log(response);
 
-      //   },
+        },
 
-      //   error: (err) => {
+        error: (err) => {
 
-      //     console.error(err);
+          console.error(err);
 
-      //     if (err.error) {
+          if (err.error) {
 
-      //       this.alertService.error(err.error);
+            this.alertService.error(err.error);
 
-      //     } else {
+          } else {
 
-      //       this.alertService.error(
-      //         'Failed to withdraw application.'
-      //       );
+            this.alertService.error(
+              'Failed to delete education.'
+            );
 
-      //     }
+          }
 
-      //   }
+        }
 
-      // });
+      });
 
     });
 
@@ -885,8 +995,11 @@ onResumeChange(event: any): void {
   // ... your existing fields stay unchanged ...
 
   // 3) New state for the Certification modal
+  // showCertForm = false;
+  // selectedCertification: CertificationEntry | null = null;
+
   showCertForm = false;
-  selectedCertification: CertificationEntry | null = null;
+  selectedCertification: Certification | null = null;
 
   // 4) Open modal in "Add" mode
   openAddCertification(): void {
@@ -894,60 +1007,163 @@ onResumeChange(event: any): void {
     this.showCertForm = true;
   }
 
+
+
   // 5) Open modal in "Edit" mode — maps your existing TimelineItem (icon/title/subtitle)
   //    into the richer CertificationEntry shape the form expects.
-  openEditCertification(cert: TimelineItem): void {
-    const parsed = this.parseCertSubtitle(cert.subtitle);
+  // openEditCertification(cert: TimelineItem): void {
+  //   const parsed = this.parseCertSubtitle(cert.subtitle);
+  //   this.selectedCertification = {
+  //     id: (cert as any).id, // add an `id` field to TimelineItem if you don't have one yet
+  //     name: cert.title,
+  //     issuingOrg: parsed.issuingOrg,
+  //     issueMonth: '',
+  //     issueYear: parsed.issueYear,
+  //     hasExpiry: false,
+  //     expiryMonth: '',
+  //     expiryYear: '',
+  //     credentialId: '',
+  //     credentialUrl: ''
+  //   };
+  //   this.showCertForm = true;
+  // }
+
+  
+  
+  openEditCertification(certi: Certification): void {
+
     this.selectedCertification = {
-      id: (cert as any).id, // add an `id` field to TimelineItem if you don't have one yet
-      name: cert.title,
-      issuingOrg: parsed.issuingOrg,
-      issueMonth: '',
-      issueYear: parsed.issueYear,
-      hasExpiry: false,
-      expiryMonth: '',
-      expiryYear: '',
-      credentialId: '',
-      credentialUrl: ''
+      ...certi
     };
+
     this.showCertForm = true;
+
   }
 
   // 6) Handle the form's (save) event — converts the CertificationEntry back
   //    into your TimelineItem shape and pushes/updates the certifications array.
-  onCertificationSaved(entry: CertificationEntry): void {
-    const issueDate = [entry.issueMonth, entry.issueYear].filter(Boolean).join(' ');
-    const expiryDate = entry.hasExpiry
-      ? ` · Expires ${[entry.expiryMonth, entry.expiryYear].filter(Boolean).join(' ')}`
-      : '';
-    const subtitle = `${entry.issuingOrg} · ${issueDate}${expiryDate}`;
+  // onCertificationSaved(entry: CertificationEntry): void {
+  //   const issueDate = [entry.issueMonth, entry.issueYear].filter(Boolean).join(' ');
+  //   const expiryDate = entry.hasExpiry
+  //     ? ` · Expires ${[entry.expiryMonth, entry.expiryYear].filter(Boolean).join(' ')}`
+  //     : '';
+  //   const subtitle = `${entry.issuingOrg} · ${issueDate}${expiryDate}`;
 
-    const existingIndex = this.certifications.findIndex((c: any) => c.id === entry.id);
+  //   const existingIndex = this.certifications.findIndex((c: any) => c.id === entry.id);
 
-    if (existingIndex > -1) {
-      this.certifications[existingIndex] = { ...this.certifications[existingIndex], title: entry.name, subtitle };
-    } else {
-      this.certifications.unshift({
-        icon: '🏅',
-        title: entry.name,
-        subtitle,
-        id: Date.now() // simple unique id for future edits
-      } as TimelineItem);
-    }
+  //   if (existingIndex > -1) {
+  //     this.certifications[existingIndex] = { ...this.certifications[existingIndex], title: entry.name, subtitle };
+  //   } else {
+  //     this.certifications.unshift({
+  //       icon: '🏅',
+  //       title: entry.name,
+  //       subtitle,
+  //       id: Date.now() // simple unique id for future edits
+  //     } as TimelineItem);
+  //   }
 
-    this.showCertForm = false;
-    this.showToast(existingIndex > -1 ? 'Certification updated' : 'Certification added');
+  //   this.showCertForm = false;
+  //   this.showToast(existingIndex > -1 ? 'Certification updated' : 'Certification added');
+  // }
+
+
+onCertificationSaved(entry: Certification): void {
+
+  if (!this.candidate) {
+    return;
   }
 
+  if (!entry.candidateId) {
+
+    entry.candidateId = this.candidate.candidateId;
+
+    this.authService
+      .addCertificate( entry)
+      .subscribe({
+
+        next: (res) => {
+
+          console.log('Certificate added:', res);
+
+          // this.authService.setCandidate(updatedCandidate);
+          this.refreshCandidate();
+
+          this.showExpForm = false;
+
+          this.alertService.success(
+            'Certificate added successfully.'
+          );
+
+        },
+
+        error: (err) => {
+
+          console.error('Error adding Certificate:', err);
+
+          this.alertService.error(
+            err?.error?.message ||
+            'Failed to add Cretificate.'
+          );
+
+        }
+
+      });
+
+    return;
+  }
+
+
+  // ==============================
+  // UPDATE EXPERIENCE
+  // ==============================
+
+  this.authService
+    .updateCertificate(entry)
+    .subscribe({
+
+      next: (response) => {
+
+        console.log('Certificationn updated:', response);
+
+        // this.authService.setCandidate(response);
+
+        this.refreshCandidate();
+
+        this.showExpForm = false;
+
+        this.alertService.success(
+          'Certification updated successfully.'
+        );
+
+      },
+
+      error: (err) => {
+
+        console.error('Error updating Certification:', err);
+
+        this.alertService.error(
+          err?.error?.message ||
+          'Failed to update Certification.'
+        );
+
+      }
+
+    });
+
+}
+  
+
+
+  
   // ---- helper used only to bridge TimelineItem <-> CertificationEntry when editing ----
-  private parseCertSubtitle(subtitle: string): { issuingOrg: string; issueYear: string } {
-    // Expected shape: "Issuing Org · 2023" (optionally " · Expires Month Year")
-    const [org, rest] = subtitle.split('·').map(s => s.trim());
-    const issueYear = (rest ?? '').split(' ').pop() ?? '';
-    return { issuingOrg: org ?? '', issueYear };
-  }
+  // private parseCertSubtitle(subtitle: string): { issuingOrg: string; issueYear: string } {
+  //   // Expected shape: "Issuing Org · 2023" (optionally " · Expires Month Year")
+  //   const [org, rest] = subtitle.split('·').map(s => s.trim());
+  //   const issueYear = (rest ?? '').split(' ').pop() ?? '';
+  //   return { issuingOrg: org ?? '', issueYear };
+  // }
 
-  removeCertification(applicationId: number): void {
+  removeCertification(certificatioId: number): void {
 
     this.confirmDialogService.confirm({
 
@@ -967,42 +1183,45 @@ onResumeChange(event: any): void {
         return;
       }
 
-      // this.authService.withdrawJobApplication(applicationId).subscribe({
+      this.authService.deleteCertificate(certificatioId).subscribe({
 
-      //   next: (response) => {
+        next: (response) => {
 
-      //     this.alertService.success(
-      //       'Application withdrawn successfully.'
-      //     );
+          this.refreshCandidate();
 
-      //     // Remove the withdrawn application from the list
-      //     this.appliedJobs = this.appliedJobs.filter(
-      //       job => job.applyid !== applicationId
-      //     );
+          this.alertService.success(
+            'Certificate Deleted successfully.'
+          );
 
-      //     console.log(response);
+          // Remove the withdrawn application from the list
+          // this.appliedJobs = this.appliedJobs.filter(
+          //   job => job.applyid !== applicationId
+          // );
 
-      //   },
+          console.log(response);
 
-      //   error: (err) => {
+        },
 
-      //     console.error(err);
+        error: (err) => {
 
-      //     if (err.error) {
+          console.error(err);
 
-      //       this.alertService.error(err.error);
+          if (err.error) {
 
-      //     } else {
+            this.alertService.error(err.error);
 
-      //       this.alertService.error(
-      //         'Failed to withdraw application.'
-      //       );
+          } else {
 
-      //     }
+            this.alertService.error(
+              'Failed to withdraw application.'
+            );
 
-      //   }
+          }
 
-      // });
+        }
+
+      });
+
 
     });
 
@@ -1016,7 +1235,7 @@ onResumeChange(event: any): void {
 
   // 3) New state for the Project modal
   showProjectForm = false;
-  selectedProject: ProjectEntry | null = null;
+  selectedProject: Project | null = null;
 
   // 4) Open modal in "Add" mode
   openAddProject(): void {
@@ -1026,46 +1245,141 @@ onResumeChange(event: any): void {
 
   // 5) Open modal in "Edit" mode — maps your existing TimelineItem (icon/title/description/link)
   //    into the richer ProjectEntry shape the form expects.
-  openEditProject(proj: TimelineItem): void {
+  // openEditProject(proj: TimelineItem): void {
+  //   this.selectedProject = {
+  //     id: (proj as any).id, // add an `id` field to TimelineItem if you don't have one yet
+  //     title: proj.title,
+  //     role: '',
+  //     startMonth: '',
+  //     startYear: '',
+  //     endMonth: '',
+  //     endYear: '',
+  //     ongoing: false,
+  //     description: proj.description ?? '',
+  //     projectUrl: proj.link ?? ''
+  //   };
+  //   this.showProjectForm = true;
+  // }
+
+    openEditProject(project: Project): void {
+
     this.selectedProject = {
-      id: (proj as any).id, // add an `id` field to TimelineItem if you don't have one yet
-      title: proj.title,
-      role: '',
-      startMonth: '',
-      startYear: '',
-      endMonth: '',
-      endYear: '',
-      ongoing: false,
-      description: proj.description ?? '',
-      projectUrl: proj.link ?? ''
+      ...project
     };
+
     this.showProjectForm = true;
+
   }
 
   // 6) Handle the form's (save) event — converts the ProjectEntry back
   //    into your TimelineItem shape and pushes/updates the projects array.
-  onProjectSaved(entry: ProjectEntry): void {
-    const existingIndex = this.projects.findIndex((p: any) => p.id === entry.id);
+  // onProjectSaved(entry: ProjectEntry): void {
+  //   const existingIndex = this.projects.findIndex((p: any) => p.id === entry.id);
 
-    const updated: TimelineItem = {
-      icon: '📁',
-      title: entry.title,
-      subtitle: '',
-      description: entry.description,
-      link: entry.projectUrl || undefined
-    };
+  //   const updated: TimelineItem = {
+  //     icon: '📁',
+  //     title: entry.title,
+  //     subtitle: '',
+  //     description: entry.description,
+  //     link: entry.projectUrl || undefined
+  //   };
 
-    if (existingIndex > -1) {
-      this.projects[existingIndex] = { ...this.projects[existingIndex], ...updated };
-    } else {
-      this.projects.unshift({ ...updated, id: Date.now() } as TimelineItem); // simple unique id
-    }
+  //   if (existingIndex > -1) {
+  //     this.projects[existingIndex] = { ...this.projects[existingIndex], ...updated };
+  //   } else {
+  //     this.projects.unshift({ ...updated, id: Date.now() } as TimelineItem); // simple unique id
+  //   }
 
-    this.showProjectForm = false;
-    this.showToast(existingIndex > -1 ? 'Project updated' : 'Project added');
+  //   this.showProjectForm = false;
+  //   this.showToast(existingIndex > -1 ? 'Project updated' : 'Project added');
+  // }
+
+  onProjectSaved(entry: Project): void {
+
+  if (!this.candidate) {
+    return;
   }
 
-  removeProject(applicationId: number): void {
+  if (!entry.candidateId) {
+
+    entry.candidateId = this.candidate.candidateId;
+
+    this.authService
+      .addProject( entry)
+      .subscribe({
+
+        next: (res) => {
+
+          console.log('Project added:', res);
+
+          // this.authService.setCandidate(updatedCandidate);
+          this.refreshCandidate();
+
+          this.showProjectForm = false;
+
+          this.alertService.success(
+            'Project added successfully.'
+          );
+
+        },
+
+        error: (err) => {
+
+          console.error('Error adding Project:', err);
+
+          this.alertService.error(
+            err?.error?.message ||
+            'Failed to add Project.'
+          );
+
+        }
+
+      });
+
+    return;
+  }
+
+
+  // ==============================
+  // UPDATE EXPERIENCE
+  // ==============================
+
+  this.authService
+    .updateProject(entry)
+    .subscribe({
+
+      next: (response) => {
+
+        console.log('Project updated:', response);
+
+        // this.authService.setCandidate(response);
+
+        this.refreshCandidate();
+
+        this.showExpForm = false;
+
+        this.alertService.success(
+          'Project updated successfully.'
+        );
+
+      },
+
+      error: (err) => {
+
+        console.error('Error updating Project:', err);
+
+        this.alertService.error(
+          err?.error?.message ||
+          'Failed to update Project.'
+        );
+
+      }
+
+    });
+
+}
+
+  removeProject(projectId: number): void {
 
     this.confirmDialogService.confirm({
 
@@ -1085,42 +1399,44 @@ onResumeChange(event: any): void {
         return;
       }
 
-      // this.authService.withdrawJobApplication(applicationId).subscribe({
+      this.authService.deleteProject(projectId).subscribe({
 
-      //   next: (response) => {
+        next: (response) => {
 
-      //     this.alertService.success(
-      //       'Application withdrawn successfully.'
-      //     );
+          this.refreshCandidate();
 
-      //     // Remove the withdrawn application from the list
-      //     this.appliedJobs = this.appliedJobs.filter(
-      //       job => job.applyid !== applicationId
-      //     );
+          this.alertService.success(
+            'Project Deleted successfully.'
+          );
 
-      //     console.log(response);
+          // Remove the withdrawn application from the list
+          // this.appliedJobs = this.appliedJobs.filter(
+          //   job => job.applyid !== applicationId
+          // );
 
-      //   },
+          console.log(response);
 
-      //   error: (err) => {
+        },
 
-      //     console.error(err);
+        error: (err) => {
 
-      //     if (err.error) {
+          console.error(err);
 
-      //       this.alertService.error(err.error);
+          if (err.error) {
 
-      //     } else {
+            this.alertService.error(err.error);
 
-      //       this.alertService.error(
-      //         'Failed to withdraw application.'
-      //       );
+          } else {
 
-      //     }
+            this.alertService.error(
+              'Failed to withdraw application.'
+            );
 
-      //   }
+          }
 
-      // });
+        }
+
+      });
 
     });
 

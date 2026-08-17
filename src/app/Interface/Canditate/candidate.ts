@@ -1,14 +1,3 @@
-// export interface Candidate {
-
-//   first_name: string;
-//   last_name:string;
-//   mobNo:string;
-//   email:string;
-//   education:string;
-//   resumeId: number;
-//   skills:string;  
-// }
-
 export interface Candidate {
   candidateId: number;
   firstName: string;
@@ -21,6 +10,7 @@ export interface Candidate {
   experiences: Experience[];
   certifications: Certification[];
   languages: language[];
+  projects:Project[];
   skills: Skill[];
 
   resumeId: number | null;
@@ -30,22 +20,37 @@ export interface Candidate {
   createdDate: string;
 }
 
+// export interface Education {
+//   educationId: number;
+
+//   instituteName: string;
+//   degree: string;
+//   fieldOfStudy: string;
+
+//   startDate: string;
+//   endDate: string | null;
+
+//   grade?: string;
+//   description?: string;
+
+//   candidateId: number;
+// }
+
 export interface Education {
-  educationId: number;
-
-  instituteName: string;
+  educationId?: number;
   degree: string;
-  fieldOfStudy: string;
-
-  startDate: string;
-  endDate: string | null;
-
-  grade?: string;
-  description?: string;
-
-  candidateId: number;
+  college: string;
+  FieldOfStudy:string;
+  smonth: string;
+  syear: number;
+  emonth: string | null;
+  eyear: number | null;
+  isCurrentlystudying: boolean;
+  // startYear: string;
+  // endYear: string;
+  percentage: number;
+  candidateId?: number;
 }
-
 
 export interface Experience {
   candExpId?: number;
@@ -66,6 +71,8 @@ export interface Experience {
   isCurrentCompanny: boolean;
   aboutJobProfile: string;
 }
+
+
 // export interface Experience {
 //   experienceId: number;
 
@@ -85,19 +92,49 @@ export interface Experience {
 // }
 
 export interface Certification {
-  certificationId: number;
-
-  certificationName: string;
-  issuingOrganization: string;
-
-  issueDate: string;
-  expiryDate?: string | null;
-
-  credentialId?: string;
-  credentialUrl?: string;
-
-  candidateId: number;
+  certificationId?: number;
+  certificateName: string;
+  issueingOrganization: string;
+  smonth: string;
+  syear: number;
+  emonth: string | null;
+  eyear: number | null;
+  certiid?: number;
+  certiurl?: string;
+  candidateId?: number;
 }
+
+export interface Project {
+  projectId?: number;
+  ProjectTitle: string;
+  role: string;
+  FieldOfStudy: string;
+  smonth: string;
+  syear: number;
+  emonth: string | null;
+  eyear: number | null;
+  isOngoing: boolean;
+  discription: string;
+  casestudyurl: string;
+  candidateId?: number;
+}
+
+// export interface Certification {
+//   certificationId: number;
+
+//   certificationName: string;
+//   issuingOrganization: string;
+
+//   issueDate: string;
+//   expiryDate?: string | null;
+
+//   credentialId?: string;
+//   credentialUrl?: string;
+
+//   candidateId: number;
+// }
+
+
 
 export interface language {
   langId?: number;
@@ -105,6 +142,21 @@ export interface language {
   proficiency: string;
   candidateId: number;
 }
+
+// export enum Months {
+//   JANUARY = 'JANUARY',
+//   FEBRUARY = 'FEBRUARY',
+//   MARCH = 'MARCH',
+//   APRIL = 'APRIL',
+//   MAY = 'MAY',
+//   JUNE = 'JUNE',
+//   JULY = 'JULY',
+//   AUGUST = 'AUGUST',
+//   SEPTEMBER = 'SEPTEMBER',
+//   OCTOBER = 'OCTOBER',
+//   NOVEMBER = 'NOVEMBER',
+//   DECEMBER = 'DECEMBER'
+// }
 
 
 export interface Skill {

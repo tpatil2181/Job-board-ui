@@ -120,16 +120,16 @@
           <h2><span class="ico">🎓</span> Education</h2>
           <button class="icon-btn" (click)="openAddEducation()">+ Add</button>
         </div>
-        <div class="item" *ngFor="let edu of education">
-          <div class="item-icon">{{ edu.icon }}</div>
+        <div class="item" *ngFor="let edu of candidate?.educations">
+          <div class="item-icon">{{ edu.educationId }}</div>
           <div class="item-body">
-            <div class="item-title">{{ edu.title }}</div>
-            <div class="item-sub">{{ edu.subtitle }}</div>
+            <div class="item-title">{{ edu.degree }}</div>
+            <div class="item-sub">{{ edu.college }}</div>
           </div>
           <div class="item-controls">
             <button class="ctrl-btn" (click)="openEditEducation(edu)">✏️</button>
             <!-- <button class="ctrl-btn danger" (click)="removeItem(education, edu, 'Education')">🗑️</button> -->
-            <button class="ctrl-btn danger" (click)="removeEducation(1)">🗑️</button>
+            <button class="ctrl-btn danger" (click)="removeEducation(edu.educationId||0)">🗑️</button>
           </div>
         </div>
       </div>
@@ -165,12 +165,12 @@
           <h2><span class="ico">📁</span> Projects</h2>
           <button class="icon-btn" (click)="openAddProject()">+ Add</button>
         </div>
-        <div class="item" *ngFor="let proj of projects">
-          <div class="item-icon">{{ proj.icon }}</div>
+        <div class="item" *ngFor="let proj of candidate?.projects">
+          <div class="item-icon">{{ proj.projectId }}</div>
           <div class="item-body">
-            <div class="item-title">{{ proj.title }}</div>
-            <div class="item-desc" *ngIf="proj.description">{{ proj.description }}</div>
-            <a class="item-link" *ngIf="proj.link" [href]="proj.link">View case study →</a>
+            <div class="item-title">{{ proj.ProjectTitle }}</div>
+            <div class="item-desc" *ngIf="proj.discription">{{ proj.discription }}</div>
+            <a class="item-link" *ngIf="proj.casestudyurl" [href]="proj.casestudyurl">View case study →</a>
           </div>
           <div class="item-controls">
             <button class="ctrl-btn" (click)="openEditProject(proj)">✏️</button>
@@ -210,16 +210,16 @@
           <h2><span class="ico">🏅</span> Certifications</h2>
           <button class="icon-btn" (click)="openAddCertification()">+ Add</button>
         </div>
-        <div class="item" *ngFor="let cert of certifications">
-          <div class="item-icon">{{ cert.icon }}</div>
+        <div class="item" *ngFor="let cert of candidate?.certifications">
+          <div class="item-icon">{{ cert.candidateId }}</div>
           <div class="item-body">
-            <div class="item-title">{{ cert.title }}</div>
-            <div class="item-sub">{{ cert.subtitle }}</div>
+            <div class="item-title">{{ cert.certificateName }}</div>
+            <div class="item-sub">{{ cert.issueingOrganization }}</div>
           </div>
           <div class="item-controls">
             <button class="ctrl-btn" (click)="openEditCertification(cert)">✏️</button>
             <!-- <button class="ctrl-btn danger" (click)="removeItem(certifications, cert, 'Certification')">🗑️</button> -->
-            <button class="ctrl-btn danger" (click)="removeCertification(1)">🗑️</button>
+            <button class="ctrl-btn danger" (click)="removeCertification(cert.certificationId||0)">🗑️</button>
           </div>
         </div>
       </div>

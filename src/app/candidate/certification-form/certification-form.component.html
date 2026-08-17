@@ -10,25 +10,27 @@
 
       <div class="form-group">
         <label>Certification Name <span class="req">*</span></label>
-        <input type="text" name="name" [(ngModel)]="form.name" required
+        <input type="text" name="name" [(ngModel)]="form.certificateName" required
                placeholder="Ex: Certified UX Design Professional">
       </div>
 
       <div class="form-group">
         <label>Issuing Organization <span class="req">*</span></label>
-        <input type="text" name="issuingOrg" [(ngModel)]="form.issuingOrg" required
+        <input type="text" name="issuingOrg" [(ngModel)]="form.issueingOrganization" required
                placeholder="Ex: Google, via Coursera">
       </div>
+
+      <!-- issuingOrg -->
 
       <div class="form-row">
         <div class="form-group half">
           <label>Issue Date</label>
           <div class="inline-selects">
-            <select name="issueMonth" [(ngModel)]="form.issueMonth">
+            <select name="issueMonth" [(ngModel)]="form.smonth">
               <option value="" disabled selected>Month</option>
               <option *ngFor="let m of months" [value]="m">{{ m }}</option>
             </select>
-            <select name="issueYear" [(ngModel)]="form.issueYear">
+            <select name="issueYear" [(ngModel)]="form.syear">
               <option value="" disabled selected>Year</option>
               <option *ngFor="let y of years" [value]="y">{{ y }}</option>
             </select>
@@ -37,11 +39,13 @@
         <div class="form-group half">
           <label>Expiry Date</label>
           <div class="inline-selects">
-            <select name="expiryMonth" [(ngModel)]="form.expiryMonth" [disabled]="!form.hasExpiry">
+            <!-- <select name="expiryMonth" [(ngModel)]="form.expiryMonth" [disabled]="!form.hasExpiry"> -->
+            <select name="expiryMonth" [(ngModel)]="form.emonth" >
               <option value="" disabled selected>Month</option>
               <option *ngFor="let m of months" [value]="m">{{ m }}</option>
             </select>
-            <select name="expiryYear" [(ngModel)]="form.expiryYear" [disabled]="!form.hasExpiry">
+            <!-- <select name="expiryYear" [(ngModel)]="form.expiryYear" [disabled]="!form.hasExpiry"> -->
+            <select name="expiryYear" [(ngModel)]="form.eyear" >
               <option value="" disabled selected>Year</option>
               <option *ngFor="let y of years" [value]="y">{{ y }}</option>
             </select>
@@ -49,20 +53,20 @@
         </div>
       </div>
 
-      <div class="checkbox-row">
+      <!-- <div class="checkbox-row">
         <input type="checkbox" id="hasExpiry" name="hasExpiry" [(ngModel)]="form.hasExpiry">
         <label for="hasExpiry">This credential expires</label>
-      </div>
+      </div> -->
 
       <div class="form-group">
         <label>Credential ID</label>
-        <input type="text" name="credentialId" [(ngModel)]="form.credentialId"
+        <input type="text" name="credentialId" [(ngModel)]="form.certiid"
                placeholder="Ex: ABC-123456">
       </div>
 
       <div class="form-group">
         <label>Credential URL</label>
-        <input type="url" name="credentialUrl" [(ngModel)]="form.credentialUrl"
+        <input type="url" name="credentialUrl" [(ngModel)]="form.certiurl"
                placeholder="https://...">
       </div>
 

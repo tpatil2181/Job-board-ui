@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CandidateLogin, CandidateRegistration, Job } from '../Interface/models';
 import { CandidateChangePassword } from '../Interface/Canditate/candidate-chagepass';
-import { AppliedJob, Candidate, Education, Experience, JobApplication, language } from '../Interface/Canditate/candidate';
+import { AppliedJob, Candidate, Certification, Education, Experience, JobApplication, language, Project } from '../Interface/Canditate/candidate';
 import { PostedJob, PostJob } from '../Interface/employerModel';
 import { HttpParams } from '@angular/common/http';
 import { registerEmployer } from '../Interface/employerModel';
@@ -394,17 +394,17 @@ export class AuthService {
 
   //------------------Education Service------------------
 
-  // addEducation(education: Education): Observable<any> {
-  //   return this.http.post(`${this.candidateUrl}/addEducation`, education);
-  // }
+  addEducation(education: Education): Observable<any> {
+    return this.http.post(`${this.candidateUrl}/edu`, education);
+  }
 
-  // updateEducation(education: Education): Observable<any> {
-  //   return this.http.put(`${this.candidateUrl}/updateEducation`, education);
-  // }
+  updateEducation(education: Education): Observable<any> {
+    return this.http.post(`${this.candidateUrl}/updateEdu`, education);
+  }
 
-  // deleteEducation(educationId: number): Observable<any> {
-  //   return this.http.delete(`${this.candidateUrl}/deleteEducation/${educationId}`);
-  // }
+  deleteEducation(educationId: number): Observable<any> {
+    return this.http.delete(`${this.candidateUrl}/edu/${educationId}`);
+  }
 
   // getEducation(): Observable<Education[]> {
   //   return this.http.get<Education[]>(`${this.candidateUrl}/getEducation`);
@@ -416,17 +416,17 @@ export class AuthService {
 
   //------------------Projects Service------------------
 
-  // addProject(project: any): Observable<any> {
-  //   return this.http.post(`${this.candidateUrl}/addProject`, project);
-  // }
+  addProject(project: Project): Observable<any> {
+    return this.http.post(`${this.candidateUrl}/proj`, project);
+  }
   
-  // updateProject(project: any): Observable<any> {
-  //   return this.http.put(`${this.candidateUrl}/updateProject`, project);
-  // }
+  updateProject(project: Project): Observable<any> {
+    return this.http.put(`${this.candidateUrl}/updateProject`, project);
+  }
 
-  // deleteProject(projectId: number): Observable<any> {
-  //   return this.http.delete(`${this.candidateUrl}/deleteProject/${projectId}`);
-  // }
+  deleteProject(projectId: number): Observable<any> {
+    return this.http.delete(`${this.candidateUrl}/deleteProject/${projectId}`);
+  }
 
   // getProjects(): Observable<any[]> {
   //   return this.http.get<any[]>(`${this.candidateUrl}/getProjects`);
@@ -439,17 +439,17 @@ export class AuthService {
 
   //------------------Certificates  Service------------------
 
-  // addCertificate(cert: any): Observable<any> {
-  //   return this.http.post(`${this.candidateUrl}/addCertificate`, cert);
-  // }
+  addCertificate(cert: Certification): Observable<any> {
+    return this.http.post(`${this.candidateUrl}/certification`, cert);
+  }
 
-  // updateCertificate(cert: any): Observable<any> {
-  //   return this.http.put(`${this.candidateUrl}/updateCertificate`, cert);
-  // }
+  updateCertificate(cert: Certification): Observable<any> {
+    return this.http.post(`${this.candidateUrl}/updateCertificate`, cert);
+  }
 
-  // deleteCertificate(certId: number): Observable<any> {
-  //   return this.http.delete(`${this.candidateUrl}/deleteCertificate/${certId}`);
-  // }
+  deleteCertificate(certId: number): Observable<any> {
+    return this.http.delete(`${this.candidateUrl}/certification/${certId}`);
+  }
 
   // getCertificates(): Observable<any[]> {
   //   return this.http.get<any[]>(`${this.candidateUrl}/getCertificates`);
