@@ -152,11 +152,11 @@ export class ProjectFormComponent implements OnChanges {
 
       projectId: undefined,
 
-      ProjectTitle: '',
+      projectTitle: '',
 
       role: '',
 
-      FieldOfStudy: '',
+      // FieldOfStudy: '',
 
       smonth: '',
 

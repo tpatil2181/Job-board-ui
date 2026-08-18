@@ -17,21 +17,21 @@ import { JobSearchDTO } from '../Interface/Application/job_search';
 })
 export class AuthService {
 
-  // private baseUrl = 'http://localhost:8080';
+  private baseUrl = 'http://localhost:8080';
 
-  // private candidateUrl = 'http://localhost:8080/Hireflow/candidate'
+  private candidateUrl = 'http://localhost:8080/Hireflow/candidate'
 
-  // private employerUrl = 'http://localhost:8080/Hireflow/employer'
+  private employerUrl = 'http://localhost:8080/Hireflow/employer'
 
   // codespace url
-  private baseUrl = 'https://curly-happiness-69gvp65gq79wcr55-8080.app.github.dev';
+  // private baseUrl = 'https://curly-happiness-69gvp65gq79wcr55-8080.app.github.dev';
 
-  private candidateUrl = `${this.baseUrl}/Hireflow/candidate`;
+  // private candidateUrl = `${this.baseUrl}/Hireflow/candidate`;
 
-  private employerUrl = `${this.baseUrl}/Hireflow/employer`;
+  // private employerUrl = `${this.baseUrl}/Hireflow/employer`;
 
 
-  private employerNoAuthUrl ='http://localhost:8080/employer'
+  // private employerNoAuthUrl ='http://localhost:8080/employer'
 
 
 
@@ -421,7 +421,7 @@ export class AuthService {
   }
   
   updateProject(project: Project): Observable<any> {
-    return this.http.put(`${this.candidateUrl}/updateProject`, project);
+    return this.http.post(`${this.candidateUrl}/updateProj`, project);
   }
 
   deleteProject(projectId: number): Observable<any> {

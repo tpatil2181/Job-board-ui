@@ -106,9 +106,9 @@ export interface Certification {
 
 export interface Project {
   projectId?: number;
-  ProjectTitle: string;
+  projectTitle: string;
   role: string;
-  FieldOfStudy: string;
+  // FieldOfStudy: string;
   smonth: string;
   syear: number;
   emonth: string | null;

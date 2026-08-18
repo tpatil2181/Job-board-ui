@@ -10,14 +10,12 @@
 
       <div class="form-group">
         <label>Job Title <span class="req">*</span></label>
-        <input type="text" name="title" [(ngModel)]="form.jobTitle" required
-               placeholder="Ex: Senior Product Designer">
+        <input type="text" name="title" [(ngModel)]="form.jobTitle" required placeholder="Ex: Senior Product Designer">
       </div>
 
       <div class="form-group">
         <label>Company <span class="req">*</span></label>
-        <input type="text" name="company" [(ngModel)]="form.companyName" required
-               placeholder="Ex: Zeta Finance">
+        <input type="text" name="company" [(ngModel)]="form.companyName" required placeholder="Ex: Zeta Finance">
       </div>
 
       <div class="form-row">
@@ -52,64 +50,51 @@
           <label>End Date</label>
           <div class="inline-selects">
             <!-- <select name="endMonth" [(ngModel)]="form.emonth" [disabled]="form.currentlyWorking"> -->
-              <!-- <select name="endMonth" [(ngModel)]="form.emonth" [disabled]="form.isCurrentCompanny">
+            <!-- <select name="endMonth" [(ngModel)]="form.emonth" [disabled]="form.isCurrentCompanny">
               <option value="" disabled selected>Month</option>
               <option *ngFor="let m of months" [value]="m">{{ m }}</option> -->
             <!-- </select> -->
-     <select
-  name="endMonth"
-  [(ngModel)]="form.emonth"
-  [disabled]="form.isCurrentCompanny">
+            <select name="endMonth" [(ngModel)]="form.emonth" [disabled]="form.isCurrentCompanny">
 
-  <option [ngValue]="null">Month</option>
+              <option [ngValue]="null">Month</option>
 
-  <option
-    *ngFor="let m of months"
-    [ngValue]="m">
+              <option *ngFor="let m of months" [ngValue]="m">
 
-    {{ m }}
+                {{ m }}
 
-  </option>
+              </option>
 
-</select>
+            </select>
             <!-- <select name="endYear" [(ngModel)]="form.eyear" [disabled]="form.isCurrentCompanny">
               <option value="" disabled selected>Year</option>
               <option *ngFor="let y of years" [value]="y">{{ y }}</option>
             </select> -->
-   <select
-  name="endYear"
-  [(ngModel)]="form.eyear"
-  [disabled]="form.isCurrentCompanny">
+            <select name="endYear" [(ngModel)]="form.eyear" [disabled]="form.isCurrentCompanny">
 
-  <option [ngValue]="null">Year</option>
+              <option [ngValue]="null">Year</option>
 
-  <option
-    *ngFor="let year of years"
-    [ngValue]="year">
+              <option *ngFor="let year of years" [ngValue]="year">
 
-    {{ year }}
+                {{ year }}
 
-  </option>
+              </option>
 
-</select>
+            </select>
           </div>
         </div>
       </div>
 
       <div class="checkbox-row">
-       <input
-  type="checkbox"
-  [(ngModel)]="form.isCurrentCompanny"
-  name="isCurrentCompanny"
-  (change)="onCurrentCompanyChange()">
+        <input type="checkbox" [(ngModel)]="form.isCurrentCompanny" name="isCurrentCompanny"
+          (change)="onCurrentCompanyChange()">
         <label for="currentlyWorking">I currently work here</label>
       </div>
 
-      
+
       <div class="form-group">
         <label>Description</label>
         <textarea name="description" rows="3" [(ngModel)]="form.aboutJobProfile"
-                  placeholder="Describe your key responsibilities and achievements"></textarea>
+          placeholder="Describe your key responsibilities and achievements"></textarea>
       </div>
 
       <div class="form-actions">

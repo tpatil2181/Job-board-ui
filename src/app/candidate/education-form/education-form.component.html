@@ -54,13 +54,35 @@
         <div class="form-group half">
           <label>End Date (or expected)</label>
           <div class="inline-selects">
-            <select name="endMonth" [(ngModel)]="form.emonth" [disabled]="form.isCurrentlystudying">
+            <!-- <select name="endMonth" [(ngModel)]="form.emonth" [disabled]="form.isCurrentlystudying">
               <option value="" disabled selected>Month</option>
               <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+            </select> -->
+            <select name="endMonth" [(ngModel)]="form.emonth" [disabled]="form.isCurrentlystudying">
+
+              <option [ngValue]="null">Month</option>
+
+              <option *ngFor="let m of months" [ngValue]="m">
+
+                {{ m }}
+
+              </option>
+
             </select>
-            <select name="endYear" [(ngModel)]="form.eyear" [disabled]="form.isCurrentlystudying">
+            <!-- <select name="endYear" [(ngModel)]="form.eyear" [disabled]="form.isCurrentlystudying">
               <option value="" disabled selected>Year</option>
               <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+            </select> -->
+             <select name="endYear" [(ngModel)]="form.eyear" [disabled]="form.isCurrentlystudying">
+
+              <option [ngValue]="null">Year</option>
+
+              <option *ngFor="let year of years" [ngValue]="year">
+
+                {{ year }}
+
+              </option>
+
             </select>
           </div>
         </div>

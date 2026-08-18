@@ -19,10 +19,10 @@
       <div class="avatar">{{candidate?.firstName?.charAt(0)||''}}{{candidate?.lastName?.charAt(0)||''}}</div>
       <div class="avatar-edit" (click)="uploadPhoto()">📷</div>
     </div>
- 
+
     <div class="profile-info">
       <h1 [attr.contenteditable]="isEditingProfile" (input)="onNameInput($event)" [class.editing]="isEditingProfile">{{
-         candidate?.firstName }} {{candidate?.lastName}}</h1>
+        candidate?.firstName }} {{candidate?.lastName}}</h1>
       <!-- [class.editing]="isEditingProfile">{{ candidate.first_name }} {{ candidate.last_name }}</h1> -->
 
       <div class="role" [attr.contenteditable]="isEditingProfile" (input)="onRoleInput($event)"
@@ -112,7 +112,7 @@
       <app-experience-form [visible]="showExpForm" [editData]="selectedExperience" (save)="onExperienceSaved($event)"
         (close)="showExpForm = false">
       </app-experience-form>
-      
+
 
       <!-- Education -->
       <div class="card">
@@ -168,7 +168,7 @@
         <div class="item" *ngFor="let proj of candidate?.projects">
           <div class="item-icon">📁</div>
           <div class="item-body">
-            <div class="item-title">{{ proj.ProjectTitle }}</div>
+            <div class="item-title">{{ proj.projectTitle }}</div>
             <div class="item-desc" *ngIf="proj.discription">{{ proj.discription }}</div>
             <a class="item-link" *ngIf="proj.casestudyurl" [href]="proj.casestudyurl">View case study →</a>
           </div>
@@ -232,6 +232,25 @@
 
     <!-- SIDE COLUMN -->
     <div>
+    <!-- Contact -->
+       <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">📄</span> Contact</h2>
+        </div>
+        <div class="resume-row">
+          <div class="resume-file">
+            <div class="resume-icon">📄</div>
+            <div>
+              <!-- <div class="resume-name">{{ resumeFileName }}</div> -->
+              <div class="resume-name">{{ candidate?.firstName + ' ' + candidate?.lastName}} Resume</div>
+              <div class="resume-updated">{{ resumeUpdatedLabel }}</div>
+            </div>
+          </div>
+        </div>
+        <!-- <input type="file" #resumeInput hidden accept=".pdf" (change)="updateResume()">
+        <button class="btn-primary full-width" (click)="resumeInput.click()"> Update Resume</button> -->
+
+      </div>
 
       <!-- Resume -->
       <div class="card">
@@ -250,20 +269,12 @@
         </div>
         <!-- <input type="file" #resumeInput hidden accept=".pdf" (change)="updateResume()">
         <button class="btn-primary full-width" (click)="resumeInput.click()"> Update Resume</button> -->
-        <input
-  type="file"
-  #resumeInput
-  hidden
-  accept=".pdf,.doc,.docx"
-  (change)="onResumeChange($event)">
+        <input type="file" #resumeInput hidden accept=".pdf,.doc,.docx" (change)="onResumeChange($event)">
 
-<button
-  type="button"
-  class="btn-primary full-width"
-  (click)="resumeInput.click()">
-  Update Resume
-</button>
-        
+        <button type="button" class="btn-primary full-width" (click)="resumeInput.click()">
+          Update Resume
+        </button>
+
 
       </div>
 
@@ -282,30 +293,27 @@
       </div>
 
       <!-- Languages -->
-     <div class="card">
-  <div class="card-head">
-    <h2><span class="ico">🌐</span> Languages</h2>
-    <button class="icon-btn" (click)="openAddLanguage()">+ Add</button>
-  </div>
-  <div class="lang-list">
-    <div class="lang-item" *ngFor="let lang of  candidate?.languages">
-      <b>{{ lang.language }}</b>
-      <span class="lang-level">{{ lang.proficiency }}</span>
-      <div class="item-controls">
-        <button class="ctrl-btn" (click)="openEditLanguage(lang)">✏️</button>
-        <button class="ctrl-btn danger" (click)="removeLanguage(lang)">🗑️</button>
+      <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">🌐</span> Languages</h2>
+          <button class="icon-btn" (click)="openAddLanguage()">+ Add</button>
+        </div>
+        <div class="lang-list">
+          <div class="lang-item" *ngFor="let lang of  candidate?.languages">
+            <b>{{ lang.language }}</b>
+            <span class="lang-level">{{ lang.proficiency }}</span>
+            <div class="item-controls">
+              <button class="ctrl-btn" (click)="openEditLanguage(lang)">✏️</button>
+              <button class="ctrl-btn danger" (click)="removeLanguage(lang)">🗑️</button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
 
-<!-- Language Add/Edit modal -->
-<app-language-form
-  [visible]="showLangForm"
-  [editData]="selectedLanguage"
-  (save)="onLanguageSavedBackend($event)"
-  (close)="showLangForm = false">
-</app-language-form>
+      <!-- Language Add/Edit modal -->
+      <app-language-form [visible]="showLangForm" [editData]="selectedLanguage" (save)="onLanguageSavedBackend($event)"
+        (close)="showLangForm = false">
+      </app-language-form>
     </div>
 
   </div>
