@@ -425,7 +425,7 @@ export class AuthService {
   }
 
   deleteProject(projectId: number): Observable<any> {
-    return this.http.delete(`${this.candidateUrl}/deleteProject/${projectId}`);
+    return this.http.delete(`${this.candidateUrl}/delpro/${projectId}`);
   }
 
   // getProjects(): Observable<any[]> {

@@ -175,7 +175,7 @@
           <div class="item-controls">
             <button class="ctrl-btn" (click)="openEditProject(proj)">✏️</button>
             <!-- <button class="ctrl-btn danger" (click)="removeItem(projects, proj, 'Project')">🗑️</button> -->
-            <button class="ctrl-btn danger" (click)="removeProject(1)">🗑️</button>
+            <button class="ctrl-btn danger" (click)="removeProject(proj.projectId||0)">🗑️</button>
           </div>
         </div>
       </div>

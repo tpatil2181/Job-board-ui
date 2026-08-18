@@ -1356,7 +1356,7 @@ onCertificationSaved(entry: Certification): void {
 
         this.refreshCandidate();
 
-        this.showExpForm = false;
+        this.showProjectForm = false;
 
         this.alertService.success(
           'Project updated successfully.'
