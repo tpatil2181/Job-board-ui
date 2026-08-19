@@ -33,6 +33,12 @@ export interface SkillTag {
   variant: 'blue' | 'gray';
 }
 
+// export interface Skill {
+//   id: number;
+//   label: string;
+//   variant?: 'blue' | 'gray';
+// }
+
 // export interface LanguageItem {
 //   name: string;
 //   level: string;
@@ -167,6 +173,12 @@ ngOnInit(): void {
 
   // ---- skills ----
   skills: SkillTag[] = [
+    { label: 'UI Design', variant: 'blue' },
+    { label: 'Figma', variant: 'blue' },
+    { label: 'Design Systems', variant: 'blue' },
+    { label: 'User Research', variant: 'gray' },
+    { label: 'Prototyping', variant: 'gray' },
+    { label: 'HTML/CSS', variant: 'gray' },
     { label: 'UI Design', variant: 'blue' },
     { label: 'Figma', variant: 'blue' },
     { label: 'Design Systems', variant: 'blue' },
@@ -1593,6 +1605,97 @@ removeLanguage(lang: language): void {
   // }
 
 
+//======================Skils Section
 
+// getSkills(candidateId: number): Observable<Skill[]> {
+//     return this.http.get<Skill[]>(`${this.baseUrl}/${candidateId}/skills`);
+//   }
+ 
+//   /** POST /api/candidates/:candidateId/skills  { label: string } */
+//   addSkill(candidateId: number, label: string): Observable<Skill> {
+//     return this.http.post<Skill>(`${this.baseUrl}/${candidateId}/skills`, { label });
+//   }
+ 
+//   /** DELETE /api/candidates/:candidateId/skills/:skillId */
+//   removeSkill(candidateId: number, skillId: number): Observable<void> {
+//     return this.http.delete<void>(`${this.baseUrl}/${candidateId}/skills/${skillId}`);
+//   }
+
+// skills: Skill[] = [];
+  skillInput = '';
+  isAddingSkill = false;
+ 
+  // TODO: replace with the logged-in candidate's id from your auth/session service
+  // candidateId = 1;
+ 
+  // constructor(private skillService: SkillService) {}
+ 
+  // ngOnInit(): void {
+  //   this.loadSkills();
+  // }
+ 
+  // 5) Fetch the candidate's current skills on load
+  // loadSkills(): void {
+  //   this.skillService.getSkills(this.candidateId).subscribe({
+  //     next: (skills) => {
+  //       this.skills = skills;
+  //     },
+  //     error: () => {
+  //       this.showToast('Failed to load skills');
+  //     }
+  //   });
+  // }
+ 
+  // 6) Add a new skill — called on button click or pressing Enter in the input
+  // addSkill(): void {
+  //   const label = this.skillInput.trim();
+  //   if (!label || this.isAddingSkill) {
+  //     return;
+  //   }
+ 
+    // avoid duplicate skill labels client-side before hitting the API
+    // const alreadyExists = this.skills.some(
+    //   s => s.label.toLowerCase() === label.toLowerCase()
+    // );
+    // if (alreadyExists) {
+    //   this.showToast('This skill is already added');
+    //   this.skillInput = '';
+    //   return;
+    // }
+ 
+  //   this.isAddingSkill = true;
+ 
+  //   this.skillService.addSkill(this.candidateId, label).subscribe({
+  //     next: (newSkill) => {
+  //       this.skills.push(newSkill);
+  //       this.skillInput = '';
+  //       this.isAddingSkill = false;
+  //       this.showToast('Skill added');
+  //     },
+  //     error: () => {
+  //       this.isAddingSkill = false;
+  //       this.showToast('Failed to add skill');
+  //     }
+  //   });
+  // }
+ 
+  // // 7) Remove a skill — called when the ✕ on a chip is clicked
+  // removeSkill(skill: Skill): void {
+  //   const previousSkills = [...this.skills];
+ 
+  //   // optimistic UI update — remove immediately, roll back on error
+  //   this.skills = this.skills.filter(s => s.id !== skill.id);
+ 
+  //   this.skillService.removeSkill(this.candidateId, skill.id).subscribe({
+  //     next: () => {
+  //       this.showToast(`Removed "${skill.label}"`);
+  //     },
+  //     error: () => {
+  //       this.skills = previousSkills; // rollback
+  //       this.showToast('Failed to remove skill');
+  //     }
+  //   });
+  // }
+  
 
 }

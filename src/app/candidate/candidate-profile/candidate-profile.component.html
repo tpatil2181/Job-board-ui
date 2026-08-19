@@ -114,6 +114,54 @@
       </app-experience-form>
 
 
+      <!-- Skils-->
+      <!-- <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">📁</span> Skils</h2>
+          <button class="icon-btn" (click)="openAddProject()">+ Add</button>
+        </div>
+        <div class="item" *ngFor="let proj of candidate?.projects">
+          <div class="item-icon">📁</div>
+          <div class="item-body">
+            <div class="item-title">{{ proj.projectTitle }}</div>
+            <div class="item-desc" *ngIf="proj.discription">{{ proj.discription }}</div>
+            <a class="item-link" *ngIf="proj.casestudyurl" [href]="proj.casestudyurl">View case study →</a>
+          </div>
+          <div class="item-controls">
+            <button class="ctrl-btn" (click)="openEditProject(proj)">✏️</button>
+             <button class="ctrl-btn danger" (click)="removeItem(projects, proj, 'Project')">🗑️</button> 
+            <button class="ctrl-btn danger" (click)="removeProject(proj.projectId||0)">🗑️</button>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- Skills -->
+      <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">🛠️</span> Skills</h2>
+        </div>
+
+        <!-- Add skill input row -->
+        <div class="skill-input-row">
+          <input type="text" class="skill-input" placeholder="Type a skill and press Enter" [(ngModel)]="skillInput"
+            name="skillInput" (keyup.enter)="addSkill()">
+          <button class="btn-outline sm" (click)="addSkill()" [disabled]="!skillInput.trim() || isAddingSkill">
+            {{ isAddingSkill ? 'Adding...' : '+ Add' }}
+        </button> 
+        </div>
+
+        <!-- Skill chips -->
+        <div class="tags">
+          <span class="tag" [class.gray]="skill.variant === 'gray'" *ngFor="let skill of skills">
+            {{ skill.label }}
+            <span class="x" (click)="removeSkill(skill)">✕</span>
+          </span>
+
+          <span class="empty-hint" *ngIf="!skills.length">No skills added yet.</span>
+        </div>
+      </div>
+
+
       <!-- Education -->
       <div class="card">
         <div class="card-head">
@@ -232,8 +280,8 @@
 
     <!-- SIDE COLUMN -->
     <div>
-    <!-- Contact -->
-       <div class="card">
+      <!-- Contact -->
+      <div class="card">
         <div class="card-head">
           <h2><span class="ico">📄</span> Contact</h2>
         </div>
