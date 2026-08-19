@@ -1100,7 +1100,7 @@ onCertificationSaved(entry: Certification): void {
           // this.authService.setCandidate(updatedCandidate);
           this.refreshCandidate();
 
-          this.showExpForm = false;
+          this.showCertForm = false;
 
           this.alertService.success(
             'Certificate added successfully.'
@@ -1141,7 +1141,7 @@ onCertificationSaved(entry: Certification): void {
 
         this.refreshCandidate();
 
-        this.showExpForm = false;
+        this.showCertForm = false;
 
         this.alertService.success(
           'Certification updated successfully.'

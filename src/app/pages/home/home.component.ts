@@ -89,6 +89,9 @@ export class HomeComponent implements OnInit {
 
 
 //================ New Search Variables ===================
+
+    search:string='';
+
     jobTitle: string = '';
 
     jobLocation: string = '';
@@ -120,6 +123,8 @@ export class HomeComponent implements OnInit {
   console.log("Search button clicked");
 
   const filters: JobSearchDTO = {
+
+    search:this.search,
 
     jobTitle: this.jobTitle,
 
@@ -683,7 +688,8 @@ clearDatePosted() {
 
   fillSearch(tag: string) {
 
-    this.jobTitle = tag;
+    this.search=tag;
+    // this.jobTitle = tag;
     this.searchJobs();
 
   }

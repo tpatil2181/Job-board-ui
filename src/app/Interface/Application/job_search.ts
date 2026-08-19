@@ -4,6 +4,7 @@ export interface ExperienceFilterDTO {
 }
 
 export interface JobSearchDTO {
+  search?:string;
   jobTitle?: string;
   jobLocation?: string;
   employerName?: string;
