@@ -56,11 +56,12 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let job of appliedJobs; trackBy: trackByJob">
+        <tr *ngFor="let job of (appliedJobs ?? []).slice().reverse(); trackBy: trackByJob">
           <td>{{ job.JobTitle }}</td>
           <td>{{ job.Comapny }}</td>
-          <td>{{ job.WorkMode }}</td>
-          <td>{{ job.applyid }}</td>
+          <td>{{ job.WorkMode | enumFormat}}</td>
+          <td>{{ job.dateApplied |dateFormatePipe}}</td>
+          <td>{{ job.status | enumFormat}}</td>
           <td>
             <!-- <span class="status" [ngClass]="job.Status.toLowerCase()">{{ job.Status }}</span> -->
           </td>

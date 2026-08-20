@@ -6,11 +6,13 @@ import { AppliedJob } from '../../Interface/Canditate/candidate';
 import { SharedModule } from '../../pages/shared.module';
 import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 import { AlertService } from '../../services/alert.service.service';
+import { DateFormatePipePipe } from '../../shared/pipes/date-formate-pipe.pipe';
+import { EnumFormatPipe } from '../../shared/pipes/enum-format.pipe';
 
 @Component({
   selector: 'app-applied-jobs',
   standalone: true,
-  imports: [CommonModule, SharedModule],
+  imports: [CommonModule, SharedModule,DateFormatePipePipe,EnumFormatPipe],
   templateUrl: './applied-jobs.component.html',
   styleUrls: ['./applied-jobs.component.css']
 })

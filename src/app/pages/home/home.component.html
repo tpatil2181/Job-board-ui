@@ -364,7 +364,7 @@
             <div class="job-meta">
               <span>No.Openings: {{ job.noOfOpenings }} </span>
               <span>👥 100+ applicants</span>
-              <span>Freshness: {{ job.datePosted }}</span>
+              <span>Posted On: {{ job.datePosted | dateFormatePipe }}</span>
               <!-- <span>📍 {{ job.jobLocation }}</span> -->
               <!-- <span>🕐 {{ job.employmentType }}</span> -->
               <!-- <span>👥 {{ job.applicants }} applicants</span> -->
@@ -378,8 +378,8 @@
             </div>
           </div>
           <div class="job-right">
-            
-            <div class="job-salary">{{ job.minSalary }}-{{ job.maxSalary }} LPA</div>
+
+            <div class="job-salary">₹ {{ job.minSalary }}-{{ job.maxSalary }} LPA</div>
             <!-- <div class="job-posted">Posted {{ job.datePosted }}</div> -->
             <!-- <button class="job-save" [class.saved]="isSaved(job.jobId)" (click)="toggleSave(job.jobId, $event)">
               {{ isSaved(job.jobId) ? '★ Saved' : '☆ Save' }}
@@ -423,46 +423,50 @@
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="how-section" id="how">
-  <div class="container">
-    <h2>How It Works</h2>
-    <div class="how-grid">
-      <div class="how-card">
-        <div class="how-num">1</div>
-        <h3>Create Your Profile</h3>
-        <p>Sign up and build your professional profile with your skills, experience, and resume.</p>
-      </div>
-      <div class="how-card">
-        <div class="how-num">2</div>
-        <h3>Search &amp; Apply</h3>
-        <p>Browse thousands of jobs, filter by your preferences, and apply with one click.</p>
-      </div>
-      <div class="how-card">
-        <div class="how-num">3</div>
-        <h3>Get Hired</h3>
-        <p>Track your applications, receive interview calls, and land your next opportunity.</p>
+<div *ngIf="!isLoggedIn">
+  <section class="how-section" id="how">
+    <div class="container">
+      <h2>How It Works</h2>
+      <div class="how-grid">
+        <div class="how-card">
+          <div class="how-num">1</div>
+          <h3>Create Your Profile</h3>
+          <p>Sign up and build your professional profile with your skills, experience, and resume.</p>
+        </div>
+        <div class="how-card">
+          <div class="how-num">2</div>
+          <h3>Search &amp; Apply</h3>
+          <p>Browse thousands of jobs, filter by your preferences, and apply with one click.</p>
+        </div>
+        <div class="how-card">
+          <div class="how-num">3</div>
+          <h3>Get Hired</h3>
+          <p>Track your applications, receive interview calls, and land your next opportunity.</p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
 <!-- CTA -->
-<section class="cta-section">
-  <div class="container">
-    <div class="cta-grid">
-      <div class="cta-card">
-        <h3>Looking for a Job?</h3>
-        <p>Create a free profile and let top companies find you. Access thousands of openings today.</p>
-        <a href="#" class="btn-white">Create Free Account</a>
-      </div>
-      <div class="cta-card">
-        <h3>Hiring Talent?</h3>
-        <p>Post your job in minutes and reach thousands of qualified candidates across India.</p>
-        <a href="#" class="btn-white">Post a Job</a>
+<div *ngIf="!isLoggedIn">
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-grid">
+        <div class="cta-card">
+          <h3>Looking for a Job?</h3>
+          <p>Create a free profile and let top companies find you. Access thousands of openings today.</p>
+          <a href="#" class="btn-white">Create Free Account</a>
+        </div>
+        <div class="cta-card">
+          <h3>Hiring Talent?</h3>
+          <p>Post your job in minutes and reach thousands of qualified candidates across India.</p>
+          <a href="#" class="btn-white">Post a Job</a>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
 <!-- FOOTER -->
 <footer class="footer">

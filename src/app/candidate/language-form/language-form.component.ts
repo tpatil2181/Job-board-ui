@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { EnumFormatPipe } from '../../shared/pipes/enum-format.pipe';
 
 export interface LanguageEntry {
   langId?: number;
@@ -12,7 +13,7 @@ export interface LanguageEntry {
 @Component({
   selector: 'app-language-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,EnumFormatPipe],
   templateUrl: './language-form.component.html',
   styleUrls: ['./language-form.component.css']
 })

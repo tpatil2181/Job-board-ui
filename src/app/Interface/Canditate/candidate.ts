@@ -193,8 +193,7 @@ export interface AppliedJob {
   // candidateId: number;
   JobTitle: string;
   Comapny: string;
+  dateApplied:string;
   WorkMode: string;
-  Status: string;
-  // filePath: string;
-
+  status: string;
 }

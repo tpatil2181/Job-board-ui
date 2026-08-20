@@ -18,6 +18,7 @@ import { ProjectFormComponent } from '../project-form/project-form.component';
 import { LanguageEntry, LanguageFormComponent } from '../language-form/language-form.component';
 import {language} from "../../Interface/Canditate/candidate";
 import { Education, Experience, Certification, Skill } from '../../Interface/Canditate/candidate';
+import { EnumFormatPipe } from '../../shared/pipes/enum-format.pipe';
 
 
 export interface TimelineItem {
@@ -52,7 +53,7 @@ export interface SkillTag {
 @Component({
   selector: 'app-candidate-profile',
   standalone: true,
-  imports: [CommonModule, SharedModule, EducationFormComponent, ExperienceFormComponent, CertificationFormComponent, ProjectFormComponent, LanguageFormComponent, FormsModule],
+  imports: [CommonModule, SharedModule, EducationFormComponent, ExperienceFormComponent, CertificationFormComponent, ProjectFormComponent, LanguageFormComponent, FormsModule, EnumFormatPipe],
   templateUrl: './candidate-profile.component.html',
   styleUrls: ['./candidate-profile.component.css']
 })

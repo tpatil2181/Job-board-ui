@@ -8,6 +8,8 @@
   --page-bg: #f3f4f6;
 
   display: block;
+  min-height: 100vh;
+  background: var(--page-bg);
   font-family: 'Inter', sans-serif;
   color: var(--ink);
 }
@@ -24,9 +26,91 @@ h2 {
 
 .applied-container {
   padding: 28px 40px;
-  background: var(--page-bg);
   max-width: 1440px;
   margin: 0 auto;
+}
+
+/* 🔹 Filter bar */
+.filter-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(22, 48, 92, 0.04);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.filter-group select {
+  min-width: 200px;
+  padding: 9px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  background: #fff;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236B7280' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: var(--blue-bright);
+  box-shadow: 0 0 0 3px rgba(41, 82, 163, 0.12);
+}
+
+.search-btn {
+  padding: 9px 22px;
+  border: none;
+  border-radius: 8px;
+  background: var(--blue-bright);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.search-btn:hover {
+  background: var(--blue-deep);
+}
+
+.reset-btn {
+  padding: 9px 18px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: 0.15s;
+  flex-shrink: 0;
+}
+.reset-btn:hover {
+  border-color: var(--blue-bright);
+  color: var(--blue-bright);
 }
 
 /* 🔹 Table card wrapper */
@@ -44,7 +128,6 @@ table {
 }
 
 thead tr {
-  
   background: #3d6dcc;
 }
 
@@ -52,7 +135,6 @@ th {
   text-align: left;
   padding: 14px 16px;
   color: #fff;
-  /* color: var(--muted); */
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -88,7 +170,7 @@ tbody tr:last-child td {
   font-size: 14px;
 }
 
-/* 🔹 Action button (no class on the element itself, so styled via table scope) */
+/* 🔹 Action button */
 .job-table button {
   padding: 7px 16px;
   background: #fff;
@@ -112,4 +194,141 @@ tbody tr:last-child td {
   .applied-container { padding: 20px 16px; }
   .job-table { overflow-x: auto; }
   table { min-width: 650px; }
+  .filter-bar { flex-wrap: wrap; }
+  .filter-group select { min-width: 100%; }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Old Code */
+/* :host {
+  --navy: #16305c;
+  --blue-deep: #1f4e8c;
+  --blue-bright: #2952a3;
+  --ink: #1e2a45;
+  --line: #e4e7eb;
+  --muted: #6b7280;
+  --page-bg: #f3f4f6;
+
+  display: block;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+}
+
+* { box-sizing: border-box; }
+
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 20px;
+  color: var(--navy);
+}
+
+.applied-container {
+  padding: 28px 40px;
+  background: var(--page-bg);
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+🔹 Table card wrapper
+.job-table {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 3px rgba(22, 48, 92, 0.04);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead tr {
+  
+  background: #3d6dcc;
+}
+
+th {
+  text-align: left;
+  padding: 14px 16px;
+  color: #fff;
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+
+th:first-child { border-radius: 8px 0 0 8px; }
+th:last-child { border-radius: 0 8px 8px 0; }
+
+tbody tr {
+  transition: background 0.15s;
+}
+
+tbody tr:hover {
+  background: var(--page-bg);
+}
+
+td {
+  padding: 16px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+🔹 Empty state
+.empty-row {
+  text-align: center;
+  color: var(--muted);
+  padding: 32px 16px;
+  font-size: 14px;
+}
+
+🔹 Action button (no class on the element itself, so styled via table scope)
+.job-table button {
+  padding: 7px 16px;
+  background: #fff;
+  color: #dc2626;
+  border: 1.5px solid #fee2e2;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.job-table button:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .applied-container { padding: 20px 16px; }
+  .job-table { overflow-x: auto; }
+  table { min-width: 650px; }
+} */

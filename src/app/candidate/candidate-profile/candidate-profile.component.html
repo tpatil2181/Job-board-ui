@@ -92,13 +92,16 @@
           <h2><span class="ico">💼</span> Experience</h2>
           <button class="icon-btn" (click)="openAddExperience()">+ Add</button>
         </div>
-        <div class="item" *ngFor="let exp of candidate?.experiences">
+        <!-- <div class="item" *ngFor="let exp of candidate?.experiences"> -->
+          <div class="item" *ngFor="let exp of (candidate?.experiences ?? []).slice().reverse()">
           <!-- <div class="item-icon">{{ exp.icon }}</div> -->
-          <div class="item-icon">{{ exp.candExpId }}</div>
+           
+          <div class="item-icon">{{ exp.companyName.charAt(0) }}</div>
           <div class="item-body">
             <div class="item-title">{{ exp.jobTitle }}</div>
             <!-- <div class="item-sub">{{ exp.subtitle }}</div> -->
-            <div class="item-sub">{{ exp.companyName }}, {{exp.location}}, {{exp.smonth}} {{exp.syear}} - </div>
+            <div class="item-sub">{{ exp.companyName }}, {{exp.location}}, {{exp.smonth |  enumFormat }} {{exp.syear}} - {{ exp.isCurrentCompanny ? 'Present' : (exp.emonth | enumFormat) + ' ' + exp.eyear }}</div>
+            
           </div>
           <div class="item-controls">
             <button class="ctrl-btn" (click)="openEditExperience(exp)">✏️</button>
@@ -168,7 +171,7 @@
           <h2><span class="ico">🎓</span> Education</h2>
           <button class="icon-btn" (click)="openAddEducation()">+ Add</button>
         </div>
-        <div class="item" *ngFor="let edu of candidate?.educations">
+        <div class="item" *ngFor="let edu of (candidate?.educations ?? []).slice().reverse()">
           <div class="item-icon">🎓</div>
           <div class="item-body">
             <div class="item-title">{{ edu.degree }}</div>
@@ -213,7 +216,7 @@
           <h2><span class="ico">📁</span> Projects</h2>
           <button class="icon-btn" (click)="openAddProject()">+ Add</button>
         </div>
-        <div class="item" *ngFor="let proj of candidate?.projects">
+        <div class="item" *ngFor="let proj of (candidate?.projects ?? []).slice().reverse()s">
           <div class="item-icon">📁</div>
           <div class="item-body">
             <div class="item-title">{{ proj.projectTitle }}</div>
@@ -258,7 +261,7 @@
           <h2><span class="ico">🏅</span> Certifications</h2>
           <button class="icon-btn" (click)="openAddCertification()">+ Add</button>
         </div>
-        <div class="item" *ngFor="let cert of candidate?.certifications">
+        <div class="item" *ngFor="let cert of (candidate?.certifications ?? []).slice().reverse()">
           <div class="item-icon">🏅</div>
           <div class="item-body">
             <div class="item-title">{{ cert.certificateName }}</div>
@@ -285,13 +288,16 @@
         <div class="card-head">
           <h2><span class="ico">📄</span> Contact</h2>
         </div>
+        
         <div class="resume-row">
           <div class="resume-file">
-            <div class="resume-icon">📄</div>
+            <!-- <div class="resume-icon">📄</div> -->
             <div>
+              <span>Contact: {{cand.mobNo}}</span>
+              <!-- <span>Email</span> -->
               <!-- <div class="resume-name">{{ resumeFileName }}</div> -->
-              <div class="resume-name">{{ candidate?.firstName + ' ' + candidate?.lastName}} Resume</div>
-              <div class="resume-updated">{{ resumeUpdatedLabel }}</div>
+              <!-- <div class="resume-name">{{ candidate?.firstName + ' ' + candidate?.lastName}} Resume</div>
+              <div class="resume-updated">{{ resumeUpdatedLabel }}</div> -->
             </div>
           </div>
         </div>
@@ -349,7 +355,7 @@
         <div class="lang-list">
           <div class="lang-item" *ngFor="let lang of  candidate?.languages">
             <b>{{ lang.language }}</b>
-            <span class="lang-level">{{ lang.proficiency }}</span>
+            <span class="lang-level">{{ lang.proficiency| enumFormat}}</span>
             <div class="item-controls">
               <button class="ctrl-btn" (click)="openEditLanguage(lang)">✏️</button>
               <button class="ctrl-btn danger" (click)="removeLanguage(lang)">🗑️</button>

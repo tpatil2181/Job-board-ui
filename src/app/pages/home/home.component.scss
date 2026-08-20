@@ -281,13 +281,13 @@ a:hover { text-decoration: underline; }
 }
 .job-info { flex: 1; min-width: 0; }
 .job-title { font-size: 16px; font-weight: 700; color: $blue; margin-bottom: 2px; }
-.job-company { font-size: 14px; color: $gray-4; margin-bottom: 8px; }
+.job-company { font-size: 14px; color: $gray-4; margin-bottom: 8px; font-weight: bolder; }
 .job-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   font-size: 13px;
-  color: $gray-3;
+  color: $gray-4;
   margin-bottom: 10px;
 }
 .job-tags { display: flex; flex-wrap: wrap; gap: 6px; }

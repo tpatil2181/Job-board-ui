@@ -1,32 +1,3 @@
-// import { Component } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { FormsModule } from '@angular/forms';
-
-
-// @Component({
-//   selector: 'app-home',
-//   standalone: true,
-//  imports: [CommonModule, FormsModule],
-//   templateUrl: './home.component.html',
-//   styleUrl: './home.component.css'
-// })
-
-// export class HomeComponent {
-
-//   searchText: string = '';
-//   location: string = '';
-
-//   jobs = [
-//     { title: 'Java Developer', company: 'TCS', location: 'Pune' },
-//     { title: 'Angular Developer', company: 'Infosys', location: 'Mumbai' },
-//     { title: 'Spring Boot Developer', company: 'Wipro', location: 'Bangalore' }
-//   ];
-
-//   goHome() {
-//     console.log(this.searchText, this.location);
-//   }
-// }
-
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -36,13 +7,14 @@ import { AuthService } from '../../services/auth.service';
 import { SharedModule } from '../shared.module';
 import { AlertService } from '../../services/alert.service.service';
 import { ExperienceFilterDTO, JobSearchDTO } from '../../Interface/Application/job_search';
+import { DateFormatePipePipe } from '../../shared/pipes/date-formate-pipe.pipe';
 
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, SharedModule],
+  imports: [CommonModule, FormsModule, SharedModule,DateFormatePipePipe],
   templateUrl: './home.component.html',
   styleUrls: ['home.component.scss'],
 

@@ -17,7 +17,7 @@
       <div class="form-group">
         <label>Proficiency</label>
         <select name="Proficiency" [(ngModel)]="form.proficiency" required>
-          <option *ngFor="let l of levels" [value]="l">{{ l }}</option>
+          <option *ngFor="let l of levels" [value]="l">{{ l | enumFormat}}</option>
         </select>
       </div>
 
