@@ -1,0 +1,276 @@
+:host {
+  --border: #e4e2da;
+  --border-strong: #d3d1c7;
+  --surface-1: #f7f6f2;
+  --surface-2: #ffffff;
+  --text-primary: #201f1c;
+  --text-secondary: #6b6a63;
+  --text-muted: #9a988f;
+  --accent: #185fa5;
+  --accent-bg: #e6f1fb;
+  --danger: #a32d2d;
+  --radius: 10px;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  display: block;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background: var(--surface-1);
+}
+
+.edit-profile {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--surface-2);
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.edit-profile__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 0.5px solid var(--border);
+}
+
+.edit-profile__title {
+  font-size: 17px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.icon-btn:hover {
+  background: var(--surface-1);
+}
+
+.link-btn {
+  border: none;
+  background: none;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 4px;
+}
+
+.link-btn:disabled {
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.edit-profile__form {
+  padding: 28px 40px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.photo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 8px;
+}
+
+.avatar {
+  position: relative;
+  width: 96px;
+  height: 96px;
+}
+
+.avatar img,
+.avatar__initials {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: cover;
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.avatar__camera {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--surface-2);
+  cursor: pointer;
+}
+
+.photo-section__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field__label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  box-sizing: border-box;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 110px;
+  line-height: 1.6;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.field__input--invalid {
+  border-color: var(--danger) !important;
+}
+
+.field__error {
+  font-size: 12px;
+  color: var(--danger);
+}
+
+.field__hint,
+.field__counter {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.field__counter {
+  align-self: flex-end;
+}
+
+.field__with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field__icon {
+  position: absolute;
+  left: 12px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.field__with-icon input {
+  padding-left: 34px;
+}
+
+.edit-profile__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 0.5px solid var(--border);
+  margin-top: 4px;
+}
+
+.btn {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  border: 0.5px solid var(--border-strong);
+}
+
+.btn--secondary {
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.btn--secondary:hover {
+  background: var(--surface-1);
+}
+
+.btn--primary {
+  background: var(--text-primary);
+  color: #fff;
+  border-color: var(--text-primary);
+}
+
+.btn--primary:hover {
+  opacity: 0.92;
+}
+
+.btn--primary:disabled,
+.btn--secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .edit-profile__form {
+    padding: 20px 20px 24px;
+  }
+
+  .field-grid {
+    grid-template-columns: 1fr;
+  }
+}

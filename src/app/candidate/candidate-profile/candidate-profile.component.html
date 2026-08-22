@@ -26,7 +26,7 @@
       <!-- [class.editing]="isEditingProfile">{{ candidate.first_name }} {{ candidate.last_name }}</h1> -->
 
       <div class="role" [attr.contenteditable]="isEditingProfile" (input)="onRoleInput($event)"
-        [class.editing]="isEditingProfile">{{ role }}</div>
+        [class.editing]="isEditingProfile">{{ candidate?.candidateTitle }}</div>
 
       <div class="meta">
         <span class="dot-live" *ngIf="openToWork"></span>
@@ -44,10 +44,20 @@
 
     <div class="profile-actions">
       <button class="btn-outline" (click)="viewResume()">View Resume</button>
-      <button class="btn-primary" (click)="toggleEditProfile()">
+      <!-- <button class="btn-primary" (click)="toggleEditProfile()">
         {{ isEditingProfile ? 'Save Changes' : 'Edit Profile' }}
+      </button> -->
+      <!-- Edit profile button — only action available, no Add/Delete since a candidate has exactly one profile -->
+      <button type="button" class="btn-primary" (click)="openEditProfile()">
+        Edit Profile
       </button>
+
+      <!-- Profile edit modal -->
+      <app-profile-form [visible]="showProfileForm" [editData]="candidate" imageBaseUrl="/api/images/"
+        (save)="onProfileSaved($event)" (close)="onProfileFormClosed()">
+      </app-profile-form>
     </div>
+
   </div>
 
   <!-- TWO COLUMN APP LAYOUT -->
@@ -60,12 +70,13 @@
       <div class="card">
         <div class="card-head">
           <h2><span class="ico">📝</span> About</h2>
-          <button class="icon-btn" (click)="toggleEditAbout()">
+          <!-- <button class="icon-btn" (click)="toggleEditAbout()">
             {{ isEditingAbout ? '💾 Save' : '✏️ Edit' }}
-          </button>
+          </button> -->
         </div>
-        <p class="about-text" [attr.contenteditable]="isEditingAbout" (input)="onAboutInput($event)"
-          [class.editing]="isEditingAbout">{{ aboutText }}</p>
+        <!-- <p class="about-text" [attr.contenteditable]="isEditingAbout" (input)="onAboutInput($event)"
+          [class.editing]="isEditingAbout">{{ aboutText }}</p> -->
+        <p>{{candidate?.candidateAbout}}</p>
       </div>
 
       <!-- Experience
@@ -93,15 +104,16 @@
           <button class="icon-btn" (click)="openAddExperience()">+ Add</button>
         </div>
         <!-- <div class="item" *ngFor="let exp of candidate?.experiences"> -->
-          <div class="item" *ngFor="let exp of (candidate?.experiences ?? []).slice().reverse()">
+        <div class="item" *ngFor="let exp of (candidate?.experiences ?? []).slice().reverse()">
           <!-- <div class="item-icon">{{ exp.icon }}</div> -->
-           
+
           <div class="item-icon">{{ exp.companyName.charAt(0) }}</div>
           <div class="item-body">
             <div class="item-title">{{ exp.jobTitle }}</div>
             <!-- <div class="item-sub">{{ exp.subtitle }}</div> -->
-            <div class="item-sub">{{ exp.companyName }}, {{exp.location}}, {{exp.smonth |  enumFormat }} {{exp.syear}} - {{ exp.isCurrentCompanny ? 'Present' : (exp.emonth | enumFormat) + ' ' + exp.eyear }}</div>
-            
+            <div class="item-sub">{{ exp.companyName }}, {{exp.location}}, {{exp.smonth | enumFormat }} {{exp.syear}} -
+              {{ exp.isCurrentCompanny ? 'Present' : (exp.emonth | enumFormat) + ' ' + exp.eyear }}</div>
+
           </div>
           <div class="item-controls">
             <button class="ctrl-btn" (click)="openEditExperience(exp)">✏️</button>
@@ -150,7 +162,7 @@
             name="skillInput" (keyup.enter)="addSkill()">
           <button class="btn-outline sm" (click)="addSkill()" [disabled]="!skillInput.trim() || isAddingSkill">
             {{ isAddingSkill ? 'Adding...' : '+ Add' }}
-        </button> 
+          </button>
         </div>
 
         <!-- Skill chips -->
@@ -284,27 +296,66 @@
     <!-- SIDE COLUMN -->
     <div>
       <!-- Contact -->
+      <!-- Contact -->
       <div class="card">
         <div class="card-head">
-          <h2><span class="ico">📄</span> Contact</h2>
+          <h2><span class="ico">✉️</span> Contact</h2>
         </div>
-        
-        <div class="resume-row">
-          <div class="resume-file">
-            <!-- <div class="resume-icon">📄</div> -->
-            <div>
-              <span>Contact: {{cand.mobNo}}</span>
-              <!-- <span>Email</span> -->
-              <!-- <div class="resume-name">{{ resumeFileName }}</div> -->
-              <!-- <div class="resume-name">{{ candidate?.firstName + ' ' + candidate?.lastName}} Resume</div>
-              <div class="resume-updated">{{ resumeUpdatedLabel }}</div> -->
-            </div>
-          </div>
-        </div>
-        <!-- <input type="file" #resumeInput hidden accept=".pdf" (change)="updateResume()">
-        <button class="btn-primary full-width" (click)="resumeInput.click()"> Update Resume</button> -->
 
+        <div class="contact-row">
+
+          <div class="contact-item">
+            <span class="contact-label">Mobile No</span>
+            <span class="contact-sep">:</span>
+            <span class="contact-value">{{ candidate?.mobNo || 'Not added' }}</span>
+          </div>
+
+          <div class="contact-item">
+            <span class="contact-label">Email</span>
+            <span class="contact-sep">:</span>
+            <span class="contact-value">{{ candidate?.contactEmail || 'Not added' }}</span>
+          </div>
+
+        </div>
+
+        <!-- <button type="button" class="btn-primary full-width" (click)="openEditContact()">
+          Edit Contact
+        </button> -->
       </div>
+
+
+      <!-- Links -->
+      <!-- <div class="card">
+        <div class="card-head">
+          <h2><span class="ico">🔗</span> Links</h2>
+        </div>
+
+        <div class="links-list" *ngIf="candidateLinks?.length; else noLinks">
+          <a class="link-row" *ngFor="let link of candidateLinks" [href]="link.url" target="_blank"
+            rel="noopener noreferrer">
+
+            <div class="link-icon">{{ linkIcon(link.type) }}</div>
+
+            <div class="link-info">
+              <div class="link-label">{{ link.type }}</div>
+              <div class="link-url">{{ link.url }}</div>
+            </div>
+
+            <div class="link-arrow">↗</div>
+
+          </a>
+        </div>
+
+        <ng-template #noLinks>
+          <div class="empty-state">No links added yet.</div>
+        </ng-template>
+
+        <button type="button" class="btn-primary full-width" (click)="openEditLinks()">
+          Manage Links
+        </button>
+      </div> -->
+
+
 
       <!-- Resume -->
       <div class="card">
@@ -333,7 +384,7 @@
       </div>
 
       <!-- Skills -->
-      <div class="card">
+      <!-- <div class="card">
         <div class="card-head">
           <h2><span class="ico">🛠️</span> Skills</h2>
         </div>
@@ -344,7 +395,7 @@
           </span>
           <span class="tag add-tag" (click)="addSkill()">+ Add</span>
         </div>
-      </div>
+      </div> -->
 
       <!-- Languages -->
       <div class="card">

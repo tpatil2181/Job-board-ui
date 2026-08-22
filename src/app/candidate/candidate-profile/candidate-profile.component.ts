@@ -19,6 +19,7 @@ import { LanguageEntry, LanguageFormComponent } from '../language-form/language-
 import {language} from "../../Interface/Canditate/candidate";
 import { Education, Experience, Certification, Skill } from '../../Interface/Canditate/candidate';
 import { EnumFormatPipe } from '../../shared/pipes/enum-format.pipe';
+import { CandidateProfileEdit, CandidateProfileSaveEvent, ProfileFormComponent } from "../profile-form/profile-form.component";
 
 
 export interface TimelineItem {
@@ -53,7 +54,7 @@ export interface SkillTag {
 @Component({
   selector: 'app-candidate-profile',
   standalone: true,
-  imports: [CommonModule, SharedModule, EducationFormComponent, ExperienceFormComponent, CertificationFormComponent, ProjectFormComponent, LanguageFormComponent, FormsModule, EnumFormatPipe],
+  imports: [CommonModule, SharedModule, EducationFormComponent, ExperienceFormComponent, CertificationFormComponent, ProjectFormComponent, LanguageFormComponent, FormsModule, EnumFormatPipe, ProfileFormComponent],
   templateUrl: './candidate-profile.component.html',
   styleUrls: ['./candidate-profile.component.css']
 })
@@ -720,10 +721,224 @@ onResumeChange(event: any): void {
     return { school: school ?? '', startYear: startYear ?? '', endYear: endYear ?? '' };
   }
 
+//====================================Edit Profile==============================================
+// =====================================================
+// Profile edit state
+// =====================================================
+ 
+showProfileForm = false;
+ 
+ 
+// =====================================================
+// Open modal in "Edit" mode
+// The form takes the whole Candidate and pulls out only
+// the fields it needs — no separate "Add" mode, since a
+// profile always exists for a logged-in candidate.
+// =====================================================
+ 
+openEditProfile(): void {
+ 
+  if (!this.candidate) {
+    return;
+  }
+ 
+  this.showProfileForm = true;
+ 
+}
+ 
+ 
+// =====================================================
+// Handle the form's (save) event.
+// If a new photo was picked, upload it first to get the
+// fresh imageId, then send the profile fields.
+// =====================================================
+ 
+onProfileSaved(event: CandidateProfileSaveEvent): void {
+ 
+  if (!this.candidate) {
+    return;
+  }
+ 
+  const { profile, imageFile } = event;
+ 
+  profile.candidateId = this.candidate.candidateId;
+ 
+  if (imageFile) {
+ 
+    this.authService
+      .uploadCandidateImage(this.candidate.candidateId, imageFile)
+      .subscribe({
+ 
+        next: (uploadRes) => {
+ 
+          profile.imageId = uploadRes.imageId;
+ 
+          this.saveProfileFields(profile);
+ 
+        },
+ 
+        error: (err) => {
+ 
+          console.error('Error uploading photo:', err);
+ 
+          this.alertService.error(
+            err?.error?.message ||
+            'Failed to upload photo.'
+          );
+ 
+        }
+ 
+      });
+ 
+    return;
+ 
+  }
+ 
+  this.saveProfileFields(profile);
+ 
+}
+ 
+ 
+// =====================================================
+// Shared save call, used whether or not a new photo
+// was uploaded first.
+// =====================================================
+ 
+private saveProfileFields(profile: CandidateProfileEdit): void {
+ 
+  this.authService
+    .updateProfile(profile)
+    .subscribe({
+ 
+      next: (response) => {
+ 
+        console.log('Profile updated:', response);
+ 
+        // this.authService.setCandidate(response);
+ 
+        this.refreshCandidate();
+ 
+        this.showProfileForm = false;
+ 
+        this.alertService.success(
+          'Profile updated successfully.'
+        );
+ 
+      },
+ 
+      error: (err) => {
+ 
+        console.error('Error updating profile:', err);
+ 
+        this.alertService.error(
+          err?.error?.message ||
+          'Failed to update profile.'
+        );
+ 
+      }
+ 
+    });
+ 
+}
+ 
+ 
+// =====================================================
+// Close the modal without saving
+// =====================================================
+ 
+onProfileFormClosed(): void {
+ 
+  this.showProfileForm = false;
+ 
+}
+ 
+
+//=============Links===================
+// =====================================================
+// Candidate does not currently have `email` or a links
+// array. Add these to the Candidate interface (or wherever
+// the real data lives) — shown here so the template compiles:
+//
+//   email: string;
+//   candidateLinks: CandidateLink[];
+// =====================================================
+
+// export interface CandidateLink {
+
+//   linkId?: number;
+
+//   type: 'LinkedIn' | 'GitHub' | 'Portfolio' | 'Twitter' | 'Website' | string;
+
+//   url: string;
+
+// }
 
 
+// // =====================================================
+// // Component state (add alongside your other properties)
+// // =====================================================
+
+// candidateLinks: CandidateLink[] = [];
 
 
+// // =====================================================
+// // Icon per link type
+// // =====================================================
+
+// linkIcon(type: string): string {
+
+//   switch (type) {
+
+//     case 'LinkedIn':
+//       return '💼';
+
+//     case 'GitHub':
+//       return '🐙';
+
+//     case 'Portfolio':
+//       return '🌐';
+
+//     case 'Twitter':
+//       return '🐦';
+
+//     default:
+//       return '🔗';
+
+//   }
+
+// }
+
+
+// // =====================================================
+// // Open contact / links edit modals
+// // (wire these to whatever form components you build next,
+// // following the same [visible]/[editData]/(save)/(close)
+// // pattern as ProfileFormComponent)
+// // =====================================================
+
+// showContactForm = false;
+
+// openEditContact(): void {
+
+//   if (!this.candidate) {
+//     return;
+//   }
+
+//   this.showContactForm = true;
+
+// }
+
+// showLinksForm = false;
+
+// openEditLinks(): void {
+
+//   if (!this.candidate) {
+//     return;
+//   }
+
+//   this.showLinksForm = true;
+
+// }
 
 
 

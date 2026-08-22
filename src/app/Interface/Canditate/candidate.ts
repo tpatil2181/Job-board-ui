@@ -5,6 +5,7 @@ export interface Candidate {
   candidateTitle: string | null;
   candidateAbout: string | null;
   mobNo: string;
+  contactEmail:string;
 
   educations: Education[];
   experiences: Experience[];

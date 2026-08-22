@@ -596,7 +596,7 @@ clearDatePosted() {
   // ── State ──
   filteredJobs: Job[] = [];
   currentPage = 1;
-  readonly PER_PAGE = 6;
+  readonly PER_PAGE = 5;
   savedJobs = new Set<number>();
   sortValue = 'relevant';
 

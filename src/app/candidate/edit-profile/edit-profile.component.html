@@ -1,0 +1,113 @@
+<div class="edit-profile">
+  <header class="edit-profile__header">
+    <button type="button" class="icon-btn" aria-label="Go back">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+    <h1 class="edit-profile__title">Edit profile</h1>
+    <button
+      type="button"
+      class="link-btn"
+      [disabled]="form.invalid"
+      (click)="onSave()"
+    >
+      Save
+    </button>
+  </header>
+
+  <form class="edit-profile__form" [formGroup]="form" (ngSubmit)="onSave()">
+    <section class="photo-section">
+      <div class="avatar">
+        <img *ngIf="photoPreviewUrl" [src]="photoPreviewUrl" alt="Profile photo preview" />
+        <span *ngIf="!photoPreviewUrl" class="avatar__initials">{{ initials }}</span>
+
+        <label class="avatar__camera" for="photo-input" aria-label="Change photo">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path
+              d="M4 8h3l2-2h6l2 2h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <circle cx="12" cy="14" r="3.2" />
+          </svg>
+        </label>
+        <input
+          id="photo-input"
+          type="file"
+          accept="image/*"
+          class="visually-hidden"
+          (change)="onPhotoSelected($event)"
+        />
+      </div>
+      <label class="photo-section__label" for="photo-input">Change photo</label>
+    </section>
+
+    <div class="field-grid">
+      <div class="field">
+        <label class="field__label" for="fullName">Full name</label>
+        <input
+          id="fullName"
+          type="text"
+          formControlName="fullName"
+          placeholder="Your full name"
+          [class.field__input--invalid]="form.get('fullName')?.invalid && form.get('fullName')?.touched"
+        />
+        <span
+          class="field__error"
+          *ngIf="form.get('fullName')?.invalid && form.get('fullName')?.touched"
+        >
+          Enter your name.
+        </span>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="candidateTitle">Candidate title</label>
+        <input
+          id="candidateTitle"
+          type="text"
+          formControlName="candidateTitle"
+          placeholder="e.g. Senior product designer"
+        />
+        <span class="field__hint">Shows below your name on your profile.</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="location">Location</label>
+      <div class="field__with-icon">
+        <svg class="field__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path
+            d="M12 21s-7-6.1-7-11a7 7 0 1 1 14 0c0 4.9-7 11-7 11z"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <circle cx="12" cy="10" r="2.5" />
+        </svg>
+        <input
+          id="location"
+          type="text"
+          formControlName="location"
+          placeholder="City, state"
+        />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="about">About</label>
+      <textarea
+        id="about"
+        rows="5"
+        formControlName="about"
+        [maxlength]="aboutMaxLength"
+        placeholder="Tell recruiters about your experience, skills, and what you're looking for."
+      ></textarea>
+      <span class="field__counter">{{ aboutLength }} / {{ aboutMaxLength }}</span>
+    </div>
+
+    <div class="edit-profile__actions">
+      <button type="button" class="btn btn--secondary" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="btn btn--primary" [disabled]="form.invalid">Save changes</button>
+    </div>
+  </form>
+</div>

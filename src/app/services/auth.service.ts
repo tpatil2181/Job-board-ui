@@ -8,6 +8,7 @@ import { PostedJob, PostJob } from '../Interface/employerModel';
 import { HttpParams } from '@angular/common/http';
 import { registerEmployer } from '../Interface/employerModel';
 import { JobSearchDTO } from '../Interface/Application/job_search';
+import { CandidateProfileEdit } from '../candidate/profile-form/profile-form.component';
 
 
 
@@ -331,6 +332,14 @@ export class AuthService {
     // console.log('Loading candidate profile...');
     // console.log(localStorage.getItem('token'));
     return this.http.post<any>(`${this.candidateUrl}/profile`, null);
+  }
+
+  updateProfile(candidate: CandidateProfileEdit): Observable<any> {
+    return this.http.post(`${this.candidateUrl}/updateProfile`, candidate);
+  }
+
+  uploadCandidateImage(candidateId:number,imageFile: File):Observable<any>{
+        return this.http.post(`${this.candidateUrl}/uploadImage`, candidateId);
   }
 
   uploadResume(file: File, candidateId: number) {
