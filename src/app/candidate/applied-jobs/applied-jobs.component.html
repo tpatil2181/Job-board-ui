@@ -1,47 +1,35 @@
-<!-- <h2>Applied Jobs</h2>
-
-<table border="1" cellpadding="10">
-
-  <thead>
-    <tr>
-      <th>Job Title</th>
-      <th>Company</th>
-      <th>Mode</th>
-      <th>Applied On</th>
-      <th>Status</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr *ngFor="let job of appliedJobs">
-    <tr *ngFor="let job of appliedJobs; trackBy: trackByJob">
-
-      <td>{{job.JobTitle}}</td>
-      <td>{{job.Comapny}}</td>
-      <td>{{job.WorkMode}}</td>
-      <td>Applied Date</td>
-       <td>{{job.appliedOn}}</td> 
-      <td>{{job.Status}}</td>
-      <td>
-        <button (click)="onWithdraw(job.applyid)">Withdraw</button>
-      </td>
-    </tr>
-  </tbody>
-
-</table> -->
-
-
-
-
 <app-header></app-header>
 
 <div class="applied-container">
 
   <h2>Applied Jobs</h2>
 
-  <!-- 🔹 Table -->
+  <!-- Filter -->
+  <div class="filter-bar">
+
+    <div class="filter-group">
+      <label>Find Applied Jobs</label>
+
+      <select [(ngModel)]="selectedStatus">
+        <option value="">All</option>
+        <option value="APPLIED">Applied</option>
+        <option value="REJECTED">Rejected</option>
+        <option value="SCHEDULED">Scheduled</option>
+      </select>
+    </div>
+
+    <button
+      class="search-btn"
+      (click)="filterAppliedJobs()">
+      Search
+    </button>
+
+  </div>
+
+
+  <!-- Table -->
   <div class="job-table">
+
     <table>
 
       <thead>
@@ -56,25 +44,62 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let job of (appliedJobs ?? []).slice().reverse(); trackBy: trackByJob">
+
+        <tr
+          *ngFor="
+            let job of filteredAppliedJobs;
+            trackBy: trackByJob
+          "
+        >
+
           <td>{{ job.JobTitle }}</td>
+
           <td>{{ job.Comapny }}</td>
-          <td>{{ job.WorkMode | enumFormat}}</td>
-          <td>{{ job.dateApplied |dateFormatePipe}}</td>
-          <td>{{ job.status | enumFormat}}</td>
+
           <td>
-            <!-- <span class="status" [ngClass]="job.Status.toLowerCase()">{{ job.Status }}</span> -->
+            {{ job.WorkMode | enumFormat }}
           </td>
+
           <td>
-                <button (click)="onWithdraw(job.applyid)">Withdraw</button>
+            {{ job.dateApplied | dateFormatePipe }}
           </td>
+
+          <td>
+            <span
+              class="status"
+              [ngClass]="job.status?.toLowerCase()"
+            >
+              {{ job.status | enumFormat }}
+            </span>
+          </td>
+
+          <td>
+            <button
+              class="withdraw-btn"
+              (click)="onWithdraw(job.applyid)"
+            >
+              Withdraw
+            </button>
+          </td>
+
         </tr>
-        <tr *ngIf="appliedJobs.length === 0">
-          <td colspan="6" class="empty-row">You haven't applied to any jobs yet.</td>
+
+
+        <tr *ngIf="filteredAppliedJobs.length === 0">
+
+          <td
+            colspan="6"
+            class="empty-row"
+          >
+            No applications found.
+          </td>
+
         </tr>
+
       </tbody>
 
     </table>
+
   </div>
 
 </div>

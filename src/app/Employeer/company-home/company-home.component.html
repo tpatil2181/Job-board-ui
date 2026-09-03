@@ -1,3 +1,64 @@
 <!-- <p>company-home works!</p> -->
 
-<app-company-sidebar></app-company-sidebar>
+<!-- <app-company-sidebar></app-company-sidebar> -->
+
+<!-- <div class="company-layout"> -->
+
+  <!-- Toggle Button -->
+  <!-- <button
+    class="sidebar-toggle"
+    (click)="toggleSidebar()"
+    aria-label="Toggle sidebar">
+    ☰
+  </button> -->
+
+  <!-- Sidebar -->
+  <!-- <aside
+    class="sidebar-wrapper"
+    [class.sidebar-open]="sidebarOpen">
+
+    <app-company-sidebar></app-company-sidebar>
+
+  </aside> -->
+
+  <!-- Main Content -->
+  <!-- <main
+    class="company-content"
+    [class.content-expanded]="!sidebarOpen"> -->
+
+    <!-- Your existing company home page content goes here -->
+<!-- 
+  </main> -->
+
+<!-- </div> -->
+
+
+
+
+<div class="company-layout">
+
+  <!-- Sidebar -->
+  <aside
+    class="sidebar-wrapper"
+    [class.sidebar-open]="sidebarOpen">
+
+    <app-company-sidebar></app-company-sidebar>
+
+  </aside>
+
+  <!-- Main Area -->
+  <main class="company-content">
+
+    <!-- Toggle Button -->
+    <button
+      class="sidebar-toggle"
+      (click)="toggleSidebar()">
+      ☰
+    </button>
+
+    <!-- Child pages appear here -->
+    <router-outlet></router-outlet>
+
+  </main>
+
+</div>

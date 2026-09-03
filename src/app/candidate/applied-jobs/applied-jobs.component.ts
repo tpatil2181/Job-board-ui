@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { AppliedJob } from '../../Interface/Canditate/candidate';
@@ -12,7 +13,13 @@ import { EnumFormatPipe } from '../../shared/pipes/enum-format.pipe';
 @Component({
   selector: 'app-applied-jobs',
   standalone: true,
-  imports: [CommonModule, SharedModule,DateFormatePipePipe,EnumFormatPipe],
+  imports: [
+    CommonModule,
+    FormsModule,
+    SharedModule,
+    DateFormatePipePipe,
+    EnumFormatPipe
+  ],
   templateUrl: './applied-jobs.component.html',
   styleUrls: ['./applied-jobs.component.css']
 })
@@ -33,11 +40,32 @@ export class AppliedJobsComponent {
     this.loadAppliedJobs();
   }
 
+  selectedStatus: string = '';
+
+  filteredAppliedJobs: any[] = [];
+
+
+  filterAppliedJobs(): void {
+
+    if (!this.selectedStatus) {
+
+      this.filteredAppliedJobs = [...this.appliedJobs];
+
+      return;
+    }
+
+    this.filteredAppliedJobs = this.appliedJobs.filter(
+      job => job.status === this.selectedStatus
+    );
+  }
+
+
   // onWithdraw(ApplyId: number) {
   //   alert('Withdrawing job application for Application id ' + ApplyId);
 
   //   // alert('Withdraw clicked for ' + job.jobTitle);
   // }
+
 
   trackByJob(_: number, job: AppliedJob): number {
     return job.applyid;
@@ -53,6 +81,8 @@ export class AppliedJobsComponent {
         console.log("Is Array:", Array.isArray(data));
 
         this.appliedJobs = data;
+
+        this.filteredAppliedJobs = [...this.appliedJobs];
 
         console.log("Applied Jobs:", this.appliedJobs);
 
@@ -99,6 +129,10 @@ export class AppliedJobsComponent {
             job => job.applyid !== applicationId
           );
 
+          this.filteredAppliedJobs = this.filteredAppliedJobs.filter(
+            job => job.applyid !== applicationId
+          );
+
           console.log(response);
 
         },
@@ -127,8 +161,6 @@ export class AppliedJobsComponent {
 
   }
 }
-
-
 
 
 

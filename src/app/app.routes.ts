@@ -48,12 +48,62 @@ export const routes: Routes = [
   
 //================================Employer routs================================     
 
-     { path: 'comapnyHome', component: CompanyHomeComponent},
+     // { path: 'comapnyHome', component: CompanyHomeComponent},
      // { path: 'comapnyHome', component: CompanyHomeComponent, canActivate: [authGuard]},,
-     { path: 'postJob', component: PostJobComponent,canActivate: [authGuard] },
-     { path: 'postedJobs', component: PostedJobsComponent, canActivate: [authGuard] },
-     { path: 'allAllicantsofperticularjobd', component: ApplicantListComponent, canActivate: [authGuard]},
-     { path: 'allJob', component: AllApplicantWiseJobsComponent,canActivate: [authGuard] },
+     // { path: 'postJob', component: PostJobComponent,canActivate: [authGuard] },
+     // { path: 'postedJobs', component: PostedJobsComponent, canActivate: [authGuard] },
+     // { path: 'allAllicantsofperticularjobd', component: ApplicantListComponent, canActivate: [authGuard]},
+     // { path: 'allJob', component: AllApplicantWiseJobsComponent,canActivate: [authGuard] },
+
+
+     //================================Employer routes================================
+
+{
+  path: 'comapnyHome',
+  component: CompanyHomeComponent,
+
+  children: [
+
+    {
+      path: '',
+      redirectTo: 'dashboard',
+      pathMatch: 'full'
+    },
+
+//     {
+//       path: 'dashboard',
+//       component: CompanyDashboardComponent,
+//       canActivate: [authGuard]
+//     },
+
+    {
+      path: 'postJob',
+      component: PostJobComponent,
+      canActivate: [authGuard]
+    },
+
+    {
+      path: 'postedJobs',
+      component: PostedJobsComponent,
+      canActivate: [authGuard]
+    },
+
+    {
+      path: 'allAllicantsofperticularjobd',
+      component: ApplicantListComponent,
+      canActivate: [authGuard]
+    },
+
+    {
+      path: 'allJob',
+      component: AllApplicantWiseJobsComponent,
+      canActivate: [authGuard]
+    }
+
+  ]
+},
+
+     
      
   
      // { path: 'changePass', component: CandidateChagepassComponent},

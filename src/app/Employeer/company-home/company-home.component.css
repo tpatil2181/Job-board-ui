@@ -1,0 +1,94 @@
+.company-layout {
+  display: flex;
+
+  width: 100%;
+  height: 100vh;
+
+  overflow: hidden;
+}
+
+/* ==============================
+   SIDEBAR
+   ============================== */
+
+.sidebar-wrapper {
+  width: 260px;
+  min-width: 260px;
+
+  height: 100vh;
+
+  overflow: hidden;
+
+  transition:
+    width 0.3s ease,
+    min-width 0.3s ease;
+}
+
+.sidebar-wrapper:not(.sidebar-open) {
+  width: 0;
+  min-width: 0;
+}
+
+/* ==============================
+   MAIN CONTENT
+   ============================== */
+
+.company-content {
+  flex: 1;
+
+  min-width: 0;
+  height: 100vh;
+
+  /*
+   * IMPORTANT:
+   * Only this section will scroll.
+   */
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  position: relative;
+}
+
+/* ==============================
+   SIDEBAR TOGGLE BUTTON
+   ============================== */
+
+.sidebar-toggle {
+  position: fixed;
+
+  top: 20px;
+  left: 20px;
+
+  z-index: 1100;
+
+  width: 42px;
+  height: 42px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #16305c;
+  color: #fff;
+
+  font-size: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.sidebar-toggle:hover {
+  background: #1f4e8c;
+}
+
+.sidebar-toggle:active {
+  transform: scale(0.95);
+}

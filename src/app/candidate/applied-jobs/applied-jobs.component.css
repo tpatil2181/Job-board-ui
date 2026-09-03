@@ -14,118 +14,223 @@
   color: var(--ink);
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
+
+/* ==============================
+   PAGE CONTAINER
+   ============================== */
+
+.applied-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 28px 40px;
+}
+
+/* ==============================
+   PAGE TITLE
+   ============================== */
 
 h2 {
+  margin: 0 0 20px;
+
   font-family: 'Playfair Display', serif;
   font-size: 24px;
   font-weight: 700;
-  margin: 0 0 20px;
+
   color: var(--navy);
 }
 
-.applied-container {
-  padding: 28px 40px;
-  max-width: 1440px;
-  margin: 0 auto;
-}
+/* ==============================
+   FILTER BAR
+   ============================== */
 
-/* 🔹 Filter bar */
 .filter-bar {
   display: flex;
   align-items: flex-end;
+
   gap: 14px;
+
+  width: 100%;
+
   background: #fff;
+
   border: 1px solid var(--line);
   border-radius: 12px;
+
   padding: 16px 20px;
   margin-bottom: 20px;
+
   box-shadow: 0 1px 3px rgba(22, 48, 92, 0.04);
 }
+
+/* Filter group */
 
 .filter-group {
   display: flex;
   flex-direction: column;
+
   gap: 6px;
 }
+
+/* Filter label */
 
 .filter-group label {
   font-size: 12px;
   font-weight: 600;
+
   color: var(--muted);
+
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 
+/* Dropdown */
+
 .filter-group select {
   min-width: 200px;
-  padding: 9px 12px;
+
+  padding: 9px 32px 9px 12px;
+
   border: 1.5px solid var(--line);
   border-radius: 8px;
-  font-size: 13.5px;
+
   font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+
   color: var(--ink);
-  background: #fff;
+  background-color: #fff;
+
+  cursor: pointer;
+
   appearance: none;
+
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236B7280' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+
   background-repeat: no-repeat;
   background-position: right 12px center;
-  padding-right: 32px;
-  transition: border-color 0.15s, box-shadow 0.15s;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
+
+/* Dropdown focus */
 
 .filter-group select:focus {
   outline: none;
+
   border-color: var(--blue-bright);
+
   box-shadow: 0 0 0 3px rgba(41, 82, 163, 0.12);
 }
 
+/* ==============================
+   SEARCH BUTTON
+   ============================== */
+
 .search-btn {
   padding: 9px 22px;
+
   border: none;
   border-radius: 8px;
+
   background: var(--blue-bright);
   color: #fff;
-  font-weight: 700;
+
+  font-family: 'Inter', sans-serif;
   font-size: 13.5px;
+  font-weight: 700;
+
   cursor: pointer;
-  transition: background 0.15s;
+
   flex-shrink: 0;
+
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
 }
+
 .search-btn:hover {
   background: var(--blue-deep);
 }
 
+.search-btn:active {
+  transform: translateY(1px);
+}
+
+/* ==============================
+   RESET BUTTON
+   ============================== */
+
 .reset-btn {
   padding: 9px 18px;
+
   border: 1.5px solid var(--line);
   border-radius: 8px;
+
   background: #fff;
   color: var(--ink);
-  font-weight: 600;
+
+  font-family: 'Inter', sans-serif;
   font-size: 13.5px;
+  font-weight: 600;
+
   cursor: pointer;
-  transition: 0.15s;
+
   flex-shrink: 0;
+
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease,
+    background 0.15s ease;
 }
+
 .reset-btn:hover {
   border-color: var(--blue-bright);
   color: var(--blue-bright);
 }
 
-/* 🔹 Table card wrapper */
+/* ==============================
+   TABLE CARD
+   ============================== */
+
 .job-table {
+  width: 100%;
+
   background: #fff;
+
   padding: 20px;
-  border-radius: 12px;
+
   border: 1px solid var(--line);
+  border-radius: 12px;
+
   box-shadow: 0 1px 3px rgba(22, 48, 92, 0.04);
+
+  overflow-x: auto;
 }
+
+/* ==============================
+   TABLE
+   ============================== */
 
 table {
   width: 100%;
+
   border-collapse: collapse;
+
+  /*
+   * Fixed layout keeps every column
+   * perfectly aligned with its header.
+   */
+  table-layout: fixed;
 }
+
+/* ==============================
+   TABLE HEADER
+   ============================== */
 
 thead tr {
   background: #3d6dcc;
@@ -133,202 +238,287 @@ thead tr {
 
 th {
   text-align: left;
+
   padding: 14px 16px;
+
   color: #fff;
+
   font-size: 12px;
+  font-weight: 700;
+
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  font-weight: 700;
+
+  white-space: nowrap;
 }
 
-th:first-child { border-radius: 8px 0 0 8px; }
-th:last-child { border-radius: 0 8px 8px 0; }
+/* Header rounded corners */
+
+th:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+th:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+/* ==============================
+   COLUMN WIDTHS
+   ============================== */
+
+th:nth-child(1),
+td:nth-child(1) {
+  width: 25%;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+  width: 18%;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+  width: 12%;
+}
+
+th:nth-child(4),
+td:nth-child(4) {
+  width: 17%;
+}
+
+th:nth-child(5),
+td:nth-child(5) {
+  width: 13%;
+}
+
+th:nth-child(6),
+td:nth-child(6) {
+  width: 15%;
+}
+
+/* ==============================
+   TABLE BODY
+   ============================== */
 
 tbody tr {
-  transition: background 0.15s;
+  transition: background 0.15s ease;
 }
 
 tbody tr:hover {
   background: var(--page-bg);
 }
 
+/* ==============================
+   TABLE CELLS
+   ============================== */
+
 td {
   padding: 16px;
+
   border-bottom: 1px solid var(--line);
-  font-size: 14px;
-}
 
-tbody tr:last-child td {
-  border-bottom: none;
-}
-
-/* 🔹 Empty state */
-.empty-row {
-  text-align: center;
-  color: var(--muted);
-  padding: 32px 16px;
-  font-size: 14px;
-}
-
-/* 🔹 Action button */
-.job-table button {
-  padding: 7px 16px;
-  background: #fff;
-  color: #dc2626;
-  border: 1.5px solid #fee2e2;
-  border-radius: 6px;
-  font-size: 12.5px;
-  font-weight: 700;
   font-family: 'Inter', sans-serif;
-  cursor: pointer;
-  transition: 0.15s;
-}
+  font-size: 14px;
 
-.job-table button:hover {
-  background: #dc2626;
-  border-color: #dc2626;
-  color: #fff;
-}
-
-@media (max-width: 900px) {
-  .applied-container { padding: 20px 16px; }
-  .job-table { overflow-x: auto; }
-  table { min-width: 650px; }
-  .filter-bar { flex-wrap: wrap; }
-  .filter-group select { min-width: 100%; }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Old Code */
-/* :host {
-  --navy: #16305c;
-  --blue-deep: #1f4e8c;
-  --blue-bright: #2952a3;
-  --ink: #1e2a45;
-  --line: #e4e7eb;
-  --muted: #6b7280;
-  --page-bg: #f3f4f6;
-
-  display: block;
-  font-family: 'Inter', sans-serif;
   color: var(--ink);
+
+  vertical-align: middle;
+
+  /*
+   * Prevent long text from destroying
+   * the table layout.
+   */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-* { box-sizing: border-box; }
-
-h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0 0 20px;
-  color: var(--navy);
-}
-
-.applied-container {
-  padding: 28px 40px;
-  background: var(--page-bg);
-  max-width: 1440px;
-  margin: 0 auto;
-}
-
-🔹 Table card wrapper
-.job-table {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  box-shadow: 0 1px 3px rgba(22, 48, 92, 0.04);
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-thead tr {
-  
-  background: #3d6dcc;
-}
-
-th {
-  text-align: left;
-  padding: 14px 16px;
-  color: #fff;
-  color: var(--muted);
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-weight: 700;
-}
-
-th:first-child { border-radius: 8px 0 0 8px; }
-th:last-child { border-radius: 0 8px 8px 0; }
-
-tbody tr {
-  transition: background 0.15s;
-}
-
-tbody tr:hover {
-  background: var(--page-bg);
-}
-
-td {
-  padding: 16px;
-  border-bottom: 1px solid var(--line);
-  font-size: 14px;
-}
+/* Remove border from last row */
 
 tbody tr:last-child td {
   border-bottom: none;
 }
 
-🔹 Empty state
-.empty-row {
-  text-align: center;
-  color: var(--muted);
-  padding: 32px 16px;
-  font-size: 14px;
+/* ==============================
+   STATUS BADGE
+   ============================== */
+
+.status {
+  display: inline-block;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  line-height: 1.2;
+
+  white-space: nowrap;
 }
 
-🔹 Action button (no class on the element itself, so styled via table scope)
+/* Applied */
+
+.status.applied {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* Rejected */
+
+.status.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Scheduled */
+
+.status.scheduled {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+/* ==============================
+   WITHDRAW BUTTON
+   ============================== */
+
 .job-table button {
   padding: 7px 16px;
+
   background: #fff;
   color: #dc2626;
+
   border: 1.5px solid #fee2e2;
   border-radius: 6px;
+
+  font-family: 'Inter', sans-serif;
   font-size: 12.5px;
   font-weight: 700;
-  font-family: 'Inter', sans-serif;
+
   cursor: pointer;
-  transition: 0.15s;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .job-table button:hover {
   background: #dc2626;
+
   border-color: #dc2626;
+
   color: #fff;
 }
 
+.job-table button:active {
+  transform: translateY(1px);
+}
+
+/* ==============================
+   EMPTY STATE
+   ============================== */
+
+.empty-row {
+  text-align: center;
+
+  padding: 32px 16px;
+
+  color: var(--muted);
+
+  font-size: 14px;
+}
+
+/* ==============================
+   RESPONSIVE - TABLET
+   ============================== */
+
 @media (max-width: 900px) {
-  .applied-container { padding: 20px 16px; }
-  .job-table { overflow-x: auto; }
-  table { min-width: 650px; }
-} */
+
+  .applied-container {
+    padding: 20px 16px;
+  }
+
+  .filter-bar {
+    flex-wrap: wrap;
+  }
+
+  .filter-group {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .filter-group select {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .search-btn {
+    align-self: flex-end;
+  }
+
+  .job-table {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 650px;
+  }
+}
+
+/* ==============================
+   RESPONSIVE - MOBILE
+   ============================== */
+
+@media (max-width: 600px) {
+
+  .applied-container {
+    padding: 18px 12px;
+  }
+
+  h2 {
+    font-size: 22px;
+
+    margin-bottom: 16px;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 12px;
+
+    padding: 14px;
+  }
+
+  .filter-group {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .filter-group select {
+    width: 100%;
+  }
+
+  .search-btn {
+    width: 100%;
+  }
+
+  .job-table {
+    padding: 12px;
+  }
+
+  table {
+    min-width: 650px;
+  }
+
+  th {
+    padding: 12px;
+  }
+
+  td {
+    padding: 13px 12px;
+  }
+}

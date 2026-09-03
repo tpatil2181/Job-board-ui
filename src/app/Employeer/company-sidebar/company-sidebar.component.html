@@ -9,10 +9,10 @@
     <p>{{ this.role }}</p>
   </div> -->
 
-   <div class="profile">
+  <div class="profile">
     <div class="company-logo">
-        <img [src]="this.name  || 'assets/images/company-placeholder.png'" alt="Company Logo" />
-      </div>
+      <img [src]="this.name  || 'assets/images/company-placeholder.png'" alt="Company Logo" />
+    </div>
     <h3>{{ this.name }}</h3>
     <p>{{ this.role }}</p>
   </div>
@@ -29,15 +29,47 @@
 
 
   <!-- Menu -->
-  <ul class="menu">
+  <!-- <ul class="menu">
     <li routerLink="/postJob" routerLinkActive="active">Post job</li>
     <li routerLink="/postedJobs" routerLinkActive="active">All posted Jobs</li>
     <li routerLink="/allJob" routerLinkActive="active">All Applications</li>
     <li routerLink="/changePass" routerLinkActive="active">Company Profile</li>
     <li routerLink="/changePass" routerLinkActive="active">Change Password</li>
     <li routerLink="/settings" routerLinkActive="active">Settings</li>
-    <li routerLink="/settings" routerLinkActive="active">logout</li>
+    <li (click)="logout()">logout</li>
+
 
   </ul>
 
-</div>
+</div> -->
+
+  <ul class="menu">
+
+    <li routerLink="/comapnyHome/postJob" routerLinkActive="active">
+      Post job
+    </li>
+
+    <li routerLink="/comapnyHome/postedJobs" routerLinkActive="active">
+      All posted Jobs
+    </li>
+
+    <li routerLink="/comapnyHome/allJob" routerLinkActive="active">
+      All Applications
+    </li>
+    <li routerLink="/company/companyProfile" routerLinkActive="active">
+      Company Profile
+    </li>
+
+    <li routerLink="/company/changePass" routerLinkActive="active">
+      Change Password
+    </li>
+
+    <li routerLink="/company/settings" routerLinkActive="active">
+      Settings
+    </li>
+
+    <li (click)="logout()">
+      Logout
+    </li>
+
+  </ul>
