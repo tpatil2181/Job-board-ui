@@ -75,7 +75,7 @@ export class AllApplicantWiseJobsComponent {
   viewApplicants(jobId:number){
 
       // this.router.navigate(['/applicants',jobId]);
-      this.router.navigate(['/allAllicantsofperticularjobd']);
+      this.router.navigate(['comapnyHome/allAllicantsofperticularjobd']);
       
 
   }

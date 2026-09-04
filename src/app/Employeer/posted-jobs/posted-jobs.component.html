@@ -1,47 +1,94 @@
-<div class="employer-jobs">
+<div class="posted-jobs-container">
 
-  <table>
-    <thead>
-      <tr>
-        <th>Job Title</th>
-        <!-- <th>Experience</th> -->
-        <th>Post Date</th>
-        <th>Status</th>
-        <!-- <th>No. of Applicants</th> -->
-        <th>Action</th>
-      </tr>
-    </thead>
+<h2>Posted Jobs</h2>
 
-    <tbody>
-      <tr *ngFor="let job of postedJobs">
-        <td>{{job.jobTitle}}</td>
-        <!-- <td>{{job.experience}}</td> -->
-        <td>{{job.datePosted}}</td>
+<!-- Filter Bar -->
 
+<div class="filter-bar">
 
-        <td>
-          <select [(ngModel)]="job.status">
-            <option value="OPEN">Open</option>
-            <option value="CLOSED">Closed</option>
-            <option value="PAUSED">Paused</option>
-          </select>
-        </td>
+<div class="filter-group">
+  <label>Find Posted Jobs</label>
 
-        <!-- <td>
-          <select [(ngModel)]="job.status">
-            <option value="Open">Open</option>
-            <option value="Closed">Closed</option>
-            <option value="Paused">Paused</option>
-          </select>
-        </td> -->
+  <select [(ngModel)]="selectedStatus">
+    <option value="">All</option>
+    <option value="OPEN">Open</option>
+    <option value="CLOSED">Closed</option>
+    <option value="PAUSED">Paused</option>
+  </select>
+</div>
 
-        <!-- <td>{{job.applicants}}</td> -->
+<button class="search-btn" (click)="filterPostedJobs()">
+  Search
+</button>
 
-        <td>
-          <button (click)="updateJob(job)">Update</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+</div>
+
+<!-- Jobs Table -->
+
+<div class="job-table">
+
+<table>
+
+  <thead>
+    <tr>
+      <th class="title-column">Job Title</th>
+      <th class="date-column">Post Date</th>
+      <th class="status-column">Status</th>
+      <th class="action-column">Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr *ngFor="let job of (filteredPostedJobs.slice().reverse()); trackBy: trackByJob">
+
+      <!-- Job Title -->
+      <td class="job-title">
+        {{ job.jobTitle }}
+      </td>
+
+      <!-- Post Date -->
+      <td>
+        {{ job.datePosted | dateFormatePipe }}
+      </td>
+
+      <!-- Status -->
+      <td>
+        <select
+          class="status-select"
+          [(ngModel)]="job.status">
+
+          <option value="OPEN">Open</option>
+          <option value="CLOSED">Closed</option>
+          <option value="PAUSED">Paused</option>
+
+        </select>
+      </td>
+
+      <!-- Action -->
+      <td>
+        <button
+          class="update-btn"
+          (click)="updateJob(job.jobId, job.status)">
+          Update
+        </button>
+      </td>
+
+    </tr>
+
+    <!-- Empty State -->
+    <tr *ngIf="filteredPostedJobs.length === 0">
+
+      <td colspan="4" class="empty-row">
+        No posted jobs found.
+      </td>
+
+    </tr>
+
+  </tbody>
+
+</table>
+
+</div>
 
 </div>

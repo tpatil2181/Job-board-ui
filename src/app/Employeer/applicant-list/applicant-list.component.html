@@ -106,8 +106,7 @@
 
                     <td>
 
-                        <button class="view-btn"
-                            (click)="viewProfile(applicant.candidateId)">
+                        <button class="view-btn" (click)="viewProfile(applicant.candidateId)">
 
                             View Profile
 
@@ -117,8 +116,7 @@
 
                     <td>
 
-                        <select
-                            [(ngModel)]="applicant.applicationStatus">
+                        <select [(ngModel)]="applicant.applicationStatus">
 
                             <option value="APPLIED">
                                 Applied
@@ -142,9 +140,7 @@
 
                     <td>
 
-                        <button
-                            class="update-btn"
-                            (click)="updateCandidateStatus(applicant)">
+                        <button class="update-btn" (click)="updateCandidateStatus(applicant)">
 
                             Update
 

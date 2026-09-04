@@ -2,13 +2,16 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';   // 🔥 ADD THIS
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeJobStatus, PostedJob } from '../../Interface/employerModel';
+import { AlertService } from '../../services/alert.service.service';
+import { EnumFormatPipe } from '../../shared/pipes/enum-format.pipe';
+import { DateFormatePipePipe } from '../../shared/pipes/date-formate-pipe.pipe';
 
 @Component({
   selector: 'app-posted-jobs',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule,DateFormatePipePipe,EnumFormatPipe],
   templateUrl: './posted-jobs.component.html',
   styleUrl: './posted-jobs.component.css'
 })
@@ -31,6 +34,24 @@ export class PostedJobsComponent {
   //   }
   // ];
 
+
+  selectedStatus: string = '';
+
+  filteredPostedJobs: any[] = [];
+
+  filterPostedJobs(): void {
+
+    if (!this.selectedStatus) {
+
+      this.filteredPostedJobs = [...this.postedJobs];
+
+      return;
+    }
+
+    this.filteredPostedJobs = this.postedJobs.filter(
+      job => job.status === this.selectedStatus
+    );
+  }
     
   postedJobs: PostedJob[] = [];
    changeJobStatus: ChangeJobStatus = {
@@ -41,7 +62,9 @@ export class PostedJobsComponent {
   
     constructor(
             private authService: AuthService,
-            private router: Router
+            private router: Router,
+            private route: ActivatedRoute,
+            private alertService: AlertService
           ) {}
     
   
@@ -55,28 +78,74 @@ export class PostedJobsComponent {
       
     
         
-    loadPostedJobs() {
-      this.authService.getPostedJobs(1).subscribe({
-        next: (data:PostedJob[]) => {
+    // loadPostedJobs() {
+    //   this.authService.getPostedJobs(1).subscribe({
+    //     next: (data:PostedJob[]) => {
   
-          console.log("Complete Response:", data);
-          console.log("Is Array:", Array.isArray(data));
+    //       console.log("Complete Response:", data);
+    //       console.log("Is Array:", Array.isArray(data));
   
-          this.postedJobs = data;
+    //       this.postedJobs = data;
   
-          console.log("Applied Jobs:", this.postedJobs);
+    //       console.log("Applied Jobs:", this.postedJobs);
           
-        },
-          error: (err) => {
-            console.error(err);
-          }
-        });
-      } 
+    //     },
+    //       error: (err) => {
+    //         console.error(err);
+    //       }
+    //     });
+    //   } 
 
+       loadPostedJobs() {
+          this.authService.getPostedJobs(1).subscribe({
+            next: (data: PostedJob[]) => {
+      
+              console.log("Complete Response:", data);
+              console.log("Is Array:", Array.isArray(data));
+      
+              this.postedJobs = data;
+      
+              this.filteredPostedJobs = [...this.postedJobs];
+      
+              console.log("Posted Jobs:", this.postedJobs);
+      
+            },
+            error: (err) => {
+              console.error(err);
+            }
+          });
+
+        }
     
 
-  updateJob(changeStatus: ChangeJobStatus) {
-    console.log('Updating job:', changeStatus);
+  updateJob(jobid: number, status: string) {
+    this.changeJobStatus.jobId = jobid;
+    this.changeJobStatus.status = status;
+    // console.log('Updating job:', changeStatus);
+
+
+
+    // console.log('Job Posted:', this.job);
+     this.authService.updateJobStatus(this.changeJobStatus).subscribe({
+      next: (res) => {
+        console.log(res);
+         this.alertService.success("Job Status Updated Successful ✅");
+        // alert('Applied Successful ✅');
+      },
+      error: (err) => {
+        console.error(err);
+        
+        if (err.error && err.error.message) {
+          this.alertService.error(err.error.message);
+        } else {
+           this.alertService.error("Something went wrong");
+          // alert('Something went wrong ❌');
+        }
+      }
+    });
+    // 👉 call backend API here
+    // changeStatus
+    // console.log('Updating job:', changeStatus);
 
 
   }

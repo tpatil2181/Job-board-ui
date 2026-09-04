@@ -13,150 +13,150 @@ export class ApplicantListComponent {
 
   // job: any = {};
 
-// applicants: any[] = [];
-job = {
-  jobId: 101,
-  jobTitle: 'Java Full Stack Developer',
-  companyName: 'TechNova Solutions',
-  jobLocation: 'Pune, Maharashtra',
-  workMode: 'Hybrid',
-  maxSalary: '12 LPA',
-  experience: '2-5 Years'
-};
+  // applicants: any[] = [];
+  job = {
+    jobId: 101,
+    jobTitle: 'Java Full Stack Developer',
+    companyName: 'TechNova Solutions',
+    jobLocation: 'Pune, Maharashtra',
+    workMode: 'Hybrid',
+    maxSalary: '12 LPA',
+    experience: '2-5 Years'
+  };
 
-applicants = [
+  applicants = [
 
-  {
-    applicationId: 1,
-    candidateId: 11,
-    firstName: 'Tushar',
-    lastName: 'Patil',
-    email: 'tushar@gmail.com',
-    mobNo: '9876543210',
-    applicationStatus: 'APPLIED'
-  },
+    {
+      applicationId: 1,
+      candidateId: 11,
+      firstName: 'Tushar',
+      lastName: 'Patil',
+      email: 'tushar@gmail.com',
+      mobNo: '9876543210',
+      applicationStatus: 'APPLIED'
+    },
 
-  {
-    applicationId: 2,
-    candidateId: 12,
-    firstName: 'Rahul',
-    lastName: 'Sharma',
-    email: 'rahul.sharma@gmail.com',
-    mobNo: '9876501234',
-    applicationStatus: 'SHORTLISTED'
-  },
+    {
+      applicationId: 2,
+      candidateId: 12,
+      firstName: 'Rahul',
+      lastName: 'Sharma',
+      email: 'rahul.sharma@gmail.com',
+      mobNo: '9876501234',
+      applicationStatus: 'SHORTLISTED'
+    },
 
-  {
-    applicationId: 3,
-    candidateId: 13,
-    firstName: 'Sneha',
-    lastName: 'Joshi',
-    email: 'sneha.joshi@gmail.com',
-    mobNo: '9876512345',
-    applicationStatus: 'INTERVIEW'
-  },
+    {
+      applicationId: 3,
+      candidateId: 13,
+      firstName: 'Sneha',
+      lastName: 'Joshi',
+      email: 'sneha.joshi@gmail.com',
+      mobNo: '9876512345',
+      applicationStatus: 'INTERVIEW'
+    },
 
-  {
-    applicationId: 4,
-    candidateId: 14,
-    firstName: 'Amit',
-    lastName: 'Verma',
-    email: 'amit.verma@gmail.com',
-    mobNo: '9876523456',
-    applicationStatus: 'REJECTED'
-  },
+    {
+      applicationId: 4,
+      candidateId: 14,
+      firstName: 'Amit',
+      lastName: 'Verma',
+      email: 'amit.verma@gmail.com',
+      mobNo: '9876523456',
+      applicationStatus: 'REJECTED'
+    },
 
-  {
-    applicationId: 5,
-    candidateId: 15,
-    firstName: 'Priya',
-    lastName: 'Kulkarni',
-    email: 'priya.kulkarni@gmail.com',
-    mobNo: '9876534567',
-    applicationStatus: 'APPLIED'
-  },
+    {
+      applicationId: 5,
+      candidateId: 15,
+      firstName: 'Priya',
+      lastName: 'Kulkarni',
+      email: 'priya.kulkarni@gmail.com',
+      mobNo: '9876534567',
+      applicationStatus: 'APPLIED'
+    },
 
-  {
-    applicationId: 6,
-    candidateId: 16,
-    firstName: 'Rohit',
-    lastName: 'Mehta',
-    email: 'rohit.mehta@gmail.com',
-    mobNo: '9876545678',
-    applicationStatus: 'SHORTLISTED'
-  },
+    {
+      applicationId: 6,
+      candidateId: 16,
+      firstName: 'Rohit',
+      lastName: 'Mehta',
+      email: 'rohit.mehta@gmail.com',
+      mobNo: '9876545678',
+      applicationStatus: 'SHORTLISTED'
+    },
 
-  {
-    applicationId: 7,
-    candidateId: 17,
-    firstName: 'Neha',
-    lastName: 'Gupta',
-    email: 'neha.gupta@gmail.com',
-    mobNo: '9876556789',
-    applicationStatus: 'INTERVIEW'
-  },
+    {
+      applicationId: 7,
+      candidateId: 17,
+      firstName: 'Neha',
+      lastName: 'Gupta',
+      email: 'neha.gupta@gmail.com',
+      mobNo: '9876556789',
+      applicationStatus: 'INTERVIEW'
+    },
 
-  {
-    applicationId: 8,
-    candidateId: 18,
-    firstName: 'Akash',
-    lastName: 'Singh',
-    email: 'akash.singh@gmail.com',
-    mobNo: '9876567890',
-    applicationStatus: 'APPLIED'
-  }
+    {
+      applicationId: 8,
+      candidateId: 18,
+      firstName: 'Akash',
+      lastName: 'Singh',
+      email: 'akash.singh@gmail.com',
+      mobNo: '9876567890',
+      applicationStatus: 'APPLIED'
+    }
 
-];
+  ];
 
-ngOnInit(): void {
+  ngOnInit(): void {
 
     this.loadJob();
 
     this.loadApplicants();
 
-}
+  }
 
-loadJob() {
+  loadJob() {
 
     // API to fetch job details
 
-}
+  }
 
-loadApplicants() {
+  loadApplicants() {
 
     // API to fetch applicants
 
-}
+  }
 
-// viewProfile(candidateId: number) {
+  // viewProfile(candidateId: number) {
 
-//     console.log(candidateId);
+  //     console.log(candidateId);
 
-// }
+  // }
 
-// updateCandidateStatus(applicant: any) {
+  // updateCandidateStatus(applicant: any) {
 
-//     console.log(applicant);
+  //     console.log(applicant);
 
-// }
+  // }
 
-viewProfile(candidateId: number): void {
+  viewProfile(candidateId: number): void {
 
-  console.log('View Profile:', candidateId);
+    console.log('View Profile:', candidateId);
 
-}
+  }
 
-updateCandidateStatus(applicant: any): void {
+  updateCandidateStatus(applicant: any): void {
 
-  console.log('Updated Candidate:', applicant);
+    console.log('Updated Candidate:', applicant);
 
-  alert(
-    applicant.firstName +
+    alert(
+      applicant.firstName +
       ' status updated to ' +
       applicant.applicationStatus
-  );
+    );
 
-}
+  }
 
 
   // applicants = [
