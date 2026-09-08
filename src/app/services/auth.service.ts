@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { CandidateLogin, CandidateRegistration, Job } from '../Interface/models';
 import { CandidateChangePassword } from '../Interface/Canditate/candidate-chagepass';
 import { AppliedJob, Candidate, Certification, Education, Experience, JobApplication, language, Project } from '../Interface/Canditate/candidate';
-import { ChangeJobStatus, PostedJob, PostJob } from '../Interface/employerModel';
+import { ApplicantWiseJob, ChangeJobStatus, PostedJob, PostJob } from '../Interface/employerModel';
 import { HttpParams } from '@angular/common/http';
 import { registerEmployer } from '../Interface/employerModel';
 import { JobSearchDTO } from '../Interface/Application/job_search';
@@ -514,6 +514,9 @@ export class AuthService {
     return this.http.post<ChangeJobStatus>(`${this.employerUrl}/changeStatus`, job);
   }
 
+  getApplicantWiseJobs(employerId: number): Observable<ApplicantWiseJob[]> {
+    return this.http.get<ApplicantWiseJob[]>(`${this.employerUrl}/allApplnWisejobs/${employerId}`);
+  }
 }
 
 

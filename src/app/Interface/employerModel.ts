@@ -18,6 +18,17 @@ export interface PostedJob {
   status: string;
 }
 
+
+export interface ApplicantWiseJob {
+  jobId: number;
+  jobTitle: string;
+  companyName: string;
+  jobLocation: string;
+  workMode: string;
+  maxSalary: string;
+  totalApplicants: number;
+}
+
 export interface ChangeJobStatus{
     jobId:number;
     status:string;

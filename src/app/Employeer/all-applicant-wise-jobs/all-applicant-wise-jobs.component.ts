@@ -7,14 +7,17 @@
 //   templateUrl: './all-applicant-wise-jobs.component.html',
 //   styleUrl: './all-applicant-wise-jobs.component.css'
 // })
-// export class AllApplicantWiseJobsComponent {
+// export class AllPostedJobComponent {
 
 // }
 
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { AlertService } from '../../services/alert.service.service';
+import { ApplicantWiseJob, PostedJob } from '../../Interface/employerModel';
 
 
 @Component({
@@ -26,7 +29,16 @@ import { FormsModule } from '@angular/forms';
 })
 export class AllApplicantWiseJobsComponent {
 
-  constructor(private router: Router){}
+  // constructor(private router: Router){}
+
+
+  // This things should be there in applicant wise job component.ts file in java side and frontend side 
+  // JobTitle: string = '';
+  // jobId: number = 0;
+  // Experience: string = '';
+  // PostedDate: string = ''
+  // salary: string = '';
+  // noOfApplicants: number = 0;
 
   jobs = [
 
@@ -72,6 +84,70 @@ export class AllApplicantWiseJobsComponent {
 
   ];
 
+  selectedStatus: string = '';
+  
+    filteredPostedJob: any[] = [];
+  
+    // filterJobListings(): void {
+  
+    //   if (!this.selectedStatus) {
+  
+    //     this.filteredPostedJob = [...this.PostedJob];
+  
+    //     return;
+    //   }
+  
+    //   this.filteredPostedJob = this.PostedJob.filter(
+    //     job => job.status === this.selectedStatus
+    //   );
+    // }
+      
+    PostedJob: PostedJob[] = [];
+    //  changeJobStatus: ChangeJobStatus = {
+    
+    //       jobId: 0,
+    //       status: ''
+    //     };
+    
+      constructor(
+              private authService: AuthService,
+              private router: Router,
+              private route: ActivatedRoute,
+              private alertService: AlertService 
+            ) {}
+      
+    
+      ngOnInit(): void {
+        this.loadPostedJob();
+      }
+  
+      trackByJob(_: number, job: ApplicantWiseJob): number {
+          return job.jobId;
+      }
+
+
+
+       loadPostedJob() {
+                this.authService.getPostedJobs(1).subscribe({
+                  next: (data: PostedJob[]) => {
+            
+                    console.log("Complete Response:", data);
+                    console.log("Is Array:", Array.isArray(data));
+            
+                    this.PostedJob = data;
+            
+                    this.filteredPostedJob = [...this.PostedJob];
+            
+                    console.log("Posted Jobs:", this.PostedJob);
+            
+                  },
+                  error: (err) => {
+                    console.error(err);
+                  }
+                });
+      
+              }
+          
   viewApplicants(jobId:number){
 
       // this.router.navigate(['/applicants',jobId]);
