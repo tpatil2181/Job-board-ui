@@ -16,6 +16,12 @@ export interface PostedJob {
   jobTitle: string;
   datePosted: string;
   status: string;
+  salary: string;
+  minExperience: number;
+  maxExperience: number;
+  workMode: string;
+  jobLocation: string;
+  noOfApplicants: number;
 }
 
 

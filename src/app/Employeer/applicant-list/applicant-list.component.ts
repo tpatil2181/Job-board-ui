@@ -1,186 +1,344 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertService } from '../../services/alert.service.service';
+import { AuthService } from '../../services/auth.service';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { SharedModule } from "../../pages/shared.module";
+
+
+// =====================================================
+// Applicant Interface
+// =====================================================
+
+export type ApplicationStatus = 'Applied' | 'Shortlisted' | 'Rejected' | 'Scheduled';
+
+export interface Applicant {
+
+  applicationId: number;
+
+  candidateId: number;
+
+  candidateName: string;
+
+  candidateEmail?: string;
+
+  candidateTitle?: string | null;
+
+  resumeId?: number | null;
+
+  imageId?: number | null;
+
+  appliedOn: string;
+
+  status: ApplicationStatus;
+
+}
+
+
+// =====================================================
+// Component
+// =====================================================
 
 @Component({
   selector: 'app-applicant-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    SharedModule
+],
   templateUrl: './applicant-list.component.html',
-  styleUrl: './applicant-list.component.css'
+  styleUrls: ['./applicant-list.component.css']
 })
-export class ApplicantListComponent {
+export class ApplicantListComponent implements OnInit {
 
-  // job: any = {};
 
-  // applicants: any[] = [];
-  job = {
-    jobId: 101,
-    jobTitle: 'Java Full Stack Developer',
-    companyName: 'TechNova Solutions',
-    jobLocation: 'Pune, Maharashtra',
-    workMode: 'Hybrid',
-    maxSalary: '12 LPA',
-    experience: '2-5 Years'
-  };
+  // =====================================================
+  // Inputs
+  // =====================================================
 
-  applicants = [
+  // Job this list belongs to — pass in directly, or it will
+  // be read from the route param `jobId` if not provided.
+  @Input() jobId?: number;
 
-    {
-      applicationId: 1,
-      candidateId: 11,
-      firstName: 'Tushar',
-      lastName: 'Patil',
-      email: 'tushar@gmail.com',
-      mobNo: '9876543210',
-      applicationStatus: 'APPLIED'
-    },
+  jobTitle = '';
 
-    {
-      applicationId: 2,
-      candidateId: 12,
-      firstName: 'Rahul',
-      lastName: 'Sharma',
-      email: 'rahul.sharma@gmail.com',
-      mobNo: '9876501234',
-      applicationStatus: 'SHORTLISTED'
-    },
+  
 
-    {
-      applicationId: 3,
-      candidateId: 13,
-      firstName: 'Sneha',
-      lastName: 'Joshi',
-      email: 'sneha.joshi@gmail.com',
-      mobNo: '9876512345',
-      applicationStatus: 'INTERVIEW'
-    },
 
-    {
-      applicationId: 4,
-      candidateId: 14,
-      firstName: 'Amit',
-      lastName: 'Verma',
-      email: 'amit.verma@gmail.com',
-      mobNo: '9876523456',
-      applicationStatus: 'REJECTED'
-    },
+  // =====================================================
+  // State
+  // =====================================================
 
-    {
-      applicationId: 5,
-      candidateId: 15,
-      firstName: 'Priya',
-      lastName: 'Kulkarni',
-      email: 'priya.kulkarni@gmail.com',
-      mobNo: '9876534567',
-      applicationStatus: 'APPLIED'
-    },
+  applicants: Applicant[] = [];
 
-    {
-      applicationId: 6,
-      candidateId: 16,
-      firstName: 'Rohit',
-      lastName: 'Mehta',
-      email: 'rohit.mehta@gmail.com',
-      mobNo: '9876545678',
-      applicationStatus: 'SHORTLISTED'
-    },
+  loading = false;
 
-    {
-      applicationId: 7,
-      candidateId: 17,
-      firstName: 'Neha',
-      lastName: 'Gupta',
-      email: 'neha.gupta@gmail.com',
-      mobNo: '9876556789',
-      applicationStatus: 'INTERVIEW'
-    },
+  searchTerm = '';
 
-    {
-      applicationId: 8,
-      candidateId: 18,
-      firstName: 'Akash',
-      lastName: 'Singh',
-      email: 'akash.singh@gmail.com',
-      mobNo: '9876567890',
-      applicationStatus: 'APPLIED'
-    }
+  statusFilter = '';
 
+  readonly statusOptions: ApplicationStatus[] = [
+    'Applied',
+    'Shortlisted',
+    'Scheduled',
+    'Rejected'
   ];
+
+  // Tracks which row's status dropdown is open (for the
+  // inline "Update Status" action menu)
+  openMenuFor: number | null = null;
+
+
+  // =====================================================
+  // Constructor
+  // =====================================================
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private authService: AuthService,      // replace with your real AuthService type
+    private alertService: AlertService,     // replace with your real AlertService type
+    private confirmDialogService: ConfirmDialogComponent // replace with your real ConfirmDialogService type
+  ) {}
+
+
+  // =====================================================
+  // Lifecycle
+  // =====================================================
 
   ngOnInit(): void {
 
-    this.loadJob();
+    if (!this.jobId) {
+
+      const paramId = this.route.snapshot.paramMap.get('jobId');
+      this.jobId = paramId ? Number(paramId) : undefined;
+
+    }
 
     this.loadApplicants();
 
   }
 
-  loadJob() {
+  
 
-    // API to fetch job details
+
+  // =====================================================
+  // Load applicants for this job
+  // =====================================================
+
+  loadApplicants(): void {
+
+    if (!this.jobId) {
+      return;
+    }
+
+    this.loading = true;
+
+    this.authService
+      .getApplicantsForJob(this.jobId, {
+        status: this.statusFilter || null,
+        search: this.searchTerm || null
+      })
+      .subscribe({
+
+        next: (response: any) => {
+
+          this.applicants = response.applicants ?? response;
+          this.jobTitle = response.jobTitle ?? this.jobTitle;
+          this.loading = false;
+
+        },
+
+        error: (err: any) => {
+
+          console.error('Error loading applicants:', err);
+
+          this.loading = false;
+
+          this.alertService.error(
+            err?.error?.message ||
+            'Failed to load applicants.'
+          );
+
+        }
+
+      });
 
   }
 
-  loadApplicants() {
 
-    // API to fetch applicants
+  // =====================================================
+  // Filter bar actions
+  // =====================================================
 
-  }
+  onSearch(): void {
 
-  // viewProfile(candidateId: number) {
-
-  //     console.log(candidateId);
-
-  // }
-
-  // updateCandidateStatus(applicant: any) {
-
-  //     console.log(applicant);
-
-  // }
-
-  viewProfile(candidateId: number): void {
-
-    console.log('View Profile:', candidateId);
+    this.loadApplicants();
 
   }
 
-  updateCandidateStatus(applicant: any): void {
+  onReset(): void {
 
-    console.log('Updated Candidate:', applicant);
+    this.searchTerm = '';
+    this.statusFilter = '';
 
-    alert(
-      applicant.firstName +
-      ' status updated to ' +
-      applicant.applicationStatus
-    );
+    this.loadApplicants();
 
   }
 
 
-  // applicants = [
-  //   {
-  //     name: 'Rahul Sharma',
-  //     status: 'Shortlisted'
-  //   },
-  //   {
-  //     name: 'Anita Verma',
-  //     status: 'Rejected'
-  //   },
-  //   {
-  //     name: 'Amit Patil',
-  //     status: 'Rejected'
-  //   }
-  // ];
+  // =====================================================
+  // Row helpers
+  // =====================================================
 
-  // viewProfile(applicant: any) {
-  //   console.log('View profile:', applicant);
-  //   // 👉 later navigate to profile page
-  // }
+  trackByApplication(_index: number, applicant: Applicant): number {
 
-  // updateApplicant(applicant: any) {
-  //   console.log('Update applicant:', applicant);
-  //   // 👉 call API here
-  // }
+    return applicant.applicationId;
+
+  }
+
+  initials(name: string): string {
+
+    return (name || '')
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(part => part[0]?.toUpperCase())
+      .join('');
+
+  }
+
+  statusClass(status: ApplicationStatus): string {
+
+    switch (status) {
+
+      case 'Shortlisted':
+        return 'status-shortlisted';
+
+      case 'Rejected':
+        return 'status-rejected';
+
+      case 'Scheduled':
+        return 'status-scheduled';
+
+      default:
+        return 'status-applied';
+
+    }
+
+  }
+
+
+  // =====================================================
+  // View resume / profile
+  // =====================================================
+
+  viewResume(applicant: Applicant): void {
+
+    if (!applicant.resumeId) {
+
+      this.alertService.error('This candidate has not uploaded a resume.');
+      return;
+
+    }
+
+    window.open(`/api/resumes/${applicant.resumeId}`, '_blank');
+
+  }
+
+  viewProfile(applicant: Applicant): void {
+
+    this.router.navigate(['/employer/candidate', applicant.candidateId]);
+
+  }
+
+
+  // =====================================================
+  // Update status
+  // =====================================================
+
+  toggleStatusMenu(applicationId: number): void {
+
+    this.openMenuFor = this.openMenuFor === applicationId ? null : applicationId;
+
+  }
+
+  updateStatus(applicant: Applicant, newStatus: ApplicationStatus): void {
+
+    this.openMenuFor = null;
+
+    if (applicant.status === newStatus) {
+      return;
+    }
+
+    const proceed = () => {
+
+      const previousStatus = applicant.status;
+      applicant.status = newStatus; // optimistic update
+
+      this.authService
+        .updateApplicationStatus(applicant.applicationId, newStatus)
+        .subscribe({
+
+          next: (response: any) => {
+
+            console.log('Application status updated:', response);
+
+            this.alertService.success(
+              `Marked as ${newStatus}.`
+            );
+
+          },
+
+          error: (err: any) => {
+
+            console.error('Error updating status:', err);
+
+            applicant.status = previousStatus; // roll back
+
+            this.alertService.error(
+              err?.error?.message ||
+              'Failed to update status.'
+            );
+
+          }
+
+        });
+
+    };
+
+    // if (newStatus === 'Rejected') {
+
+    //   this.confirmDialogService.onConfirm({
+
+    //     title: 'Reject Applicant',
+
+    //     message: `Are you sure you want to reject ${applicant.candidateName}?`,
+
+    //     variant: 'danger',
+
+    //     confirmLabel: 'Reject',
+
+    //     cancelLabel: 'Cancel'
+
+    //   }).subscribe((result: boolean) => {
+
+    //     if (result) {
+    //       proceed();
+    //     }
+
+    //   });
+
+    //   return;
+
+    // }
+
+    proceed();
+
+  }
+
 }

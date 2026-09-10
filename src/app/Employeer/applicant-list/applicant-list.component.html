@@ -1,159 +1,106 @@
-<div class="page">
+<app-header></app-header>
 
-    <!-- ================= Job Details ================= -->
+<div class="applied-container">
 
-    <div class="job-card">
+  <h2>Applicants{{ jobTitle ? ' for ' + jobTitle : '' }}</h2>
 
-        <div class="job-left">
+  <!-- 🔹 Filter bar -->
+  <div class="filter-bar">
 
-            <h2>{{ job.jobTitle }}</h2>
-
-            <p>{{ job.companyName }}</p>
-
-            <div class="job-info">
-
-                <span>📍 {{ job.jobLocation }}</span>
-
-                <span>💼 {{ job.workMode }}</span>
-
-                <span>💰 ₹ {{ job.maxSalary }}</span>
-
-            </div>
-
-        </div>
-
-        <div class="job-right">
-
-            <div class="count">
-                {{ applicants.length }}
-            </div>
-
-            <p>Total Applicants</p>
-
-        </div>
-
+    <div class="filter-group">
+      <label>Search by name</label>
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Ex: Aditi Sharma"
+        (keyup.enter)="onSearch()">
     </div>
 
-
-    <!-- ================= Applicant List ================= -->
-
-    <div class="applicant-container">
-
-        <div class="header">
-
-            <h3>Applicants</h3>
-
-        </div>
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>#</th>
-
-                    <th>Applicant</th>
-
-                    <th>Email</th>
-
-                    <th>Profile</th>
-
-                    <th>Status</th>
-
-                    <th>Action</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                <tr *ngFor="let applicant of applicants; let i=index">
-
-                    <td>{{ i+1 }}</td>
-
-                    <td>
-
-                        <div class="candidate">
-
-                            <div class="avatar">
-
-                                {{ applicant.firstName.charAt(0) }}
-
-                            </div>
-
-                            <div>
-
-                                <strong>
-
-                                    {{ applicant.firstName }}
-                                    {{ applicant.lastName }}
-
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-                    </td>
-
-                    <td>
-
-                        {{ applicant.email }}
-
-                    </td>
-
-                    <td>
-
-                        <button class="view-btn" (click)="viewProfile(applicant.candidateId)">
-
-                            View Profile
-
-                        </button>
-
-                    </td>
-
-                    <td>
-
-                        <select [(ngModel)]="applicant.applicationStatus">
-
-                            <option value="APPLIED">
-                                Applied
-                            </option>
-
-                            <option value="SHORTLISTED">
-                                Shortlisted
-                            </option>
-
-                            <option value="INTERVIEW">
-                                Interview
-                            </option>
-
-                            <option value="REJECTED">
-                                Rejected
-                            </option>
-
-                        </select>
-
-                    </td>
-
-                    <td>
-
-                        <button class="update-btn" (click)="updateCandidateStatus(applicant)">
-
-                            Update
-
-                        </button>
-
-                    </td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
+    <div class="filter-group">
+      <label>Status</label>
+      <select [(ngModel)]="statusFilter">
+        <option value="">All</option>
+        <option *ngFor="let s of statusOptions" [value]="s">{{ s }}</option>
+      </select>
     </div>
+
+    <button class="search-btn" (click)="onSearch()">Search</button>
+    <button class="reset-btn" (click)="onReset()">Reset</button>
+
+  </div>
+
+  <!-- 🔹 Table -->
+  <div class="job-table">
+    <table>
+
+      <thead>
+        <tr>
+          <th>Applicant</th>
+          <th>Applied On</th>
+          <th>Resume / Profile</th>
+          <th>Status</th>
+          <th>Update Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let applicant of applicants; trackBy: trackByApplication">
+
+          <td>
+            <div class="applicant-cell">
+              <div class="applicant-avatar">
+                <img *ngIf="applicant.imageId" [src]="'/api/images/' + applicant.imageId" [alt]="applicant.candidateName">
+                <span *ngIf="!applicant.imageId">{{ initials(applicant.candidateName) }}</span>
+              </div>
+              <div>
+                <div class="applicant-name">{{ applicant.candidateName }}</div>
+                <div class="applicant-title" *ngIf="applicant.candidateTitle">{{ applicant.candidateTitle }}</div>
+              </div>
+            </div>
+          </td>
+
+          <td>{{ applicant.appliedOn | date: 'mediumDate' }}</td>
+
+          <td>
+            <div class="action-group">
+              <button class="btn-outline" (click)="viewResume(applicant)">View Resume</button>
+              <button class="btn-outline" (click)="viewProfile(applicant)">View Profile</button>
+            </div>
+          </td>
+
+          <td>
+            <span class="status-badge" [ngClass]="statusClass(applicant.status)">{{ applicant.status }}</span>
+          </td>
+
+          <td class="status-menu-cell">
+            <button class="btn-primary-outline" (click)="toggleStatusMenu(applicant.applicationId)">
+              Update Status ▾
+            </button>
+
+            <div class="status-menu" *ngIf="openMenuFor === applicant.applicationId">
+              <button
+                *ngFor="let s of statusOptions"
+                [class.active]="applicant.status === s"
+                (click)="updateStatus(applicant, s)">
+                {{ s }}
+              </button>
+            </div>
+          </td>
+
+        </tr>
+
+        <tr *ngIf="!loading && applicants.length === 0">
+          <td colspan="5" class="empty-row">No applicants yet for this job.</td>
+        </tr>
+
+        <tr *ngIf="loading">
+          <td colspan="5" class="empty-row">Loading applicants…</td>
+        </tr>
+
+      </tbody>
+
+    </table>
+  </div>
 
 </div>

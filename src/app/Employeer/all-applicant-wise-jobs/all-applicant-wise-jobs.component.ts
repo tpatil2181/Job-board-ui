@@ -18,12 +18,13 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { AlertService } from '../../services/alert.service.service';
 import { ApplicantWiseJob, PostedJob } from '../../Interface/employerModel';
+import { EnumFormatPipe } from '../../shared/pipes/enum-format.pipe';
 
 
 @Component({
  selector: 'app-all-applicant-wise-jobs',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,EnumFormatPipe],
   templateUrl: './all-applicant-wise-jobs.component.html',
   styleUrl: './all-applicant-wise-jobs.component.css'
 })
@@ -40,67 +41,67 @@ export class AllApplicantWiseJobsComponent {
   // salary: string = '';
   // noOfApplicants: number = 0;
 
-  jobs = [
+  // jobs = [
 
-    {
-      jobId:101,
-      jobTitle:'Java Full Stack Developer',
-      companyName:'TechNova Pvt Ltd',
-      jobLocation:'Pune',
-      workMode:'Hybrid',
-      maxSalary:'12 LPA',
-      totalApplicants:23
-    },
+  //   {
+  //     jobId:101,
+  //     jobTitle:'Java Full Stack Developer',
+  //     companyName:'TechNova Pvt Ltd',
+  //     jobLocation:'Pune',
+  //     workMode:'Hybrid',
+  //     maxSalary:'12 LPA',
+  //     totalApplicants:23
+  //   },
 
-    {
-      jobId:102,
-      jobTitle:'Flutter Developer',
-      companyName:'Infosys',
-      jobLocation:'Bangalore',
-      workMode:'Remote',
-      maxSalary:'10 LPA',
-      totalApplicants:15
-    },
+  //   {
+  //     jobId:102,
+  //     jobTitle:'Flutter Developer',
+  //     companyName:'Infosys',
+  //     jobLocation:'Bangalore',
+  //     workMode:'Remote',
+  //     maxSalary:'10 LPA',
+  //     totalApplicants:15
+  //   },
 
-    {
-      jobId:103,
-      jobTitle:'Spring Boot Developer',
-      companyName:'TCS',
-      jobLocation:'Mumbai',
-      workMode:'On Site',
-      maxSalary:'14 LPA',
-      totalApplicants:42
-    },
+  //   {
+  //     jobId:103,
+  //     jobTitle:'Spring Boot Developer',
+  //     companyName:'TCS',
+  //     jobLocation:'Mumbai',
+  //     workMode:'On Site',
+  //     maxSalary:'14 LPA',
+  //     totalApplicants:42
+  //   },
 
-    {
-      jobId:104,
-      jobTitle:'React Developer',
-      companyName:'Wipro',
-      jobLocation:'Hyderabad',
-      workMode:'Hybrid',
-      maxSalary:'11 LPA',
-      totalApplicants:9
-    }
+  //   {
+  //     jobId:104,
+  //     jobTitle:'React Developer',
+  //     companyName:'Wipro',
+  //     jobLocation:'Hyderabad',
+  //     workMode:'Hybrid',
+  //     maxSalary:'11 LPA',
+  //     totalApplicants:9
+  //   }
 
-  ];
+  // ];
 
   selectedStatus: string = '';
   
     filteredPostedJob: any[] = [];
   
-    // filterJobListings(): void {
+    filterJobListings(): void {
   
-    //   if (!this.selectedStatus) {
+      if (!this.selectedStatus) {
   
-    //     this.filteredPostedJob = [...this.PostedJob];
+        this.filteredPostedJob = [...this.PostedJob];
   
-    //     return;
-    //   }
+        return;
+      }
   
-    //   this.filteredPostedJob = this.PostedJob.filter(
-    //     job => job.status === this.selectedStatus
-    //   );
-    // }
+      this.filteredPostedJob = this.PostedJob.filter(
+        job => job.status === this.selectedStatus
+      );
+    }
       
     PostedJob: PostedJob[] = [];
     //  changeJobStatus: ChangeJobStatus = {
@@ -121,7 +122,7 @@ export class AllApplicantWiseJobsComponent {
         this.loadPostedJob();
       }
   
-      trackByJob(_: number, job: ApplicantWiseJob): number {
+      trackByJob(_: number, job: PostedJob): number {
           return job.jobId;
       }
 
@@ -148,12 +149,17 @@ export class AllApplicantWiseJobsComponent {
       
               }
           
-  viewApplicants(jobId:number){
+  // viewApplicants(jobId:number){
 
-      // this.router.navigate(['/applicants',jobId]);
-      this.router.navigate(['comapnyHome/allAllicantsofperticularjobd']);
+  //     // this.router.navigate(['/applicants',jobId]);
+  //     this.router.navigate(['comapnyHome/allAllicantsofperticularjobd']);
       
 
+  // }
+
+   viewApplicants(jobId: number) {
+
+    this.router.navigate(['/comapnyHome/allAllicantsofperticularjobd', jobId]);
   }
 
 }
