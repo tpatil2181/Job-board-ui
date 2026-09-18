@@ -89,7 +89,7 @@ export const routes: Routes = [
     },
 
     {
-      path: 'allAllicantsofperticularjobd',
+      path: 'allApplicants/:jobId',
       component: ApplicantListComponent,
       canActivate: [authGuard]
     },

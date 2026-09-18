@@ -4,8 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from '../../services/alert.service.service';
 import { AuthService } from '../../services/auth.service';
-import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+// import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+// import { ConfirmDialogComponent } from "../../shared/confirm-dialog/confirm-dialog.component";
+
 import { SharedModule } from "../../pages/shared.module";
+import { ConfirmDialogService } from '../../services/confirm-dialog.service';
+import { DateFormatePipePipe } from '../../shared/pipes/date-formate-pipe.pipe';
 
 
 // =====================================================
@@ -30,7 +34,7 @@ export interface Applicant {
 
   imageId?: number | null;
 
-  appliedOn: string;
+  dateApplied: string;
 
   status: ApplicationStatus;
 
@@ -47,7 +51,8 @@ export interface Applicant {
   imports: [
     CommonModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    DateFormatePipePipe
 ],
   templateUrl: './applicant-list.component.html',
   styleUrls: ['./applicant-list.component.css']
@@ -61,7 +66,7 @@ export class ApplicantListComponent implements OnInit {
 
   // Job this list belongs to — pass in directly, or it will
   // be read from the route param `jobId` if not provided.
-  @Input() jobId?: number;
+  // @Input() jobId?: number;
 
   jobTitle = '';
 
@@ -95,13 +100,14 @@ export class ApplicantListComponent implements OnInit {
   // =====================================================
   // Constructor
   // =====================================================
+jobId!: number;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,      // replace with your real AuthService type
     private alertService: AlertService,     // replace with your real AlertService type
-    private confirmDialogService: ConfirmDialogComponent // replace with your real ConfirmDialogService type
+    private confirmDialogService: ConfirmDialogService // replace with your real ConfirmDialogService type
   ) {}
 
 
@@ -109,19 +115,58 @@ export class ApplicantListComponent implements OnInit {
   // Lifecycle
   // =====================================================
 
+  // ngOnInit(): void {
+
+  //   if (!this.jobId) {
+
+  //     const paramId = this.route.snapshot.paramMap.get('jobId');
+  //     this.jobId = paramId ? Number(paramId) : undefined;
+
+  //   }
+
+  //   this.loadApplicants();
+
+  // }
   ngOnInit(): void {
 
-    if (!this.jobId) {
+  this.jobId = Number(this.route.snapshot.paramMap.get('jobId'));
 
-      const paramId = this.route.snapshot.paramMap.get('jobId');
-      this.jobId = paramId ? Number(paramId) : undefined;
+  console.log('Job ID:', this.jobId);
 
-    }
+  this.loadApplicants();
+}
 
-    this.loadApplicants();
+loadApplicants(): void {
 
-  }
+  this.loading = true;
 
+  this.authService.getApplicantsForJob(this.jobId)
+    .subscribe({
+
+      next: (response: any) => {
+
+        console.log('Applicants response:', response);
+
+        this.applicants = response.applicants ?? response;
+        this.jobTitle = response.jobTitle ?? this.jobTitle;
+
+        this.loading = false;
+      },
+
+      error: (err: any) => {
+
+        console.error('Error loading applicants:', err);
+
+        this.loading = false;
+
+        this.alertService.error(
+          err?.error?.message ||
+          'Failed to load applicants.'
+        );
+      }
+
+    });
+}
   
 
 
@@ -129,45 +174,46 @@ export class ApplicantListComponent implements OnInit {
   // Load applicants for this job
   // =====================================================
 
-  loadApplicants(): void {
+  // loadApplicants(): void {
 
-    if (!this.jobId) {
-      return;
-    }
+  //   if (!this.jobId) {
+  //     return;
+  //   }
 
-    this.loading = true;
+  //   this.loading = true;
 
-    this.authService
-      .getApplicantsForJob(this.jobId, {
-        status: this.statusFilter || null,
-        search: this.searchTerm || null
-      })
-      .subscribe({
+  //   // this.authService
+  //   //   .getApplicantsForJob(this.jobId, {
+  //   //     status: this.statusFilter || null,
+  //   //     search: this.searchTerm || null
+  //   //   })
+  //   this.authService.getApplicantsForJob(this.jobId,)
+  //     .subscribe({
 
-        next: (response: any) => {
+  //       next: (response: any) => {
 
-          this.applicants = response.applicants ?? response;
-          this.jobTitle = response.jobTitle ?? this.jobTitle;
-          this.loading = false;
+  //         this.applicants = response.applicants ?? response;
+  //         this.jobTitle = response.jobTitle ?? this.jobTitle;
+  //         this.loading = false;
 
-        },
+  //       },
 
-        error: (err: any) => {
+  //       error: (err: any) => {
 
-          console.error('Error loading applicants:', err);
+  //         console.error('Error loading applicants:', err);
 
-          this.loading = false;
+  //         this.loading = false;
 
-          this.alertService.error(
-            err?.error?.message ||
-            'Failed to load applicants.'
-          );
+  //         this.alertService.error(
+  //           err?.error?.message ||
+  //           'Failed to load applicants.'
+  //         );
 
-        }
+  //       }
 
-      });
+  //     });
 
-  }
+  // }
 
 
   // =====================================================
