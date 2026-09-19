@@ -57,4 +57,5 @@ export interface PostJob {
   educations: string
   status: string
   datePosted: string
+  noOfApplicants:number
 }

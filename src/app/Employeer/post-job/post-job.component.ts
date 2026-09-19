@@ -30,6 +30,7 @@ export class PostJobComponent {
     roleCategory: '',
     education: [],
     skills: [],
+    noOfApplicants: 0,
     datePosted: new Date().toISOString().slice(0, 19)
   };
 

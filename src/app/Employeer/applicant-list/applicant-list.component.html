@@ -50,11 +50,11 @@
           <td>
             <div class="applicant-cell">
               <div class="applicant-avatar">
-                <img *ngIf="applicant.imageId" [src]="'/api/images/' + applicant.imageId" [alt]="applicant.candidateName">
-                <span *ngIf="!applicant.imageId">{{ initials(applicant.candidateName) }}</span>
+                <img *ngIf="applicant.imageId" [src]="'/api/images/' + applicant.imageId" [alt]="applicant.cndFname + ' ' + applicant.cndLname">
+                <span *ngIf="!applicant.imageId">{{ initials(applicant.cndFname + ' ' + applicant.cndLname) }}</span>
               </div>
               <div>
-                <div class="applicant-name">{{ applicant.candidateName }}</div>
+                <div class="applicant-name">{{ applicant.cndFname }} {{ applicant.cndLname }}</div>
                 <div class="applicant-title" *ngIf="applicant.candidateTitle">{{ applicant.candidateTitle }}</div>
               </div>
             </div>
@@ -74,11 +74,11 @@
           </td>
 
           <td class="status-menu-cell">
-            <button class="btn-primary-outline" (click)="toggleStatusMenu(applicant.applicationId)">
+            <button class="btn-primary-outline" (click)="toggleStatusMenu(applicant.applyid)">
               Update Status ▾
             </button>
 
-            <div class="status-menu" *ngIf="openMenuFor === applicant.applicationId">
+            <div class="status-menu" *ngIf="openMenuFor === applicant.applyid">
               <button
                 *ngFor="let s of statusOptions"
                 [class.active]="applicant.status === s"

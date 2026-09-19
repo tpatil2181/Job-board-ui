@@ -18,13 +18,19 @@ import { DateFormatePipePipe } from '../../shared/pipes/date-formate-pipe.pipe';
 
 export type ApplicationStatus = 'Applied' | 'Shortlisted' | 'Rejected' | 'Scheduled';
 
-export interface Applicant {
+export interface jobApplicant {
 
-  applicationId: number;
+  applyid: number;
 
-  candidateId: number;
+  employeerId:number;
 
-  candidateName: string;
+  jobId: number;
+
+  cndId: number;
+
+  cndFname: string;
+
+  cndLname: string;
 
   candidateEmail?: string;
 
@@ -77,7 +83,7 @@ export class ApplicantListComponent implements OnInit {
   // State
   // =====================================================
 
-  applicants: Applicant[] = [];
+  applicants: jobApplicant[] = [];
 
   loading = false;
 
@@ -240,9 +246,9 @@ loadApplicants(): void {
   // Row helpers
   // =====================================================
 
-  trackByApplication(_index: number, applicant: Applicant): number {
+  trackByApplication(_index: number, applicant: jobApplicant): number {
 
-    return applicant.applicationId;
+    return applicant.applyid;
 
   }
 
@@ -283,7 +289,7 @@ loadApplicants(): void {
   // View resume / profile
   // =====================================================
 
-  viewResume(applicant: Applicant): void {
+  viewResume(applicant: jobApplicant): void {
 
     if (!applicant.resumeId) {
 
@@ -296,9 +302,9 @@ loadApplicants(): void {
 
   }
 
-  viewProfile(applicant: Applicant): void {
+  viewProfile(applicant: jobApplicant): void {
 
-    this.router.navigate(['/employer/candidate', applicant.candidateId]);
+    this.router.navigate(['/employer/candidate', applicant.cndId]);
 
   }
 
@@ -313,7 +319,7 @@ loadApplicants(): void {
 
   }
 
-  updateStatus(applicant: Applicant, newStatus: ApplicationStatus): void {
+  updateStatus(applicant: jobApplicant, newStatus: ApplicationStatus): void {
 
     this.openMenuFor = null;
 
@@ -327,7 +333,7 @@ loadApplicants(): void {
       applicant.status = newStatus; // optimistic update
 
       this.authService
-        .updateApplicationStatus(applicant.applicationId, newStatus)
+        .updateApplicationStatus(applicant.applyid, newStatus)
         .subscribe({
 
           next: (response: any) => {
