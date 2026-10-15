@@ -159,7 +159,7 @@ export class AllApplicantWiseJobsComponent {
 
    viewApplicants(jobId: number) {
 
-    this.router.navigate(['/comapnyHome/allApplicants', jobId]);
+    this.router.navigate(['/companyHome/allApplicants', jobId]);
   }
 
 }

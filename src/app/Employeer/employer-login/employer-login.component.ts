@@ -44,11 +44,29 @@ export class EmployerLoginComponent {
           localStorage.setItem('userId', response.userId.toString());
           localStorage.setItem('email', response.email);
         // alert('Login Successful ✅');
-        //  console.log('INSIDE NEXT ✅');  
+        // console.log('INSIDE NEXT ✅');  
         // this.router.navigate(['/login']);
         // this.router.navigateByUrl('/userHome');
-        //  this.router.navigate(['/profile', res.id]);
-        this.router.navigate(['/comapnyHome']); // redirect after login
+        // this.router.navigate(['/profile', res.id]);
+
+          this.authService.getEmployerProfile().subscribe({
+        next: (candidate) => {
+
+          this.authService.setCandidate(candidate);
+          
+          
+
+          console.log('Profile Loaded:', candidate);
+
+          // this.router.navigate(['']);
+           this.router.navigate(['/companyHome']); // redirect after login
+        },
+
+        error: (err) => {
+          console.error('Profile API Error:', err);
+        }
+      });
+        this.router.navigate(['/companyHome']); // redirect after login
       },
       error: (err) => {
         console.error(err);

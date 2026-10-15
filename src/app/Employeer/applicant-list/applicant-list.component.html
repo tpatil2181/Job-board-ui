@@ -64,8 +64,8 @@
 
           <td>
             <div class="action-group">
-              <button class="btn-outline" (click)="viewResume(applicant)">View Resume</button>
-              <button class="btn-outline" (click)="viewProfile(applicant)">View Profile</button>
+              <button class="btn-outline" (click)="viewResume(applicant.resumeId|| 0)">View Resume</button>
+              <button class="btn-outline" (click)="viewProfile(applicant.cndId)">View Profile</button>
             </div>
           </td>
 

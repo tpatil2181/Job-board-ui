@@ -1,7 +1,13 @@
 // export interfacee employer {
 
 // }
-export interface employer {}
+export interface Employer {
+	  employeerId:number;
+    employeerName:string;
+    empEmail:string;
+    website:string;
+    contact:number;
+}
 
 export interface registerEmployer {
     employerName:string;

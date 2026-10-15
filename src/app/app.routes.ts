@@ -59,7 +59,7 @@ export const routes: Routes = [
      //================================Employer routes================================
 
 {
-  path: 'comapnyHome',
+  path: 'companyHome',
   component: CompanyHomeComponent,
 
   children: [

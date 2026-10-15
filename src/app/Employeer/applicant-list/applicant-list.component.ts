@@ -289,22 +289,60 @@ loadApplicants(): void {
   // View resume / profile
   // =====================================================
 
-  viewResume(applicant: jobApplicant): void {
-
-    if (!applicant.resumeId) {
-
-      this.alertService.error('This candidate has not uploaded a resume.');
-      return;
-
+  viewCndProfileEmplrView() {
+      this.authService.viewCndProfileEmplrView().subscribe({
+        next: (data: []) => {
+  
+          // console.log("Complete Response:", data);
+          // console.log("Is Array:", Array.isArray(data));
+  
+          // this.appliedJobs = data;
+  
+          // this.filteredAppliedJobs = [...this.appliedJobs];
+  
+          // console.log("Applied Jobs:", this.appliedJobs);
+  
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      });
     }
 
-    window.open(`/api/resumes/${applicant.resumeId}`, '_blank');
+  // viewResume(resumeId: number): void {
 
+  //   if (resumeId==null) {
+
+  //     this.alertService.error('This candidate has not uploaded a resume.');
+  //     return;
+
+  //   }
+
+  //   window.open(`/api/resumes/${applicant.resumeId}`, '_blank');
+
+  // }
+
+  viewResume(resumeId: number): void {
+    if (resumeId==null || resumeId===0) {
+      console.error('Resume ID is missing ❌');
+      alert('Resume not available');
+      return;
+    }
+    this.authService.getResume(resumeId).subscribe({
+      next: (res: Blob) => {
+        const fileURL = window.URL.createObjectURL(res);
+        window.open(fileURL); // ✅ opens PDF
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Failed to load resume ❌');
+      }
+    });
   }
 
-  viewProfile(applicant: jobApplicant): void {
+  viewProfile(cndId: number): void {
 
-    this.router.navigate(['/employer/candidate', applicant.cndId]);
+    this.router.navigate(['/employer/candidate', cndId]);
 
   }
 

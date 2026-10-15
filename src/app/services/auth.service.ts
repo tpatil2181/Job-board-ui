@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { CandidateLogin, CandidateRegistration, Job } from '../Interface/models';
 import { CandidateChangePassword } from '../Interface/Canditate/candidate-chagepass';
 import { AppliedJob, Candidate, Certification, Education, Experience, JobApplication, language, Project } from '../Interface/Canditate/candidate';
-import { ApplicantWiseJob, ChangeJobStatus, PostedJob, PostJob } from '../Interface/employerModel';
+import { ApplicantWiseJob, ChangeJobStatus, Employer, PostedJob, PostJob } from '../Interface/employerModel';
 import { HttpParams } from '@angular/common/http';
 import { registerEmployer } from '../Interface/employerModel';
 import { JobSearchDTO } from '../Interface/Application/job_search';
@@ -78,6 +78,31 @@ export class AuthService {
 
   }
 
+
+  // Employer Object from Backend
+
+  private employerSubject = new BehaviorSubject<Employer | null>(this.getEmployerFromStorage());
+  employer$ = this.employerSubject.asObservable();
+
+  private getEmployerFromStorage(): Employer | null {
+
+  const data = localStorage.getItem('employer');
+
+    if (!data) {
+      return null;
+    }
+
+    try {
+
+      return JSON.parse(data);
+
+    } catch {
+
+      return null;
+
+    }
+
+  }
 
 
   
@@ -167,7 +192,7 @@ export class AuthService {
 
   // Clear candidate during logout
   clearCandidate(): void {
-
+    
     this.candidateSubject.next(null);
 
   }
@@ -352,7 +377,7 @@ export class AuthService {
   }
 
   getResume(resumeId: number): Observable<Blob> {
-    return this.http.get(`${this.candidateUrl}/resume/${resumeId}`, {
+    return this.http.get(`${this.baseUrl}/resume/${resumeId}`, {
       responseType: 'blob'
     });
   }
@@ -367,6 +392,19 @@ export class AuthService {
     // localhost:8080/Hireflow/candidate/allAppliedJobs
   }
 
+  // viewCndProfileEmplrView(): Observable<AppliedJob[]> {
+  //   // return this.http.get<AppliedJob[]>(`${this.candidateUrl}/profileEmpView`);
+  //   return this.http.post<any>(`${this.candidateUrl}/profileEmpView`, null);
+  //   // localhost:8080/Hireflow/candidate/allAppliedJobs
+  // }
+
+  viewCndProfileEmplrView() {
+    // console.log('Loading candidate profile...');
+    // console.log(localStorage.getItem('token'));
+    return this.http.post<any>(`${this.candidateUrl}/profileEmpView`, null);
+  }
+
+  
   withdrawJobApplication(applicationId: number): Observable<string> {
     return this.http.delete(
       `${this.candidateUrl}/withdrawAppln/${applicationId}`,
@@ -497,7 +535,7 @@ export class AuthService {
   getEmployerProfile() {
     // console.log('Loading candidate profile...');
     // console.log(localStorage.getItem('token'));
-    return this.http.post<any>(`${this.employerUrl}/comapnyHome`, null);
+    return this.http.post<any>(`${this.employerUrl}/EmpProfile`, null);
   }
 
 
