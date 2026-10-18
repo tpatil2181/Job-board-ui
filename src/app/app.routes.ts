@@ -10,13 +10,14 @@ import { CandidateProfileComponent } from './candidate/candidate-profile/candida
 import { AppliedJobsComponent } from './candidate/applied-jobs/applied-jobs.component';
 import { CompanyHomeComponent } from './Employeer/company-home/company-home.component';
 import { JobDescriptionComponent } from './pages/job-description/job-description.component';
-import {PostJobComponent} from './Employeer/post-job/post-job.component';
-import {PostedJobsComponent} from './Employeer/posted-jobs/posted-jobs.component'
-import {ApplicantListComponent} from './Employeer/applicant-list/applicant-list.component'
-import {AllApplicantWiseJobsComponent} from './Employeer/all-applicant-wise-jobs/all-applicant-wise-jobs.component'
-import {EmployerLoginComponent} from './Employeer/employer-login/employer-login.component'
+import { PostJobComponent } from './Employeer/post-job/post-job.component';
+import { PostedJobsComponent } from './Employeer/posted-jobs/posted-jobs.component'
+import { ApplicantListComponent } from './Employeer/applicant-list/applicant-list.component'
+import { AllApplicantWiseJobsComponent } from './Employeer/all-applicant-wise-jobs/all-applicant-wise-jobs.component'
+import { EmployerLoginComponent } from './Employeer/employer-login/employer-login.component'
 import { EmployerRegistrationComponent } from './Employeer/employer-registration/employer-registration.component';
-
+import { EmployerChangePasswordComponent } from './Employeer/employer-change-password/employer-change-password.component';
+import { EmployerProfileComponent } from './Employeer/employer-profile/employer-profile.component';
 
 
 
@@ -27,93 +28,109 @@ import { authGuard } from './guards/auth.guard';
 
 
 
+
+
 export const routes: Routes = [
-     // { path: 'c', component: HomeComponent },
-//================================App routs================================
-     { path: '', component: HomeComponent},
-     { path: 'login', component: LoginComponent },
-     { path: 'register', component: RegisterComponent },
-     { path: 'companyLogin', component: EmployerLoginComponent},
-     // { path: 'company Regostration', component: Company Registration },
-     { path: 'companyRegistration', component: EmployerRegistrationComponent },
-     { path: 'job/:id', component: JobDescriptionComponent },
-     //Demo change to push code from git hub codespace
+  // { path: 'c', component: HomeComponent },
+  //================================App routs================================
+  { path: '', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'companyLogin', component: EmployerLoginComponent },
+  // { path: 'company Regostration', component: Company Registration },
+  { path: 'companyRegistration', component: EmployerRegistrationComponent },
+  { path: 'job/:id', component: JobDescriptionComponent },
+  //Demo change to push code from git hub codespace
 
-//================================Candidate routs================================     
-     { path: 'JsHome', component: CandidateHomeComponent, canActivate: [authGuard] },
-     { path: 'JSProfile', component: CandidateProfileComponent, canActivate: [authGuard] },
-     { path: 'applied-jobs', component: AppliedJobsComponent, canActivate: [authGuard] },
-     { path: 'CandidateChangePass', component: CandidateChagepassComponent, canActivate: [authGuard] },
-  
-  
-//================================Employer routs================================     
-
-     // { path: 'comapnyHome', component: CompanyHomeComponent},
-     // { path: 'comapnyHome', component: CompanyHomeComponent, canActivate: [authGuard]},,
-     // { path: 'postJob', component: PostJobComponent,canActivate: [authGuard] },
-     // { path: 'postedJobs', component: PostedJobsComponent, canActivate: [authGuard] },
-     // { path: 'allAllicantsofperticularjobd', component: ApplicantListComponent, canActivate: [authGuard]},
-     // { path: 'allJob', component: AllApplicantWiseJobsComponent,canActivate: [authGuard] },
+  //================================Candidate routs================================     
+  { path: 'JsHome', component: CandidateHomeComponent, canActivate: [authGuard] },
+  { path: 'JSProfile', component: CandidateProfileComponent, canActivate: [authGuard] },
+  { path: 'applied-jobs', component: AppliedJobsComponent, canActivate: [authGuard] },
+  { path: 'CandidateChangePass', component: CandidateChagepassComponent, canActivate: [authGuard] },
 
 
-     //================================Employer routes================================
+  //================================Employer routs================================     
 
-{
-  path: 'companyHome',
-  component: CompanyHomeComponent,
+  // { path: 'comapnyHome', component: CompanyHomeComponent},
+  // { path: 'comapnyHome', component: CompanyHomeComponent, canActivate: [authGuard]},,
+  // { path: 'postJob', component: PostJobComponent,canActivate: [authGuard] },
+  // { path: 'postedJobs', component: PostedJobsComponent, canActivate: [authGuard] },
+  // { path: 'allAllicantsofperticularjobd', component: ApplicantListComponent, canActivate: [authGuard]},
+  // { path: 'allJob', component: AllApplicantWiseJobsComponent,canActivate: [authGuard] },
 
-  children: [
 
-    {
-      path: '',
-      redirectTo: 'dashboard',
-      pathMatch: 'full'
-    },
+  //================================Employer routes================================
 
-//     {
-//       path: 'dashboard',
-//       component: CompanyDashboardComponent,
-//       canActivate: [authGuard]
-//     },
+  {
+    path: 'companyHome',
+    component: CompanyHomeComponent,
 
-    {
-      path: 'postJob',
-      component: PostJobComponent,
-      canActivate: [authGuard]
-    },
+    children: [
 
-    {
-      path: 'postedJobs',
-      component: PostedJobsComponent,
-      canActivate: [authGuard]
-    },
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
 
-    {
-      path: 'allApplicants/:jobId',
-      component: ApplicantListComponent,
-      canActivate: [authGuard]
-    },
+      //     {
+      //       path: 'dashboard',
+      //       component: CompanyDashboardComponent,
+      //       canActivate: [authGuard]
+      //     },
 
-    {
-      path: 'allJob',
-      component: AllApplicantWiseJobsComponent,
-      canActivate: [authGuard]
-    }
+      {
+        path: 'postJob',
+        component: PostJobComponent,
+        canActivate: [authGuard]
+      },
 
-  ]
-},
+      {
+        path: 'postedJobs',
+        component: PostedJobsComponent,
+        canActivate: [authGuard]
+      },
 
-     
-     
-  
-     // { path: 'changePass', component: CandidateChagepassComponent},
-     // { path: 'changePass', component: CandidateChagepassComponent},
-     // { path: 'changePass', component: CandidateChagepassComponent},
-     // { path: 'changePass', component: CandidateChagepassComponent},
-     // { path: 'changePass', component: CandidateChagepassComponent},
-     // { path: 'changePass', component: CandidateChagepassComponent},
-     // { path: 'changePass', component: CandidateChagepassComponent},
-     // { path: 'changePass', component: CandidateChagepassComponent},
+      {
+        path: 'employerProfile',
+        component: EmployerProfileComponent,
+        canActivate: [authGuard]
+      },
 
-     { path: 'notfound', component: NotFoundComponent },
+      {
+        path: 'employerChangePass',
+        component: EmployerChangePasswordComponent,
+        canActivate: [authGuard]
+      },
+
+      {
+        path: 'allApplicants/:jobId',
+        component: ApplicantListComponent,
+        canActivate: [authGuard]
+      },
+
+
+
+      {
+        path: 'allJob',
+        component: AllApplicantWiseJobsComponent,
+        canActivate: [authGuard]
+      }
+
+    ]
+  },
+
+
+
+
+  // { path: 'changePass', component: CandidateChagepassComponent},
+  // { path: 'changePass', component: CandidateChagepassComponent},
+  // { path: 'changePass', component: CandidateChagepassComponent},
+  // { path: 'changePass', component: CandidateChagepassComponent},
+  // { path: 'changePass', component: CandidateChagepassComponent},
+  // { path: 'changePass', component: CandidateChagepassComponent},
+  // { path: 'changePass', component: CandidateChagepassComponent},
+  // { path: 'changePass', component: CandidateChagepassComponent},
+
+  { path: 'notfound', component: NotFoundComponent },
 ];

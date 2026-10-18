@@ -1,0 +1,136 @@
+<div class="profile-container">
+
+  <div class="state-msg" *ngIf="loading">Loading profile…</div>
+
+  <ng-container *ngIf="employer && !loading">
+
+    <!-- 🔹 Hero card -->
+    <div class="card hero">
+      <div class="hero-avatar">{{ initials }}</div>
+
+      <div class="hero-info">
+        <h2>{{ employer.employeerName }}</h2>
+        <a *ngIf="employer.website" class="hero-site" [href]="websiteHref" target="_blank" rel="noopener noreferrer">
+          🌐 {{ employer.website }}
+        </a>
+        <span *ngIf="!employer.website" class="hero-site muted">No website added</span>
+      </div>
+
+      <button type="button" class="btn-primary" (click)="openEdit()">Edit Profile</button>
+    </div>
+
+    <div class="grid">
+
+      <!-- 🔹 Contact -->
+      <div class="card">
+        <div class="card-head">
+          <h3><span class="ico">📞</span> Contact</h3>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Mobile No</span>
+          <span class="info-sep">:</span>
+          <span class="info-value">{{ employer.contact || 'Not added' }}</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Email</span>
+          <span class="info-sep">:</span>
+          <!-- <span class="info-value">{{ employer.user?.email || 'Not added' }}</span> -->
+          <span class="info-value">{{ 'Not added' }}</span>
+        </div>
+      </div>
+
+      <!-- 🔹 Company -->
+      <div class="card">
+        <div class="card-head">
+          <h3><span class="ico">🏢</span> Company</h3>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Employer ID</span>
+          <span class="info-sep">:</span>
+          <span class="info-value">{{ employer.employeerId }}</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Website</span>
+          <span class="info-sep">:</span>
+          <span class="info-value">
+            <a *ngIf="employer.website; else noSite" [href]="websiteHref" target="_blank" rel="noopener noreferrer">{{ employer.website }}</a>
+            <ng-template #noSite>Not added</ng-template>
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 🔹 Jobs -->
+    <div class="card">
+      <div class="card-head">
+        <h3><span class="ico">💼</span> Job List</h3>
+      </div>
+
+      <!-- <div class="chips" *ngIf="jobTags.length; else noJobs">
+        <span class="chip" *ngFor="let job of jobTags">{{ job }}</span>
+      </div> -->
+
+      
+
+      <ng-template #noJobs>
+        <div class="state-msg small">No jobs posted yet.</div>
+      </ng-template>
+    </div>
+
+  </ng-container>
+
+</div>
+
+
+<!-- 🔹 Edit modal -->
+<div class="overlay" *ngIf="showEditForm" (click)="onOverlayClick($event)">
+  <div class="form-card">
+
+    <div class="form-header">
+      <h3>Edit Employer Profile</h3>
+      <button type="button" class="close-btn" (click)="closeEdit()">✕</button>
+    </div>
+
+    <form #empForm="ngForm" (ngSubmit)="onSave(empForm)" class="form-body">
+
+      <div class="form-group">
+        <label>Employer / Company Name <span class="req">*</span></label>
+        <input type="text" name="employeerName" [(ngModel)]="editForm.employeerName" required
+               placeholder="Ex: Acme Technologies Pvt Ltd">
+      </div>
+
+      <div class="form-group">
+        <label>Website</label>
+        <input type="url" name="website" [(ngModel)]="editForm.website"
+               placeholder="https://www.company.com">
+      </div>
+
+      <div class="form-group">
+        <label>Contact Number <span class="req">*</span></label>
+        <input type="tel" name="contact" [(ngModel)]="editForm.contact" required pattern="[0-9]{7,15}"
+               placeholder="9876543210">
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <!-- <input type="text" [value]="employer?.user?.email || ''" disabled> -->
+        <input type="text" [value]=" 'sdkjd'" disabled>
+        <div class="hint">Email is tied to your login and can't be changed here.</div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="closeEdit()">Cancel</button>
+        <button type="submit" class="btn-save" [disabled]="empForm.invalid || saving">
+          {{ saving ? 'Saving…' : 'Save Changes' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

@@ -1,0 +1,345 @@
+:host {
+  --navy: #16305c;
+  --blue-deep: #1f4e8c;
+  --blue-bright: #2952a3;
+  --ink: #1e2a45;
+  --line: #e4e7eb;
+  --muted: #6b7280;
+  --page-bg: #f3f4f6;
+
+  display: block;
+  min-height: 100vh;
+  background: var(--page-bg);
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+}
+
+* { box-sizing: border-box; }
+
+.profile-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 28px 24px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ---------- Cards ---------- */
+
+.card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 3px rgba(22, 48, 92, 0.04);
+}
+
+.card-head h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.hero-avatar {
+  width: 76px;
+  height: 76px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--navy), var(--blue-deep));
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hero-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-info h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 6px;
+  word-break: break-word;
+}
+
+.hero-site {
+  font-size: 13.5px;
+  color: var(--blue-bright);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.hero-site:hover { text-decoration: underline; }
+.hero-site.muted { color: var(--muted); font-weight: 400; }
+
+/* ---------- Label : value rows ---------- */
+
+.info-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.info-row:last-child { margin-bottom: 0; }
+
+.info-label {
+  color: var(--muted);
+  min-width: 92px;
+  flex-shrink: 0;
+}
+
+.info-sep { color: var(--muted); }
+
+.info-value {
+  font-weight: 600;
+  color: var(--ink);
+  word-break: break-word;
+}
+
+.info-value a {
+  color: var(--blue-bright);
+  text-decoration: none;
+}
+
+.info-value a:hover { text-decoration: underline; }
+
+/* ---------- Job chips ---------- */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #e6f1fb;
+  color: var(--blue-bright);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.state-msg {
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+  padding: 32px 0;
+}
+
+.state-msg.small { padding: 8px 0; text-align: left; }
+
+/* ---------- Buttons ---------- */
+
+.btn-primary {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 8px;
+  background: var(--blue-bright);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13.5px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.btn-primary:hover { background: var(--blue-deep); }
+
+/* ---------- Edit modal (same as certification/profile forms) ---------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 48, 92, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+}
+
+.form-card {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 60px rgba(22, 48, 92, 0.3);
+  animation: pop-in 0.18s ease-out;
+  overflow: hidden;
+}
+
+@keyframes pop-in {
+  from { transform: scale(0.96) translateY(6px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 26px;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.form-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0;
+}
+
+.close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--page-bg);
+  color: var(--muted);
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.close-btn:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.form-body {
+  padding: 22px 26px 26px;
+  overflow-y: auto;
+}
+
+.form-group { margin-bottom: 18px; }
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 7px;
+}
+
+.req { color: #dc2626; }
+
+.form-group input {
+  width: 100%;
+  padding: 10px 13px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-group input::placeholder { color: #9ca3af; }
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--blue-bright);
+  box-shadow: 0 0 0 3px rgba(41, 82, 163, 0.12);
+}
+
+.form-group input:disabled {
+  background: var(--page-bg);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.btn-cancel {
+  padding: 10px 20px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.btn-cancel:hover {
+  border-color: var(--blue-bright);
+  color: var(--blue-bright);
+}
+
+.btn-save {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 8px;
+  background: var(--blue-bright);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-save:hover:not(:disabled) { background: var(--blue-deep); }
+
+.btn-save:disabled {
+  background: #b9c3d4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+  .grid { grid-template-columns: 1fr; }
+  .hero { flex-wrap: wrap; }
+  .hero .btn-primary { width: 100%; }
+  .form-header, .form-body { padding-left: 18px; padding-right: 18px; }
+}

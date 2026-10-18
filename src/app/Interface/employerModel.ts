@@ -65,3 +65,9 @@ export interface PostJob {
   datePosted: string
   noOfApplicants:number
 }
+
+
+export interface EmployerChangePassword {
+  currentPass: string;
+  newPass: string;
+}

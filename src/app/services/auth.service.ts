@@ -414,8 +414,12 @@ export class AuthService {
     );
   }
 
-  changePassword(CandidateChangepass: CandidateChangePassword): Observable<any> {
-    return this.http.post(`${this.candidateUrl}/changePass `, CandidateChangepass);
+  // changePassword(CandidateChangepass: CandidateChangePassword): Observable<any> {
+  //   return this.http.post(`${this.candidateUrl}/changePass `, CandidateChangepass);
+  // }
+
+   changePassword(CandidateChangepass: CandidateChangePassword): Observable<any> {
+    return this.http.post(`${this.baseUrl}/changePass `, CandidateChangepass);
   }
 
 
