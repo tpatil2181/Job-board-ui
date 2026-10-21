@@ -10,13 +10,14 @@ import { AuthService } from '../../services/auth.service';
 import { SharedModule } from "../../pages/shared.module";
 import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 import { DateFormatePipePipe } from '../../shared/pipes/date-formate-pipe.pipe';
+import { ChangeCandidateStatus } from '../../Interface/employerModel';
 
 
 // =====================================================
 // Applicant Interface
 // =====================================================
 
-export type ApplicationStatus = 'Applied' | 'Shortlisted' | 'Rejected' | 'Scheduled';
+export type ApplicationStatus = 'APPLIED' | 'SHORTLISTED' | 'INTERVIEWSCHEDULED' | 'SELECTED';
 
 export interface jobApplicant {
 
@@ -92,10 +93,10 @@ export class ApplicantListComponent implements OnInit {
   statusFilter = '';
 
   readonly statusOptions: ApplicationStatus[] = [
-    'Applied',
-    'Shortlisted',
-    'Scheduled',
-    'Rejected'
+    'APPLIED',
+    'SHORTLISTED',
+    'INTERVIEWSCHEDULED',
+    'SELECTED'
   ];
 
   // Tracks which row's status dropdown is open (for the
@@ -264,25 +265,25 @@ loadApplicants(): void {
 
   }
 
-  statusClass(status: ApplicationStatus): string {
+  // statusClass(status: ApplicationStatus): string {
 
-    switch (status) {
+  //   switch (status) {
 
-      case 'Shortlisted':
-        return 'status-shortlisted';
+  //     case 'Shortlisted':
+  //       return 'status-SHORTLISTED';
 
-      case 'Rejected':
-        return 'status-rejected';
+  //     case 'Rejected':
+  //       return 'status-REJECTED';
 
-      case 'Scheduled':
-        return 'status-scheduled';
+  //     case 'Scheduled':
+  //       return 'status-SCHEDULED';
 
-      default:
-        return 'status-applied';
+  //     default:
+  //       return 'status-APPLIED';
 
-    }
+  //   }
 
-  }
+  // }
 
 
   // =====================================================
@@ -352,83 +353,116 @@ loadApplicants(): void {
   // =====================================================
 
   toggleStatusMenu(applicationId: number): void {
+  this.openMenuFor =
+    this.openMenuFor === applicationId ? null : applicationId;
+}
 
-    this.openMenuFor = this.openMenuFor === applicationId ? null : applicationId;
+updateStatus(
+  appid: number,
+  newStatus: ApplicationStatus
+): void {
 
-  }
+  this.openMenuFor = null;
 
-  updateStatus(applicant: jobApplicant, newStatus: ApplicationStatus): void {
+  const request: ChangeCandidateStatus = {
+    applyid: appid,
+    status: newStatus
+  };
 
-    this.openMenuFor = null;
+  this.authService.updateApplicationStatus(request).subscribe({
 
-    if (applicant.status === newStatus) {
-      return;
+    next: (response: any) => {
+      console.log('Application status updated:', response);
+
+      this.alertService.success(`Marked as ${newStatus}.`);
+    },
+
+    error: (err: any) => {
+      console.error('Error updating status:', err);
+
+      // Roll back if the API request fails
+      // applicant.status = previousStatus;
+
+      this.alertService.error(
+        err?.error?.message || 'Failed to update status.'
+      );
     }
 
-    const proceed = () => {
+  });
+}
 
-      const previousStatus = applicant.status;
-      applicant.status = newStatus; // optimistic update
+  // updateStatus(applicant: jobApplicant, newStatus: ApplicationStatus): void {
 
-      this.authService
-        .updateApplicationStatus(applicant.applyid, newStatus)
-        .subscribe({
+  //   this.openMenuFor = null;
 
-          next: (response: any) => {
+  //   if (applicant.status === newStatus) {
+  //     return;
+  //   }
 
-            console.log('Application status updated:', response);
+  //   const proceed = () => {
 
-            this.alertService.success(
-              `Marked as ${newStatus}.`
-            );
+  //     const previousStatus = applicant.status;
+  //     applicant.status = newStatus; // optimistic update
 
-          },
+  //     this.authService
+  //       .updateApplicationStatus(applicant.applyid, newStatus)
+  //       .subscribe({
 
-          error: (err: any) => {
+  //         next: (response: any) => {
 
-            console.error('Error updating status:', err);
+  //           console.log('Application status updated:', response);
 
-            applicant.status = previousStatus; // roll back
+  //           this.alertService.success(
+  //             `Marked as ${newStatus}.`
+  //           );
 
-            this.alertService.error(
-              err?.error?.message ||
-              'Failed to update status.'
-            );
+  //         },
 
-          }
+  //         error: (err: any) => {
 
-        });
+  //           console.error('Error updating status:', err);
 
-    };
+  //           applicant.status = previousStatus; // roll back
 
-    // if (newStatus === 'Rejected') {
+  //           this.alertService.error(
+  //             err?.error?.message ||
+  //             'Failed to update status.'
+  //           );
 
-    //   this.confirmDialogService.onConfirm({
+  //         }
 
-    //     title: 'Reject Applicant',
+  //       });
 
-    //     message: `Are you sure you want to reject ${applicant.candidateName}?`,
+  //   };
 
-    //     variant: 'danger',
+  //   // if (newStatus === 'Rejected') {
 
-    //     confirmLabel: 'Reject',
+  //   //   this.confirmDialogService.onConfirm({
 
-    //     cancelLabel: 'Cancel'
+  //   //     title: 'Reject Applicant',
 
-    //   }).subscribe((result: boolean) => {
+  //   //     message: `Are you sure you want to reject ${applicant.candidateName}?`,
 
-    //     if (result) {
-    //       proceed();
-    //     }
+  //   //     variant: 'danger',
 
-    //   });
+  //   //     confirmLabel: 'Reject',
 
-    //   return;
+  //   //     cancelLabel: 'Cancel'
 
-    // }
+  //   //   }).subscribe((result: boolean) => {
 
-    proceed();
+  //   //     if (result) {
+  //   //       proceed();
+  //   //     }
 
-  }
+  //   //   });
+
+  //   //   return;
+
+  //   // }
+
+  //   proceed();
+
+  // }
 
 }

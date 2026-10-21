@@ -71,3 +71,9 @@ export interface EmployerChangePassword {
   currentPass: string;
   newPass: string;
 }
+
+
+export interface ChangeCandidateStatus{
+    applyid:number;
+    status:string;
+}

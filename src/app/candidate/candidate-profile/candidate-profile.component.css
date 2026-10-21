@@ -350,7 +350,7 @@ h1, h2 {
 
 .contact-label {
   color: var(--muted, #6b7280);
-  min-width: 82px;
+  min-width: 65px;
   flex-shrink: 0;
 }
 

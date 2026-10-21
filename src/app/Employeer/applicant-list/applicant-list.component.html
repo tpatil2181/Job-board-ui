@@ -69,24 +69,28 @@
             </div>
           </td>
 
-          <td>
-            <span class="status-badge" [ngClass]="statusClass(applicant.status)">{{ applicant.status }}</span>
-          </td>
+           <td>
+        <select
+          class="status-select"
+          [(ngModel)]="applicant.status">
 
-          <td class="status-menu-cell">
-            <button class="btn-primary-outline" (click)="toggleStatusMenu(applicant.applyid)">
-              Update Status ▾
-            </button>
+                <option value="APPLIED">Applied</option>
+                <option value="SHORTLISTED">Shortlisted</option>
+                <option value="INTERVIEWSCHEDULED">Interview Scheduled</option>
+                <option value="SELECTED">Selected</option>
+              </select>
+            </td>
 
-            <div class="status-menu" *ngIf="openMenuFor === applicant.applyid">
-              <button
-                *ngFor="let s of statusOptions"
-                [class.active]="applicant.status === s"
-                (click)="updateStatus(applicant, s)">
-                {{ s }}
-              </button>
-            </div>
-          </td>
+
+
+      <!-- Action -->
+      <td>
+        <button
+          class="update-btn"
+          (click)="updateStatus(applicant.applyid, applicant.status)">
+          Update
+        </button>
+      </td>
 
         </tr>
 
