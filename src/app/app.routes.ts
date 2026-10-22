@@ -8,6 +8,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { CandidateChagepassComponent } from './candidate/candidate-changepass/candidate-changepass.component';
 import { CandidateProfileComponent } from './candidate/candidate-profile/candidate-profile.component';
 import { AppliedJobsComponent } from './candidate/applied-jobs/applied-jobs.component';
+import { CandidateSettingComponent } from './candidate/candidate-setting/candidate-setting.component';
 import { CompanyHomeComponent } from './Employeer/company-home/company-home.component';
 import { JobDescriptionComponent } from './pages/job-description/job-description.component';
 import { PostJobComponent } from './Employeer/post-job/post-job.component';
@@ -22,7 +23,10 @@ import { EmployerProfileComponent } from './Employeer/employer-profile/employer-
 
 
 
+
+
 import { authGuard } from './guards/auth.guard';
+import { EmployerSettingComponent } from './Employeer/employer-setting/employer-setting.component';
 
 
 
@@ -46,6 +50,7 @@ export const routes: Routes = [
   { path: 'JsHome', component: CandidateHomeComponent, canActivate: [authGuard] },
   { path: 'JSProfile', component: CandidateProfileComponent, canActivate: [authGuard] },
   { path: 'applied-jobs', component: AppliedJobsComponent, canActivate: [authGuard] },
+  { path: 'CandidateSettings', component: CandidateSettingComponent, canActivate: [authGuard] },
   { path: 'CandidateChangePass', component: CandidateChagepassComponent, canActivate: [authGuard] },
 
 
@@ -103,6 +108,12 @@ export const routes: Routes = [
         canActivate: [authGuard]
       },
 
+      {
+        path: 'employerSettings',
+        component: EmployerSettingComponent,
+        canActivate: [authGuard]
+      },
+      
       {
         path: 'allApplicants/:jobId',
         component: ApplicantListComponent,

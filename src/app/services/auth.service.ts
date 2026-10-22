@@ -382,6 +382,10 @@ export class AuthService {
     });
   }
 
+  deleteCandidateAccount(candidateId: number): Observable<any> {
+    return this.http.delete(`${this.candidateUrl}/deleteAccount/${candidateId}`);
+  }
+
   jobApplicationRequest(jobApplication: JobApplication): Observable<any> {
     // console.log('Sending Data:', jobApplication);  //Remove this letter for security resone it is printing data on console
     return this.http.post(`${this.candidateUrl}/jobApplication`, jobApplication);

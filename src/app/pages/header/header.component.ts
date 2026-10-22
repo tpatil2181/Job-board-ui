@@ -89,6 +89,10 @@ export class HeaderComponent implements OnInit {
 
   }
 
+  goToSettings() {
+    this.router.navigate(['/CandidateSettings']);
+  }
+
   goToChnagePasswordPage() {
     this.router.navigate(['/CandidateChangePass']);
     // this.router.navigate(['/JSProfile']);
@@ -142,7 +146,7 @@ export class HeaderComponent implements OnInit {
         break;
 
       case 'settings':
-        // this.goToSettings();
+        this.goToSettings();
         break;
       case 'logout':
         this.logout();

@@ -1,0 +1,87 @@
+<app-header></app-header>
+<div class="settings-page">
+
+  <div class="settings-container">
+
+    <div class="page-head">
+      <h2>Settings</h2>
+      <p>Manage your password, privacy and account.</p>
+    </div>
+
+
+
+
+    <!-- ================= PREFERENCES ================= -->
+<!-- 
+    <section class="card">
+
+      <div class="card-head">
+        <h3>Preferences</h3>
+        <p>Choose what you hear about and who can find you.</p>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-text">
+          <div class="setting-title">Job alert emails</div>
+          <div class="setting-desc">Get emails about new jobs that match your profile.</div>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            [ngModel]="settings.jobAlerts"
+            /* (ngModelChange)="onSettingChange('jobAlerts', $event)" */
+            aria-label="Job alert emails">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-text">
+          <div class="setting-title">Profile visible to employers</div>
+          <div class="setting-desc">Let employers find your profile and resume in search.</div>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            [ngModel]="settings.profileVisible"
+            (ngModelChange)="onSettingChange('profileVisible', $event)"
+            aria-label="Profile visible to employers">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+    </section> -->
+
+
+    <!-- ================= DANGER ZONE ================= -->
+
+    <section class="card card-danger">
+
+      <!-- <div class="card-head">
+        <h3>Danger zone</h3>
+      </div> -->
+
+      <div class="setting-row">
+        <div class="setting-text">
+          <div class="setting-title">Delete my account</div>
+          <div class="setting-desc">
+            Permanently remove your profile, resume and job applications. This can't be undone.
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn-danger"
+          [disabled]="deleting"
+          (click)="deleteAccount()">
+          {{ deleting ? 'Deleting…' : 'Delete' }}
+        </button>
+      </div>
+
+    </section>
+
+  </div>
+
+</div>

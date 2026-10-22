@@ -67,7 +67,7 @@ export class ConfirmDialogComponent implements OnInit {
 
   }
 
-  onConfirm(): void {
+  onCConfirm(): void {
 
     this.confirmDialogService.confirmAction();
 
