@@ -50,13 +50,17 @@ export class EmployerLoginComponent {
         // this.router.navigate(['/profile', res.id]);
 
           this.authService.getEmployerProfile().subscribe({
-        next: (candidate) => {
+        next: (employer) => {
 
-          this.authService.setCandidate(candidate);
+          // this.authService.setCandidate(candidate);
+          
+          this.authService.setEmployer(employer)
+
+
           
           
 
-          console.log('Profile Loaded:', candidate);
+          console.log('Profile Loaded:', employer);
 
           // this.router.navigate(['']);
            this.router.navigate(['/companyHome']); // redirect after login

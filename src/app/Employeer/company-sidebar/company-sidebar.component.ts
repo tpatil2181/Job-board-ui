@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { Employer } from '../../Interface/employerModel';
 
 @Component({
   selector: 'app-company-sidebar',
@@ -15,6 +16,21 @@ export class CompanySidebarComponent {
   role: string = localStorage.getItem('role') || '';
   email: string = localStorage.getItem('email') || '';
 
+
+    employer: Employer | null = null;
+
+    ngOnInit(): void {
+
+    this.authService.employer$.subscribe(employer => {
+
+      this.employer = employer;
+
+      console.log('Navbar employer:', this.employer);
+
+    });
+
+  }
+  
    constructor(
       private authService: AuthService,
       private router: Router
@@ -26,7 +42,7 @@ export class CompanySidebarComponent {
     localStorage.removeItem('role');
     localStorage.removeItem('userId');
     localStorage.removeItem('email');
-    // localStorage.removeItem('candidate');
+    localStorage.removeItem('Employer');
     // this.isLoggedIn = false; 
     this.router.navigate(['/']);
   }

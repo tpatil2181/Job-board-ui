@@ -86,7 +86,7 @@ export class AuthService {
 
   private getEmployerFromStorage(): Employer | null {
 
-  const data = localStorage.getItem('employer');
+  const data = localStorage.getItem('Employer');
 
     if (!data) {
       return null;
@@ -202,6 +202,11 @@ export class AuthService {
     this.candidateSubject.next(candidate);
   }
   // Store/update candidate
+
+  setEmployer(emplyer: Employer) {
+    localStorage.setItem('Employer', JSON.stringify(emplyer));
+    // this.candidateSubject.next(emplyer);
+  }
 
 
 
