@@ -14,10 +14,19 @@
 
   <!-- PROFILE SUMMARY BAR -->
   <div class="profile-bar">
-    <div class="avatar-wrap">
-      <!-- <div class="avatar">{{ avatarInitials }}</div> -->
+    <!-- <div class="avatar-wrap">
+      <div class="avatar">{{ avatarInitials }}</div>
       <div class="avatar">{{candidate?.firstName?.charAt(0)||''}}{{candidate?.lastName?.charAt(0)||''}}</div>
-      <div class="avatar-edit" (click)="uploadPhoto()">📷</div>
+    </div> -->
+
+    <div class="avatar-wrap">
+      <img *ngIf="imageUrl; else initialsAvatar" [src]="imageUrl" alt="Candidate profile photo" class="avatar-img" />
+
+      <ng-template #initialsAvatar>
+        <div class="avatar">
+          {{ candidate?.firstName?.charAt(0) || '' }}{{ candidate?.lastName?.charAt(0) || '' }}
+        </div>
+      </ng-template>
     </div>
 
     <div class="profile-info">
@@ -187,7 +196,8 @@
           <div class="item-icon">🎓</div>
           <div class="item-body">
             <div class="item-title">{{ edu.degree }}</div>
-            <div class="item-sub">{{ edu.college }}, {{edu.syear}} - {{ edu.isCurrentlystudying ? 'Present' : edu.eyear }}</div>
+            <div class="item-sub">{{ edu.college }}, {{edu.syear}} - {{ edu.isCurrentlystudying ? 'Present' : edu.eyear
+              }}</div>
           </div>
           <div class="item-controls">
             <button class="ctrl-btn" (click)="openEditEducation(edu)">✏️</button>

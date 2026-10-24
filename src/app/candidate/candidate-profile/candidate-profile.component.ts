@@ -109,6 +109,8 @@ ngOnInit(): void {
 
     this.candidate = candidate;
 
+    this.loadCandidateImage(this.candidate?.imageId);
+
     console.log('Candidate:', this.candidate);
 
   });
@@ -772,9 +774,10 @@ onProfileSaved(event: CandidateProfileSaveEvent): void {
         next: (uploadRes) => {
  
           profile.imageId = uploadRes.imageId;
+
+          this.loadCandidateImage(uploadRes.imageId);
  
           this.saveProfileFields(profile);
- 
         },
  
         error: (err) => {
@@ -797,6 +800,44 @@ onProfileSaved(event: CandidateProfileSaveEvent): void {
   this.saveProfileFields(profile);
  
 }
+
+
+// --------------------Get Image section---------------------------
+
+imageUrl: string | null = null;
+private imageObjectUrl: string | null = null;
+
+loadCandidateImage(imageId: number | null | undefined): void {
+  // Clear the previous image
+  if (this.imageObjectUrl) {
+    URL.revokeObjectURL(this.imageObjectUrl);
+    this.imageObjectUrl = null;
+  }
+
+  this.imageUrl = null;
+
+  if (!imageId) {
+    return;
+  }
+
+  this.authService.getCandidateImage(imageId).subscribe({
+    next: (imageBlob: Blob) => {
+      this.imageObjectUrl = URL.createObjectURL(imageBlob);
+      this.imageUrl = this.imageObjectUrl;
+    },
+    error: (err) => {
+      console.error('Failed to load candidate image:', err);
+      this.imageUrl = null;
+    }
+  });
+}
+
+ngOnDestroy(): void {
+  if (this.imageObjectUrl) {
+    URL.revokeObjectURL(this.imageObjectUrl);
+  }
+}
+
  
  
 // =====================================================

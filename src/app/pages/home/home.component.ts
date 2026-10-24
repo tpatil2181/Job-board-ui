@@ -90,7 +90,7 @@ export class HomeComponent implements OnInit {
 
   //======================== New Searching Query work==========================================
 
- searchJobs() {
+ searchJobs(page: number = 1) {
 
   console.log("Search button clicked");
 
@@ -122,13 +122,29 @@ export class HomeComponent implements OnInit {
 
   console.log(filters);
 
-  this.authService.searchJobs(filters).subscribe({
+  // SERVER-SIDE PAGINATION: the backend only returns one page at a time, so the
+  // pageNo (1-based, the controller does pageNo - 1) and pageSize are sent along with the filters.
+  // (was: this.authService.searchJobs(filters).subscribe({ )
+  this.authService.searchJobs(filters, page, this.PER_PAGE).subscribe({
 
     next: (response: any) => {
 
       console.log(response);
 
       this.jobs = response.content;
+
+      // PAGINATION FIX: filteredJobs holds the jobs of the CURRENT page only.
+      // Totals come from the backend page object (totalElements / totalPages).
+      this.filteredJobs = [...this.jobs];
+
+      this.currentPage = page;
+
+      this.totalElements = response.totalElements ?? this.jobs.length;
+
+      this.serverTotalPages =
+        response.totalPages ?? Math.ceil(this.totalElements / this.PER_PAGE);
+
+      this.sortJobs(this.sortValue);
 
     },
 
@@ -438,7 +454,9 @@ clearDatePosted() {
 
 
   loadJobs() {
-    this.authService.getAllJobs().subscribe({
+    // SERVER-SIDE PAGINATION: first page, same size as every later page.
+    // (was: this.authService.getAllJobs().subscribe({ )
+    this.authService.getAllJobs(1, this.PER_PAGE).subscribe({
       next: (data: any) => {
         // console.log('FULL RESPONSE =>', JSON.stringify(data, null, 2));
         // console.log('API Response:', data);
@@ -446,6 +464,11 @@ clearDatePosted() {
 
         this.jobs = data.content || []; // Adjust based on actual API response structure
         this.filteredJobs = [...this.jobs];
+
+        this.currentPage = 1;
+        this.totalElements = data.totalElements ?? this.jobs.length;
+        this.serverTotalPages =
+          data.totalPages ?? Math.ceil(this.totalElements / this.PER_PAGE);
       },
       error: (err) => {
         console.error(err);
@@ -597,6 +620,10 @@ clearDatePosted() {
   filteredJobs: Job[] = [];
   currentPage = 1;
   readonly PER_PAGE = 5;
+
+  // SERVER-SIDE PAGINATION: totals reported by the backend (all matching jobs, not just this page)
+  totalElements = 0;
+  serverTotalPages = 1;
   savedJobs = new Set<number>();
   sortValue = 'relevant';
 
@@ -716,7 +743,8 @@ clearDatePosted() {
       return true;
     });
 
-    this.currentPage = 1;
+    // SERVER-SIDE PAGINATION: currentPage now comes from the backend response, so it is no longer reset here.
+    // this.currentPage = 1;
     this.sortJobs(this.sortValue);
   }
 
@@ -738,12 +766,16 @@ clearDatePosted() {
 
   // ── Pagination ──
   get pagedJobs(): Job[] {
-    const start = (this.currentPage - 1) * this.PER_PAGE;
-    return this.filteredJobs.slice(start, start + this.PER_PAGE);
+    // SERVER-SIDE PAGINATION: filteredJobs already holds only the current page, so no slicing.
+    // const start = (this.currentPage - 1) * this.PER_PAGE;
+    // return this.filteredJobs.slice(start, start + this.PER_PAGE);
+    return this.filteredJobs;
   }
 
   get totalPages(): number {
-    return Math.ceil(this.filteredJobs.length / this.PER_PAGE);
+    // SERVER-SIDE PAGINATION: page count comes from the backend (7 jobs / 5 per page = 2 pages).
+    // return Math.ceil(this.filteredJobs.length / this.PER_PAGE);
+    return this.serverTotalPages;
   }
 
   get pageNumbers(): number[] {
@@ -751,7 +783,9 @@ clearDatePosted() {
   }
 
   goPage(n: number): void {
-    this.currentPage = n;
+    // SERVER-SIDE PAGINATION: ask the backend for page n with the filters that are still selected.
+    // this.currentPage = n;
+    this.searchJobs(n);
     document.getElementById('jobs')?.scrollIntoView({ behavior: 'smooth' });
   }
 
@@ -808,7 +842,3 @@ clearDatePosted() {
   //   this.router.navigate(['/comapnyHome']);
   // }
 }
-
-
-
-

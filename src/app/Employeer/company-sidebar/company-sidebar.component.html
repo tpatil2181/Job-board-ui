@@ -10,8 +10,21 @@
   </div> -->
 
   <div class="profile">
-    <div class="company-logo">
+    <!-- <div class="company-logo">
       <img [src]="this.name  || 'assets/images/company-placeholder.png'" alt="Company Logo" />
+    </div> -->
+    <!-- <img *ngIf="imageUrl;" [src]="imageUrl" alt="Candidate profile photo" class="avatar-img" /> -->
+    <!-- 
+      <ng-template #initialsAvatar>
+        <div class="avatar">
+          {{ candidate?.firstName?.charAt(0) || '' }}{{ candidate?.lastName?.charAt(0) || '' }}
+        </div>
+      </ng-template> -->
+
+    <div class="company-logo">
+      <!-- <img *ngIf="logoUrl && !logoFailed" [src]="logoUrl" alt="Company Logo" (error)="logoFailed = true"> -->
+      <img *ngIf="imageUrl;" [src]="imageUrl" alt="Candidate profile photo" class="avatar-img" />
+      <!-- <span *ngIf="!logoUrl || logoFailed" class="company-logo-initial">{{ companyName?.charAt(0) }}</span> -->
     </div>
     <h3>{{ employer?.employeerName }}</h3>
     <!-- <p>{{ this.role }}</p> -->

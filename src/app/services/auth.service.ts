@@ -132,6 +132,29 @@ export class AuthService {
 
   }
 
+  searchJobs(
+  filters: JobSearchDTO,
+  pageNo: number = 1,
+  pageSize: number = 5,
+  sortBy: string = 'jobId',
+  sortDir: string = 'ASE'
+): Observable<any> {
+ 
+  const params = new HttpParams()
+    .set('pageNo', pageNo)
+    .set('pageSize', pageSize)
+    .set('sortBy', sortBy)
+    .set('sortDir', sortDir);
+ 
+  return this.http.post<any>(
+    `${this.baseUrl}/jobsearch`,
+    filters,
+    { params }
+  );
+ 
+}
+  
+
 
   // getAllJobs(): Observable<Job[]> {
   //       return this.http.get<Job[]>(`${this.baseUrl}/jobsearch`);
@@ -267,32 +290,32 @@ export class AuthService {
 
   // New Search job service start
   //==================Running Job Search service with JobSearchDTO==================
-  searchJobs(
-    filters: JobSearchDTO,
-    pageNo: number = 1,
-    pageSize: number = 5,
-    sortBy: string = 'jobId',
-    sortDir: string = 'ASE'
-  ) {
+  // searchJobs(
+  //   filters: JobSearchDTO,
+  //   pageNo: number = 1,
+  //   pageSize: number = 5,
+  //   sortBy: string = 'jobId',
+  //   sortDir: string = 'ASE'
+  // ) {
 
-    console.log("Filters:", filters);
+  //   console.log("Filters:", filters);
 
-    let params = new HttpParams()
-      .set('pageNo', pageNo)
-      .set('pageSize', pageSize)
-      .set('sortBy', sortBy)
-      .set('sortDir', sortDir);
+  //   let params = new HttpParams()
+  //     .set('pageNo', pageNo)
+  //     .set('pageSize', pageSize)
+  //     .set('sortBy', sortBy)
+  //     .set('sortDir', sortDir);
 
-    console.log("Request URL Params:", params.toString());
-    console.log("Request Body:", filters);
+  //   console.log("Request URL Params:", params.toString());
+  //   console.log("Request Body:", filters);
 
-    return this.http.post<any>(
-      `${this.baseUrl}/jobsearch`,
-      filters,
-      { params }
-    );
+  //   return this.http.post<any>(
+  //     `${this.baseUrl}/jobsearch`,
+  //     filters,
+  //     { params }
+  //   );
 
-  }
+  // }
 
 
   // New Search job service end
@@ -368,9 +391,34 @@ export class AuthService {
     return this.http.post(`${this.candidateUrl}/updateProfile`, candidate);
   }
 
-  uploadCandidateImage(candidateId:number,imageFile: File):Observable<any>{
-        return this.http.post(`${this.candidateUrl}/uploadImage`, candidateId);
-  }
+  // uploadCandidateImage(candidateId:number,imageFile: File):Observable<any>{
+  //       return this.http.post(`${this.candidateUrl}/uploadImage`, candidateId);
+  // }
+
+  
+uploadCandidateImage(
+  candidateId: number,
+  imageFile: File
+): Observable<any> {
+
+  const formData = new FormData();
+  formData.append('file', imageFile);
+
+  return this.http.post(
+    `${this.candidateUrl}/uploadImage/${candidateId}`,
+    formData
+  );
+}
+
+
+getCandidateImage(imageId: number): Observable<Blob> {
+  return this.http.get(
+    `${this.candidateUrl}/candidateImage/${imageId}`,
+    { responseType: 'blob' }
+  );
+}
+
+
 
   uploadResume(file: File, candidateId: number) {
     const formData = new FormData();
@@ -594,6 +642,54 @@ export class AuthService {
     return this.http.post(`${this.employerUrl}/updateApplicationStatus`, request);
   }
 
+
+
+
+  // ----------------------------Employer  logo calls---------------------------
+
+
+  // Uploads the logo file and returns the new image id,
+// e.g.  { "imageId": 12 }
+uploadEmployerLogo(employerId: number, file: File): Observable<any> {
+ 
+  const formData = new FormData();
+ 
+  formData.append('file', file);
+ 
+  return this.http.post<any>(
+    `${this.employerUrl}/uploadLogo/${employerId}`,
+    formData
+  );
+ 
+}
+ 
+// Saves the employer (including the new companyLogoId)
+// and returns the updated employer.
+updateEmployer(employer: Employer): Observable<Employer> {
+ 
+  return this.http.put<Employer>(
+    `${this.baseUrl}/employer/update`,
+    employer
+  );
+ 
+}
+ 
+// URL the <img> tag loads the logo from
+// getImageUrl(imageId: number): string {
+ 
+//   return `${this.baseUrl}/image/${imageId}`;
+ 
+// }
+
+
+getImageUrl(logoId: number): Observable<Blob> {
+  return this.http.get(
+    `${this.baseUrl}/employerLogo/${logoId}`,
+    { responseType: 'blob' }
+  );
+}
+
+ 
 
 }
 

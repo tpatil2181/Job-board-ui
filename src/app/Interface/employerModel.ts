@@ -3,6 +3,7 @@
 // }
 export interface Employer {
 	  employeerId:number;
+    companyLogoId:number;
     employeerName:string;
     empEmail:string;
     website:string;

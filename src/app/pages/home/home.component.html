@@ -329,7 +329,8 @@
       <!-- Jobs List -->
       <div>
         <div class="jobs-header">
-          <h2>{{ filteredJobs.length }} Jobs Found</h2>
+          <!-- SERVER-SIDE PAGINATION: total across all pages (was filteredJobs.length, which is only the current page) -->
+          <h2>{{ totalElements }} Jobs Found</h2>
           <select class="sort-select" [ngModel]="sortValue" (ngModelChange)="onSortChange($event)">
             <option value="relevant">Most Relevant</option>
             <option value="recent">Most Recent</option>
@@ -338,8 +339,10 @@
         </div>
 
         <!-- Job Cards -->
+        <!-- PAGINATION FIX: the loop below used to be  *ngFor="let job of jobs; trackBy: trackByJob"
+             which showed every job on every page. It now renders only the current page via pagedJobs. -->
         <div class="job-card" [class.new-job]="job.datePosted === 'Just now'"
-          *ngFor="let job of jobs; trackBy: trackByJob" (click)="viewJob(job.jobId)">
+          *ngFor="let job of pagedJobs; trackBy: trackByJob" (click)="viewJob(job.jobId)">
           <!-- <div
             class="job-logo"
             /* [style.color]="job.color" */

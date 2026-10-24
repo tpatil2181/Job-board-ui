@@ -6,7 +6,14 @@
 
     <!-- 🔹 Hero card -->
     <div class="card hero">
-      <div class="hero-avatar">{{ initials }}</div>
+      <!-- <div class="hero-avatar">{{ initials }}</div> -->
+
+      <!-- LOGO: shows the saved company logo, falls back to initials when there is none -->
+      <div class="hero-avatar" [class.has-logo]="logoUrl">
+        <!-- <img *ngIf="logoUrl" [src]="logoUrl" [alt]="employer.employeerName + ' logo'"> -->
+           <img *ngIf="imageUrl;" [src]="imageUrl" alt="Candidate profile photo" class="avatar-img" />
+        <span *ngIf="!logoUrl">{{ initials }}</span>
+      </div>
 
       <div class="hero-info">
         <h2>{{ employer.employeerName }}</h2>
@@ -37,7 +44,8 @@
           <span class="info-label">Email</span>
           <span class="info-sep">:</span>
           <!-- <span class="info-value">{{ employer.user?.email || 'Not added' }}</span> -->
-          <span class="info-value">{{ 'Not added' }}</span>
+          <!-- <span class="info-value">{{ 'Not added' }}</span> -->
+          <span class="info-value">{{ employer.empEmail || 'Not added' }}</span>
         </div>
       </div>
 
@@ -98,6 +106,41 @@
 
     <form #empForm="ngForm" (ngSubmit)="onSave(empForm)" class="form-body">
 
+      <!-- LOGO UPLOAD -->
+      <div class="logo-group">
+
+        <div class="logo-preview" [class.has-logo]="logoPreviewUrl">
+          <!-- <img *ngIf="logoPreviewUrl" [src]="logoPreviewUrl" alt="Company logo preview"> -->
+                 <img *ngIf="imageUrl;" [src]="imageUrl" alt="Candidate profile photo" class="avatar-img" />
+
+          <span *ngIf="!logoPreviewUrl">{{ initials }}</span>
+        </div>
+
+        <div class="logo-actions">
+
+          <label class="btn-upload" for="logoInput">
+            {{ logoPreviewUrl ? 'Change logo' : 'Upload logo' }}
+          </label>
+
+          <input
+            id="logoInput"
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            class="file-hidden"
+            (change)="onLogoSelected($event)">
+
+          <button type="button" class="link-btn" *ngIf="logoFile" (click)="clearSelectedLogo()">
+            Undo
+          </button>
+
+          <div class="hint">PNG, JPG or WebP, up to 2 MB.</div>
+
+          <div class="field-error" *ngIf="logoError">{{ logoError }}</div>
+
+        </div>
+
+      </div>
+
       <div class="form-group">
         <label>Employer / Company Name <span class="req">*</span></label>
         <input type="text" name="employeerName" [(ngModel)]="editForm.employeerName" required
@@ -119,7 +162,8 @@
       <div class="form-group">
         <label>Email</label>
         <!-- <input type="text" [value]="employer?.user?.email || ''" disabled> -->
-        <input type="text" [value]=" 'sdkjd'" disabled>
+        <!-- <input type="text" [value]=" 'sdkjd'" disabled> -->
+        <input type="text" [value]="employer?.empEmail || ''" disabled>
         <div class="hint">Email is tied to your login and can't be changed here.</div>
       </div>
 
