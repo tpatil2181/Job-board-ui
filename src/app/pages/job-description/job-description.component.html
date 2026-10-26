@@ -23,12 +23,24 @@
 
       </div>
 
-      <div class="company-logo">
-        <!-- <img
+      <!-- <div class="company-logo">
+        <img
           [src]="job?.companyLogo || 'assets/images/company-placeholder.png'"
           alt="Company Logo"
-        /> -->
-      </div>
+        />
+      </div> -->
+
+      <div class="company-logo">
+  <img
+    *ngIf="logoUrl; else companyLogoPlaceholder"
+    [src]="logoUrl"
+    alt="Company Logo"
+  />
+
+  <ng-template #companyLogoPlaceholder>
+    <span>{{ job?.employerName?.charAt(0) || '?' }}</span>
+  </ng-template>
+</div>
 
     </div>
 

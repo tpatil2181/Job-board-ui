@@ -22,6 +22,7 @@ export interface Job {
 
   employerId: number;
   employerName: string | null;
+  companyLogo: number | null;
 
   jobLocation: string;
   workMode: string;

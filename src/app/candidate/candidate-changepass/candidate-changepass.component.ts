@@ -30,8 +30,7 @@ export class CandidateChagepassComponent {
       alert('Passwords do not match ❌');
       return;
     }
-    // const userId = 152;
-
+    
     console.log('Sending:', this.changePass);
 
     this.authService.changePassword(this.changePass).subscribe({
