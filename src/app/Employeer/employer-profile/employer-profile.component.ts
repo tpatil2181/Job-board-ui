@@ -88,17 +88,21 @@ export class EmployerProfileComponent implements OnInit {
   constructor(
     private authService: AuthService,   // replace with your real AuthService type
     private alertService: AlertService   // replace with your real AlertService type
-  ) {}
+  ) { }
 
 
   // =====================================================
   // Lifecycle
   // =====================================================
 
+
   ngOnInit(): void {
 
     this.loadEmployer();
-    this.getlogoUrl(this.employer?.companyLogoId);
+    //  console.log('Employer profile component initialized:', this.employer);
+    // this.getlogoUrl(this.employer?.companyLogoId);
+
+    // console.log(this.imageUrl);
 
   }
 
@@ -108,9 +112,10 @@ export class EmployerProfileComponent implements OnInit {
   private imageObjectUrl: string | null = null;
 
 
-  
-   getlogoUrl(imageId: number | null | undefined): void {
+
+  getlogoUrl(imageId: number | null | undefined): void {
     // Clear the previous image
+    console.log('getlogoUrl called with imageId:', imageId);
     if (this.imageObjectUrl) {
       URL.revokeObjectURL(this.imageObjectUrl);
       this.imageObjectUrl = null;
@@ -157,6 +162,11 @@ export class EmployerProfileComponent implements OnInit {
 
           this.employer = response;
           this.loading = false;
+
+          this.getlogoUrl(this.employer?.companyLogoId);
+
+          console.log(this.imageUrl);
+          // console.log('Loaded employer profile:', this.employer); OK
 
         },
 
@@ -279,14 +289,20 @@ export class EmployerProfileComponent implements OnInit {
   }
 
   // Drops the newly picked file and goes back to the saved logo
+  // clearSelectedLogo(): void {
+
+  //   this.logoFile = null;
+
+  //   this.logoError = '';
+
+  //   this.logoPreviewUrl = this.logoUrl || null;
+
+  // }
+
   clearSelectedLogo(): void {
-
     this.logoFile = null;
-
     this.logoError = '';
-
-    this.logoPreviewUrl = this.logoUrl || null;
-
+    this.logoPreviewUrl = this.imageUrl;
   }
 
 
@@ -294,8 +310,30 @@ export class EmployerProfileComponent implements OnInit {
   // Edit modal
   // =====================================================
 
-  openEdit(): void {
+  // openEdit(): void {
 
+  //   if (!this.employer) {
+  //     return;
+  //   }
+
+  //   this.editForm = {
+  //     employeerName: this.employer.employeerName ?? '',
+  //     website: this.employer.website ?? '',
+  //     contact: this.employer.contact != null ? String(this.employer.contact) : ''
+  //   };
+
+  //   // Start from the saved logo, with no pending upload
+  //   this.logoFile = null;
+
+  //   this.logoError = '';
+
+  //   this.logoPreviewUrl = this.logoUrl || null;
+
+  //   this.showEditForm = true;
+
+  // }
+
+  openEdit(): void {
     if (!this.employer) {
       return;
     }
@@ -303,18 +341,15 @@ export class EmployerProfileComponent implements OnInit {
     this.editForm = {
       employeerName: this.employer.employeerName ?? '',
       website: this.employer.website ?? '',
-      contact: this.employer.contact != null ? String(this.employer.contact) : ''
+      contact: this.employer.contact != null
+        ? String(this.employer.contact)
+        : ''
     };
 
-    // Start from the saved logo, with no pending upload
     this.logoFile = null;
-
     this.logoError = '';
-
-    this.logoPreviewUrl = this.logoUrl || null;
-
+    this.logoPreviewUrl = this.imageUrl;
     this.showEditForm = true;
-
   }
 
   closeEdit(): void {
@@ -355,36 +390,36 @@ export class EmployerProfileComponent implements OnInit {
 
     this.saving = true;
 
-//     this.authService
-//       .updateEmployer(payload)
-//       .subscribe({
+    //     this.authService
+    //       .updateEmployer(payload)
+    //       .subscribe({
 
-//         next: (response: Employer) => {
+    //         next: (response: Employer) => {
 
-//           this.employer = response ?? payload;
-//           this.saving = false;
-//           this.showEditForm = false;
+    //           this.employer = response ?? payload;
+    //           this.saving = false;
+    //           this.showEditForm = false;
 
-//           this.alertService.success(
-//             'Profile updated successfully.'
-//           );
+    //           this.alertService.success(
+    //             'Profile updated successfully.'
+    //           );
 
-//         },
+    //         },
 
-//         error: (err: any) => {
+    //         error: (err: any) => {
 
-//           console.error('Error updating employer profile:', err);
+    //           console.error('Error updating employer profile:', err);
 
-//           this.saving = false;
+    //           this.saving = false;
 
-//           this.alertService.error(
-//             err?.error?.message ||
-//             'Failed to update profile.'
-//           );
+    //           this.alertService.error(
+    //             err?.error?.message ||
+    //             'Failed to update profile.'
+    //           );
 
-//         }
+    //         }
 
-//       });
+    //       });
 
     // =====================================================
     // Save with logo
@@ -405,23 +440,37 @@ export class EmployerProfileComponent implements OnInit {
         .updateEmployer(updated)
         .subscribe({
 
-          next: (response: Employer) => {
+          // next: (response: Employer) => {
 
+          //   this.employer = response ?? updated;
+
+          //   // Force the browser to load the new logo
+          //   this.logoVersion = Date.now();
+
+          //   this.logoFile = null;
+
+          //   this.saving = false;
+
+          //   this.showEditForm = false;
+
+          //   this.alertService.success(
+          //     'Profile updated successfully.'
+          //   );
+
+          // },
+
+          next: (response: Employer) => {
             this.employer = response ?? updated;
 
-            // Force the browser to load the new logo
-            this.logoVersion = Date.now();
+            // Reload the saved logo using its latest ID.
+            this.getlogoUrl(this.employer.companyLogoId);
 
             this.logoFile = null;
-
+            this.logoPreviewUrl = null;
             this.saving = false;
-
             this.showEditForm = false;
 
-            this.alertService.success(
-              'Profile updated successfully.'
-            );
-
+            this.alertService.success('Profile updated successfully.');
           },
 
           error: (err: any) => {

@@ -343,17 +343,18 @@
              which showed every job on every page. It now renders only the current page via pagedJobs. -->
         <div class="job-card" [class.new-job]="job.datePosted === 'Just now'"
           *ngFor="let job of pagedJobs; trackBy: trackByJob" (click)="viewJob(job.jobId)">
-          <!-- <div
-            class="job-logo"
-            /* [style.color]="job.color" */
-            /* [style.border-color]="job.color + '22'" */
-            /* [style.background]="job.color + '10'" */
-          >
-            {{ job.logo }}
-          </div> -->
+
+          <!-- Keep your existing commented code unchanged -->
+
           <div class="job-logo">
-            {{ job.employerName?.charAt(0) }}
+            <img *ngIf="logoUrls[job.jobId]; else companyInitial" [src]="logoUrls[job.jobId]"
+              [alt]="job.employerName + ' logo'" (error)="logoUrls[job.jobId] = ''" />
+
+            <ng-template #companyInitial>
+              <span>{{ job.employerName?.charAt(0) || '?' }}</span>
+            </ng-template>
           </div>
+
           <div class="job-info">
             <div class="job-title">{{ job.jobTitle }}</div>
             <div class="job-company">{{ job.employerName }}</div>

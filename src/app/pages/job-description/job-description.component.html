@@ -17,7 +17,7 @@
         <div class="job-meta">
           <span>💼 {{ job?.minExperience }} - {{ job?.maxExperience }} Years</span>
           <span class="salary" *ngIf="job?.minSalary && job?.maxSalary">
-            ₹ {{ job?.minSalary | number }} -  {{ job?.maxSalary | number }} LPA
+            ₹ {{ job?.minSalary | number }} - {{ job?.maxSalary | number }} LPA
           </span>
         </div>
 
@@ -31,16 +31,12 @@
       </div> -->
 
       <div class="company-logo">
-  <img
-    *ngIf="logoUrl; else companyLogoPlaceholder"
-    [src]="logoUrl"
-    alt="Company Logo"
-  />
+        <img *ngIf="logoUrl; else companyLogoPlaceholder" [src]="logoUrl" alt="Company Logo" />
 
-  <ng-template #companyLogoPlaceholder>
-    <span>{{ job?.employerName?.charAt(0) || '?' }}</span>
-  </ng-template>
-</div>
+        <ng-template #companyLogoPlaceholder>
+          <span>{{ job?.employerName?.charAt(0) || '?' }}</span>
+        </ng-template>
+      </div>
 
     </div>
 
@@ -68,12 +64,16 @@
         Login to Apply
       </button>
 
-      <button
+      <!-- <button
         class="primary-btn"
         *ngIf="isLoggedIn"
         (click)="applyJob()"
       >
         Apply Now
+      </button> -->
+
+      <button class="primary-btn" *ngIf="isLoggedIn" [disabled]="isApplied" (click)="applyJob()">
+        {{ isApplied ? 'Applied' : 'Apply Now' }}
       </button>
 
     </div>
@@ -101,7 +101,7 @@
   <div class="content-card" *ngIf="job?.jobDescription">
     <h2>Job Summary</h2>
     <p>{{ job?.jobDescription }}</p>
-    
+
     <!-- <p>{{ job?.jobResponsibilities }}</p>
     <p>{{ job?.jobQualifications }}</p> -->
   </div>

@@ -46,6 +46,8 @@ export class JobDescriptionComponent {
   jobIdformList!: number;
   job: Job | null = null;
 
+  candidateId: number = 0;
+
   // Demo
 
   // job: DemoJob = {
@@ -132,15 +134,36 @@ export class JobDescriptionComponent {
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
+    
+
     this.authService.getJobById(id).subscribe(job => {
     this.job = job;
     this.loadEmployerLogo(this.job?.companyLogo);
 
+ 
+
+    const candidate = JSON.parse(
+    localStorage.getItem('candidate') || '{}'
+  );
+
+  this.candidateId = Number(candidate.candidateId) || 0;
+
+     console.log('sending jobId:', this.job?.jobId);
+    console.log('sending candidateId:', this.candidateId);
+
+      this.isalreadyApplied();
+
+
+  console.log('Candidate ID:', this.candidateId);
+
       // console.log(this.job);
     });
+    // this.isalreadyApplied();
   }
 
   // applyJob(): void {}
+
+  isApplied: boolean = false;
 
 
   applyJob(): void {
@@ -148,7 +171,7 @@ export class JobDescriptionComponent {
 
       jobId: this.job?.jobId || 0,
       employeerId: this.job?.employerId || 0,
-      candidateId: Number(localStorage.getItem('userId')) || 0
+      candidateId: this.candidateId || 0 
     };
 
     // console.log('Sending Data:', application);  //Remove this letter for security resone it is printing data on console
@@ -156,6 +179,7 @@ export class JobDescriptionComponent {
     this.authService.jobApplicationRequest(application).subscribe({
       next: (res) => {
         console.log(res);
+        this.isApplied = true;
         this.alertService.success("Applied Successful ✅");
         // alert('Applied Successful ✅');
       },
@@ -167,6 +191,18 @@ export class JobDescriptionComponent {
         } else {
           this.alertService.error("Something went wrong");
           // alert('Something went wrong ❌');
+        }
+      }
+    });
+  }
+
+  isalreadyApplied(): void{
+
+    this.authService.isAlreadyApplied(this.job?.jobId || 0, this.candidateId).subscribe({
+      next: (res) => {
+        console.log('job application status:' + res);
+        if (res) {
+          this.isApplied = true;
         }
       }
     });

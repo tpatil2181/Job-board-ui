@@ -17,7 +17,7 @@ import { ChangeCandidateStatus } from '../../Interface/employerModel';
 // Applicant Interface
 // =====================================================
 
-export type ApplicationStatus = 'APPLIED' | 'SHORTLISTED' | 'INTERVIEWSCHEDULED' | 'SELECTED';
+export type ApplicationStatus = 'APPLIED' | 'SHORTLISTED' | 'INTERVIEWSCHEDULED' | 'SELECTED'| 'REJECTED';
 
 export interface jobApplicant {
 
@@ -96,7 +96,8 @@ export class ApplicantListComponent implements OnInit {
     'APPLIED',
     'SHORTLISTED',
     'INTERVIEWSCHEDULED',
-    'SELECTED'
+    'SELECTED',
+    'REJECTED'
   ];
 
   // Tracks which row's status dropdown is open (for the

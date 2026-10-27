@@ -14,7 +14,7 @@ import { DateFormatePipePipe } from '../../shared/pipes/date-formate-pipe.pipe';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, SharedModule,DateFormatePipePipe],
+  imports: [CommonModule, FormsModule, SharedModule, DateFormatePipePipe],
   templateUrl: './home.component.html',
   styleUrls: ['home.component.scss'],
 
@@ -38,6 +38,29 @@ export class HomeComponent implements OnInit {
   //========================Variable Declaration ==========================================
   jobs: Job[] = [];
 
+  logoUrls: { [jobId: number]: string } = {};
+  private savedFilterState: any = null;
+  
+
+  loadEmployerLogo(
+    logoId: number | null | undefined,
+    jobId: number
+  ): void {
+    if (logoId == null) {
+      return;
+    }
+
+    this.authService.getImageUrl(logoId).subscribe({
+      next: (blob: Blob) => {
+        if (blob.size > 0) {
+          this.logoUrls[jobId] = URL.createObjectURL(blob);
+        }
+      },
+      error: (err) => {
+        console.error(`Failed to load logo for job ${jobId}:`, err);
+      }
+    });
+  }
 
 
 
@@ -60,29 +83,29 @@ export class HomeComponent implements OnInit {
   //================ Search Variables ===================
 
 
-//================ New Search Variables ===================
+  //================ New Search Variables ===================
 
-    search:string='';
+  search: string = '';
 
-    jobTitle: string = '';
+  jobTitle: string = '';
 
-    jobLocation: string = '';
+  jobLocation: string = '';
 
-    employerName: string = '';
+  employerName: string = '';
 
-    selectedWorkModes: string[] = [];
+  selectedWorkModes: string[] = [];
 
-    selectedEmploymentTypes: string[] = [];
+  selectedEmploymentTypes: string[] = [];
 
-    selectedIndustryTypes: string[] = [];
+  selectedIndustryTypes: string[] = [];
 
-    selectedExperiences: ExperienceFilterDTO[] = [];
+  selectedExperiences: ExperienceFilterDTO[] = [];
 
-    minSalary: number | null = null;
+  minSalary: number | null = null;
 
-    maxSalary: number | null = null;
+  maxSalary: number | null = null;
 
-    datePosted: string = '';
+  datePosted: string = '';
 
 
 
@@ -90,239 +113,244 @@ export class HomeComponent implements OnInit {
 
   //======================== New Searching Query work==========================================
 
- searchJobs(page: number = 1) {
+  searchJobs(page: number = 1) {
 
-  console.log("Search button clicked");
+    console.log("Search button clicked");
 
-  const filters: JobSearchDTO = {
+    const filters: JobSearchDTO = {
 
-    search:this.search,
+      search: this.search,
 
-    jobTitle: this.jobTitle,
+      jobTitle: this.jobTitle,
 
-    jobLocation: this.jobLocation,
+      jobLocation: this.jobLocation,
 
-    employerName: this.employerName,
+      employerName: this.employerName,
 
-    workModes: this.selectedWorkModes,
+      workModes: this.selectedWorkModes,
 
-    employmentTypes: this.selectedEmploymentTypes,
+      employmentTypes: this.selectedEmploymentTypes,
 
-    industryTypes: this.selectedIndustryTypes,
+      industryTypes: this.selectedIndustryTypes,
 
-    experiences: this.selectedExperiences,
+      experiences: this.selectedExperiences,
 
-    minSalary: this.minSalary ?? undefined,
+      minSalary: this.minSalary ?? undefined,
 
-    maxSalary: this.maxSalary ?? undefined,
+      maxSalary: this.maxSalary ?? undefined,
 
-    datePosted: this.datePosted || undefined
+      datePosted: this.datePosted || undefined
 
-  };
+    };
 
-  console.log(filters);
+    console.log(filters);
 
-  // SERVER-SIDE PAGINATION: the backend only returns one page at a time, so the
-  // pageNo (1-based, the controller does pageNo - 1) and pageSize are sent along with the filters.
-  // (was: this.authService.searchJobs(filters).subscribe({ )
-  this.authService.searchJobs(filters, page, this.PER_PAGE).subscribe({
+    // SERVER-SIDE PAGINATION: the backend only returns one page at a time, so the
+    // pageNo (1-based, the controller does pageNo - 1) and pageSize are sent along with the filters.
+    // (was: this.authService.searchJobs(filters).subscribe({ )
+    this.authService.searchJobs(filters, page, this.PER_PAGE).subscribe({
 
-    next: (response: any) => {
+      next: (response: any) => {
 
-      console.log(response);
+        console.log(response);
 
-      this.jobs = response.content;
+        this.jobs = response.content;
+        this.jobs.forEach((job: Job) => {
+          this.loadEmployerLogo(job.companyLogo, job.jobId);
+        });
+        console.log('Jobs after loading logos:', this.jobs);
 
-      // PAGINATION FIX: filteredJobs holds the jobs of the CURRENT page only.
-      // Totals come from the backend page object (totalElements / totalPages).
-      this.filteredJobs = [...this.jobs];
 
-      this.currentPage = page;
+        // PAGINATION FIX: filteredJobs holds the jobs of the CURRENT page only.
+        // Totals come from the backend page object (totalElements / totalPages).
+        this.filteredJobs = [...this.jobs];
 
-      this.totalElements = response.totalElements ?? this.jobs.length;
+        this.currentPage = page;
 
-      this.serverTotalPages =
-        response.totalPages ?? Math.ceil(this.totalElements / this.PER_PAGE);
+        this.totalElements = response.totalElements ?? this.jobs.length;
 
-      this.sortJobs(this.sortValue);
+        this.serverTotalPages =
+          response.totalPages ?? Math.ceil(this.totalElements / this.PER_PAGE);
 
-    },
+        this.sortJobs(this.sortValue);
 
-    error: (err) => {
+      },
 
-      this.alertService.error("Something went wrong");
+      error: (err) => {
 
-      console.error(err);
+        this.alertService.error("Something went wrong");
 
-    }
+        console.error(err);
 
-  });
-
-}
-
-
-onEmploymentTypeChange(type: string, checked: boolean) {
-
-  if (checked) {
-
-    this.selectedEmploymentTypes.push(type);
-
-  } else {
-
-    this.selectedEmploymentTypes =
-      this.selectedEmploymentTypes.filter(t => t !== type);
-
-  }
-
-  this.searchJobs();
-
-}
-
-clearEmploymentTypes() {
-
-  this.selectedEmploymentTypes = [];
-
-  this.searchJobs();
-
-}
-
-
-onWorkModeChange(mode: string, checked: boolean) {
-
-  if (checked) {
-
-    this.selectedWorkModes.push(mode);
-
-  } else {
-
-    this.selectedWorkModes =
-      this.selectedWorkModes.filter(m => m !== mode);
-
-  }
-
-  this.searchJobs();
-
-}
-
-clearWorkModes() {
-
-  this.selectedWorkModes = [];
-
-  this.searchJobs();
-
-}
-
-onIndustryTypeChange(type: string, checked: boolean) {
-
-  if (checked) {
-
-    this.selectedIndustryTypes.push(type);
-
-  } else {
-
-    this.selectedIndustryTypes =
-      this.selectedIndustryTypes.filter(t => t !== type);
-
-  }
-
-  this.searchJobs();
-
-}
-
-clearIndustryTypes() {
-
-  this.selectedIndustryTypes = [];
-
-  this.searchJobs();
-
-}
-
-onExperienceChange(min: number, max: number, checked: boolean) {
-
-  if (checked) {
-
-    this.selectedExperiences.push({
-
-      minExperience: min,
-
-      maxExperience: max
+      }
 
     });
 
-  } else {
+  }
 
-    this.selectedExperiences =
-      this.selectedExperiences.filter(exp =>
 
-        !(exp.minExperience === min &&
-          exp.maxExperience === max)
+  onEmploymentTypeChange(type: string, checked: boolean) {
 
-      );
+    if (checked) {
+
+      this.selectedEmploymentTypes.push(type);
+
+    } else {
+
+      this.selectedEmploymentTypes =
+        this.selectedEmploymentTypes.filter(t => t !== type);
+
+    }
+
+    this.searchJobs();
 
   }
 
-  this.searchJobs();
+  clearEmploymentTypes() {
 
-}
-isExperienceChecked(min: number, max: number): boolean {
+    this.selectedEmploymentTypes = [];
 
-  return this.selectedExperiences.some(exp =>
-    exp.minExperience === min &&
-    exp.maxExperience === max
-  );
+    this.searchJobs();
 
-}
+  }
 
-clearExperiences() {
 
-  this.selectedExperiences = [];
+  onWorkModeChange(mode: string, checked: boolean) {
 
-  this.searchJobs();
+    if (checked) {
 
-}
+      this.selectedWorkModes.push(mode);
 
-clearSalary() {
+    } else {
 
-  this.minSalary = null;
+      this.selectedWorkModes =
+        this.selectedWorkModes.filter(m => m !== mode);
 
-  this.maxSalary = null;
+    }
 
-  this.searchJobs();
+    this.searchJobs();
 
-}
+  }
 
-clearDatePosted() {
+  clearWorkModes() {
 
-  this.datePosted = '';
+    this.selectedWorkModes = [];
 
-  this.searchJobs();
+    this.searchJobs();
 
-}
+  }
 
-// onCategoryChange(category: string, checked: boolean) {
+  onIndustryTypeChange(type: string, checked: boolean) {
 
-//   if (checked) {
+    if (checked) {
 
-//     this.selectedCategories.push(category);
+      this.selectedIndustryTypes.push(type);
 
-//   } else {
+    } else {
 
-//     this.selectedCategories =
-//       this.selectedCategories.filter(c => c !== category);
+      this.selectedIndustryTypes =
+        this.selectedIndustryTypes.filter(t => t !== type);
 
-//   }
+    }
 
-//   this.searchJobs();
+    this.searchJobs();
 
-// }
+  }
 
-// clearCategories() {
+  clearIndustryTypes() {
 
-//   this.selectedCategories = [];
+    this.selectedIndustryTypes = [];
 
-//   this.searchJobs();
+    this.searchJobs();
 
-// }
+  }
+
+  onExperienceChange(min: number, max: number, checked: boolean) {
+
+    if (checked) {
+
+      this.selectedExperiences.push({
+
+        minExperience: min,
+
+        maxExperience: max
+
+      });
+
+    } else {
+
+      this.selectedExperiences =
+        this.selectedExperiences.filter(exp =>
+
+          !(exp.minExperience === min &&
+            exp.maxExperience === max)
+
+        );
+
+    }
+
+    this.searchJobs();
+
+  }
+  isExperienceChecked(min: number, max: number): boolean {
+
+    return this.selectedExperiences.some(exp =>
+      exp.minExperience === min &&
+      exp.maxExperience === max
+    );
+
+  }
+
+  clearExperiences() {
+
+    this.selectedExperiences = [];
+
+    this.searchJobs();
+
+  }
+
+  clearSalary() {
+
+    this.minSalary = null;
+
+    this.maxSalary = null;
+
+    this.searchJobs();
+
+  }
+
+  clearDatePosted() {
+
+    this.datePosted = '';
+
+    this.searchJobs();
+
+  }
+
+  // onCategoryChange(category: string, checked: boolean) {
+
+  //   if (checked) {
+
+  //     this.selectedCategories.push(category);
+
+  //   } else {
+
+  //     this.selectedCategories =
+  //       this.selectedCategories.filter(c => c !== category);
+
+  //   }
+
+  //   this.searchJobs();
+
+  // }
+
+  // clearCategories() {
+
+  //   this.selectedCategories = [];
+
+  //   this.searchJobs();
+
+  // }
 
 
 
@@ -464,6 +492,9 @@ clearDatePosted() {
 
         this.jobs = data.content || []; // Adjust based on actual API response structure
         this.filteredJobs = [...this.jobs];
+        this.jobs.forEach((job: Job) => {
+          this.loadEmployerLogo(job.companyLogo, job.jobId);
+        });
 
         this.currentPage = 1;
         this.totalElements = data.totalElements ?? this.jobs.length;
@@ -687,7 +718,7 @@ clearDatePosted() {
 
   fillSearch(tag: string) {
 
-    this.search=tag;
+    this.search = tag;
     // this.jobTitle = tag;
     this.searchJobs();
 

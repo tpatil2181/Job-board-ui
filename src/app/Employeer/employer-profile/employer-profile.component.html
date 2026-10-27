@@ -9,11 +9,22 @@
       <!-- <div class="hero-avatar">{{ initials }}</div> -->
 
       <!-- LOGO: shows the saved company logo, falls back to initials when there is none -->
-      <div class="hero-avatar" [class.has-logo]="logoUrl">
-        <!-- <img *ngIf="logoUrl" [src]="logoUrl" [alt]="employer.employeerName + ' logo'"> -->
+      <!-- <div class="hero-avatar" [class.has-logo]="logoUrl">
+        <img *ngIf="logoUrl" [src]="logoUrl" [alt]="employer.employeerName + ' logo'">
            <img *ngIf="imageUrl;" [src]="imageUrl" alt="Candidate profile photo" class="avatar-img" />
         <span *ngIf="!logoUrl">{{ initials }}</span>
-      </div>
+      </div> -->
+
+      <div class="hero-avatar" [class.has-logo]="imageUrl">
+  <img
+    *ngIf="imageUrl"
+    [src]="imageUrl"
+    [alt]="employer.employeerName + ' logo'"
+    class="avatar-img"
+  />
+
+  <span *ngIf="!imageUrl">{{ initials }}</span>
+</div>
 
       <div class="hero-info">
         <h2>{{ employer.employeerName }}</h2>
@@ -109,12 +120,22 @@
       <!-- LOGO UPLOAD -->
       <div class="logo-group">
 
-        <div class="logo-preview" [class.has-logo]="logoPreviewUrl">
-          <!-- <img *ngIf="logoPreviewUrl" [src]="logoPreviewUrl" alt="Company logo preview"> -->
+        <!-- <div class="logo-preview" [class.has-logo]="logoPreviewUrl">
+          <img *ngIf="logoPreviewUrl" [src]="logoPreviewUrl" alt="Company logo preview">
                  <img *ngIf="imageUrl;" [src]="imageUrl" alt="Candidate profile photo" class="avatar-img" />
 
           <span *ngIf="!logoPreviewUrl">{{ initials }}</span>
-        </div>
+        </div> -->
+
+        <div class="logo-preview" [class.has-logo]="logoPreviewUrl">
+  <img
+    *ngIf="logoPreviewUrl"
+    [src]="logoPreviewUrl"
+    [alt]="employer?.employeerName + ' logo preview'"
+  />
+
+  <span *ngIf="!logoPreviewUrl">{{ initials }}</span>
+</div>
 
         <div class="logo-actions">
 

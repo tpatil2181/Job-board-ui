@@ -81,28 +81,59 @@ export class AuthService {
 
   // Employer Object from Backend
 
-  private employerSubject = new BehaviorSubject<Employer | null>(this.getEmployerFromStorage());
-  employer$ = this.employerSubject.asObservable();
+  // private employerSubject = new BehaviorSubject<Employer | null>(this.getEmployerFromStorage());
+  // employer$ = this.employerSubject.asObservable();
 
-  private getEmployerFromStorage(): Employer | null {
+  // private getEmployerFromStorage(): Employer | null {
 
+  // const data = localStorage.getItem('Employer');
+
+  //   if (!data) {
+  //     return null;
+  //   }
+
+  //   try {
+
+  //     return JSON.parse(data);
+
+  //   } catch {
+
+  //     return null;
+
+  //   }
+
+  // }
+
+  private employerSubject =
+  new BehaviorSubject<Employer | null>(this.getEmployerFromStorage());
+
+employer$ = this.employerSubject.asObservable();
+
+private getEmployerFromStorage(): Employer | null {
   const data = localStorage.getItem('Employer');
 
-    if (!data) {
-      return null;
-    }
-
-    try {
-
-      return JSON.parse(data);
-
-    } catch {
-
-      return null;
-
-    }
-
+  if (!data) {
+    return null;
   }
+
+  try {
+    return JSON.parse(data);
+  } catch {
+    return null;
+  }
+}
+
+// setEmployer(employer: Employer | null): void {
+//   if (employer) {
+//     localStorage.setItem('Employer', JSON.stringify(employer));
+//   } else {
+//     localStorage.removeItem('Employer');
+//   }
+
+//   this.employerSubject.next(employer);
+// }
+
+  
 
 
   
@@ -226,10 +257,20 @@ export class AuthService {
   }
   // Store/update candidate
 
-  setEmployer(emplyer: Employer) {
-    localStorage.setItem('Employer', JSON.stringify(emplyer));
-    // this.candidateSubject.next(emplyer);
+  // setEmployer(emplyer: Employer) {
+  //   localStorage.setItem('Employer', JSON.stringify(emplyer));
+  //   // this.candidateSubject.next(emplyer);
+  // }
+
+  setEmployer(employer: Employer | null): void {
+  if (employer) {
+    localStorage.setItem('Employer', JSON.stringify(employer));
+  } else {
+    localStorage.removeItem('Employer');
   }
+
+  this.employerSubject.next(employer);
+}
 
 
 
@@ -247,6 +288,10 @@ export class AuthService {
 
   getJobById(jobId: number): Observable<Job> {
     return this.http.get<Job>(`${this.baseUrl}/job/${jobId}`);
+  }
+
+  isAlreadyApplied(jobId: number, candidateId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.candidateUrl}/isAlreadyApplied/${jobId}/${candidateId}`);
   }
 
 
