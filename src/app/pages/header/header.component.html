@@ -13,16 +13,36 @@
     <ul class="nav-links">
       <li><a [routerLink]="['']" routerLinkActive="active">Find Jobs</a></li>
       <li><a [routerLink]="['/companies']" routerLinkActive="active">Companies</a></li>
-      <!-- <li><a [routerLink]="['/about']" routerLinkActive="active">How It Works</a></li> -->
-      <!-- <li><a [routerLink]="['/about']" routerLinkActive="active">Career Advice</a></li> -->
+      <!-- <a [routerLink]="['/about']" routerLinkActive="active">How It Works</a> -->
+      <!-- <a [routerLink]="['/about']" routerLinkActive="active">Career Advice</a> -->
     </ul>
     <div class="nav-actions">
       <div *ngIf="!isLoggedIn" class="nav-actions">
         <button (click)="goToLogin()" class="btn btn-outline">Sign In</button>
         <button (click)="goToRegister()" class="btn btn-outline">Sign Up</button>
-        <button (click)="goToCompanyLogin()" class="btn btn-outline">Company Login</button>
-        <button (click)="goToCompanyRegister()" class="btn btn-outline">Company Registration</button>
 
+        <!-- <<button (click)="goToLogin()" class="btn btn-outline">Sign In</button>
+<button (click)="goToRegister()" class="btn btn-outline">Sign Up</button> -->
+
+        <!-- <span style="margin: 0 10px; color: #ccc;">|</span> -->
+
+        <span class="nav-divider"></span>
+
+        <div class="profile-dropdown">
+          <button class="btn btn-outline" (click)="isMenuOpen = !isMenuOpen"
+            style="border: none; background: transparent; cursor: pointer; font-size: medium;",>
+            Employer
+          </button>
+
+          <div class="dropdown-menu" *ngIf="isMenuOpen">
+            <button class="menu-item" type="button" (click)="goToCompanyLogin()">
+              Company Login
+            </button>
+            <button class="menu-item" type="button" (click)="goToCompanyRegister()">
+              Company Registration
+            </button>
+          </div>
+        </div>
         <!-- <button (click)="goToCompanyLogin()" class="btn btn-outline">Sign In</button>
         <button (click)="goToCompanyRegister()" class="btn btn-outline">Sign Up</button> -->
       </div>

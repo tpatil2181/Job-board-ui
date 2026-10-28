@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
 
   logoUrls: { [jobId: number]: string } = {};
   private savedFilterState: any = null;
-  
+
 
   loadEmployerLogo(
     logoId: number | null | undefined,
@@ -524,7 +524,12 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    this.router.navigate(['/job', jobId]);
+    // this.router.navigate(['/job', jobId]);
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/job', jobId])
+    );
+
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 
 

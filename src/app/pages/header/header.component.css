@@ -316,3 +316,12 @@
 
   border: 2px solid #fff;
 }
+
+.nav-divider {
+  display: inline-block;
+  height: 35px;       /* Adjust line height */
+  width: 1px;         /* Adjust line thickness */
+  background-color: #0c0101; /* Adjust line color */
+  margin: 0 10px;     /* Adjust horizontal spacing */
+  vertical-align: middle;
+}

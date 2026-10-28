@@ -5,21 +5,24 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Candidate, Project } from '../../Interface/Canditate/candidate';
 import { SharedModule } from "../../pages/shared.module";
-// import { EducationFormComponent, EducationEntry } from '../education-form/education-form.component';
 import { EducationFormComponent } from '../education-form/education-form.component';
 import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 import { AlertService } from '../../services/alert.service.service';
-// import { ExperienceEntry, ExperienceFormComponent } from '../experience-form/experience-form.component';
 import { ExperienceFormComponent } from '../experience-form/experience-form.component';
-// import { CertificationEntry, CertificationFormComponent } from '../certification-form/certification-form.component';
 import { CertificationFormComponent } from '../certification-form/certification-form.component';
-// import { ProjectEntry, ProjectFormComponent } from '../project-form/project-form.component';
 import { ProjectFormComponent } from '../project-form/project-form.component';
 import { LanguageEntry, LanguageFormComponent } from '../language-form/language-form.component';
-import {language} from "../../Interface/Canditate/candidate";
+import { language } from "../../Interface/Canditate/candidate";
 import { Education, Experience, Certification, Skill } from '../../Interface/Canditate/candidate';
 import { EnumFormatPipe } from '../../shared/pipes/enum-format.pipe';
 import { CandidateProfileEdit, CandidateProfileSaveEvent, ProfileFormComponent } from "../profile-form/profile-form.component";
+
+// import { ProjectEntry, ProjectFormComponent } from '../project-form/project-form.component';
+// import { CertificationEntry, CertificationFormComponent } from '../certification-form/certification-form.component';
+// import { ExperienceEntry, ExperienceFormComponent } from '../experience-form/experience-form.component';
+// import { EducationFormComponent, EducationEntry } from '../education-form/education-form.component';
+
+
 
 
 export interface TimelineItem {
@@ -35,21 +38,10 @@ export interface SkillTag {
   variant: 'blue' | 'gray';
 }
 
-// export interface Skill {
-//   id: number;
-//   label: string;
-//   variant?: 'blue' | 'gray';
-// }
-
-// export interface LanguageItem {
-//   name: string;
-//   level: string;
-// }
-
- export interface entityIcons{
-    educationicon: '🎓',
-    projecticon:'📁'
-  }
+export interface entityIcons {
+  educationicon: '🎓',
+  projecticon: '📁'
+}
 
 @Component({
   selector: 'app-candidate-profile',
@@ -59,90 +51,17 @@ export interface SkillTag {
   styleUrls: ['./candidate-profile.component.css']
 })
 export class CandidateProfileComponent {
-  //============================ My Code And variables============================
-  profileImage: any;
-  resume: any;
 
-  candidate: Candidate | null = null;
-  // Education: EducationEntry[] = [];
-  // Experience: ExperienceEntry[] = [];
-  // Certification: CertificationEntry[] = [];
-  // Project: ProjectEntry[] = [];
-  // backendlanguages: language[] = [];
+  ngOnInit(): void {
 
+    this.authService.candidate$.subscribe(candidate => {
+      this.candidate = candidate;
+      this.loadCandidateImage(this.candidate?.imageId);
+      this.calculateProfileStrength();
+      // console.log('Candidate:', this.candidate);
+    });
 
-  // candidate = this.authService.getLoggedInCandidate();
-  // candidateemail: string = localStorage.getItem('email') || '';
-  // usrId: number = localStorage.getItem('userId') ? Number(localStorage.getItem('userId')) : 0;
-  cand: Candidate = JSON.parse(localStorage.getItem('candidate') || '{}');
-  usrId: number = this.cand.candidateId || 0;
-
-  // candidate: Candidate = {
-  //        first_name: '',
-  //         last_name:'',
-  //         mobNo:'',
-  //         email:'',
-  //         education:'',
-  //          resume: {
-  //               id: 0,
-  //               filePath: '',
-  //               candidateId:0,
-  //             },
-  //         skills:'', 
-  //     };
-
-  // ngOnInit() {
-    // ✅ get ID from URL
-    // const email = this.route.snapshot.paramMap.get('email');
-
-    // console.log('User ID from URL:', email);
-
-    // if (email) {
-    //   this.getCandidate(email);
-    // }
-  // }
-
-
-ngOnInit(): void {
-
-  this.authService.candidate$.subscribe(candidate => {
-
-    this.candidate = candidate;
-
-    this.loadCandidateImage(this.candidate?.imageId);
-
-    console.log('Candidate:', this.candidate);
-
-  });
-
-}
-//===============================Load APIs on load profile page=================================
-
-  // loadE
-
-  // loadLanguage() {
-  //   this.authService.getLanguages().subscribe({
-  //     next: (data: language[]) => {
-
-  //       console.log("Complete Response:", data);
-  //       console.log("Is Array:", Array.isArray(data));
-
-  //       this.backendlanguages = data;
-
-  //       console.log("Backend Languages:", this.backendlanguages);
-
-  //     },
-  //     error: (err) => {
-  //       this.alertService.error('Failed to load languages');
-  //       // console.error(err);
-  //     }
-  //   });
-  // }
-
-//==================================================================
-
-
-
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -150,6 +69,24 @@ ngOnInit(): void {
     private alertService: AlertService,
     private confirmDialogService: ConfirmDialogService
   ) { }
+
+  //============================ My Code And variables============================
+
+  profileImage: any;
+  resume: any;
+  candidate: Candidate | null = null;
+  cand: Candidate = JSON.parse(localStorage.getItem('candidate') || '{}');
+  usrId: number = this.cand.candidateId || 0;
+
+
+  // Education: EducationEntry[] = [];
+  // Experience: ExperienceEntry[] = [];
+  // Certification: CertificationEntry[] = [];
+  // Project: ProjectEntry[] = [];
+  // backendlanguages: language[] = [];
+  // candidate = this.authService.getLoggedInCandidate();
+  // candidateemail: string = localStorage.getItem('email') || '';
+  // usrId: number = localStorage.getItem('userId') ? Number(localStorage.getItem('userId')) : 0;
 
 
   //============================ My Code And variables END============================
@@ -160,8 +97,8 @@ ngOnInit(): void {
   location = 'Pune, Maharashtra';
   experienceYears = 6;
   openToWork = true;
-  profileStrength = 82;
-  avatarInitials = 'AK';
+  // profileStrength = 82;
+  // avatarInitials = 'AK';
 
   isEditingProfile = false;
 
@@ -172,8 +109,8 @@ ngOnInit(): void {
   isEditingAbout = false;
 
   // ---- resume ----
-  resumeFileName = 'Ananya_Kulkarni.pdf';
-  resumeUpdatedLabel = 'Updated 5 days ago';
+  // resumeFileName = 'Ananya_Kulkarni.pdf';
+  // resumeUpdatedLabel = 'Updated 5 days ago';
 
   // ---- skills ----
   skills: SkillTag[] = [
@@ -192,79 +129,9 @@ ngOnInit(): void {
   ];
 
 
- 
 
-  // ---- experience ----
-  // experience: TimelineItem[] = [
-  //   {
-  //     icon: 'Z',
-  //     title: 'Senior Product Designer',
-  //     subtitle: 'Zeta Finance · Bengaluru · Mar 2023 — Present'
-  //   },
-  //   {
-  //     icon: 'M',
-  //     title: 'Product Designer',
-  //     subtitle: 'Meesho · Bengaluru · Jul 2020 — Feb 2023'
-  //   },
-  //   {
-  //     icon: 'S',
-  //     title: 'UI/UX Design Intern',
-  //     subtitle: 'Swiggy · Bengaluru · Jan 2020 — Jun 2020'
-  //   }
-  // ];
 
-  // ---- education ----
-  education: TimelineItem[] = [
-    {
-      icon: '🎓',
-      title: 'B.Des, Communication Design',
-      subtitle: 'National Institute of Design, Ahmedabad · 2016 — 2020'
-    },
-    {
-      icon: '🎓',
-      title: 'Higher Secondary, Science',
-      subtitle: 'Fergusson College, Pune · 2014 — 2016'
-    }
-  ];
 
-  // ---- projects ----
-  projects: TimelineItem[] = [
-    {
-      icon: '📁',
-      title: 'Checkout Redesign — Zeta Pay',
-      subtitle: '',
-      description: 'Redesigned the multi-step checkout flow, reducing cart abandonment by 17%.',
-      link: '#'
-    },
-    {
-      icon: '📁',
-      title: 'Seller Onboarding — Meesho',
-      subtitle: '',
-      description: 'Simplified seller KYC and listing flow across web and mobile.',
-      link: '#'
-    }
-  ];
-
-  // ---- certifications ----
-  // certifications: TimelineItem[] = [
-  //   {
-  //     icon: '🏅',
-  //     title: 'Certified UX Design Professional',
-  //     subtitle: 'Google · via Coursera · 2023'
-  //   },
-  //   {
-  //     icon: '🏅',
-  //     title: 'Design Systems Certification',
-  //     subtitle: 'Interaction Design Foundation · 2021'
-  //   }
-  // ];
-
-  // ---- languages ----
-  // languages: LanguageItem[] = [
-  //   { name: 'English', level: 'Professional' },
-  //   { name: 'Hindi', level: 'Native' },
-  //   { name: 'Marathi', level: 'Native' }
-  // ];
 
   // ---- toast ----
   toastMessage = '';
@@ -282,6 +149,8 @@ ngOnInit(): void {
   toggleEditProfile(): void {
     if (this.isEditingProfile) {
       this.showToast('Profile updated successfully');
+      // this.calculateProfileStrength();
+
     }
     this.isEditingProfile = !this.isEditingProfile;
   }
@@ -306,64 +175,79 @@ ngOnInit(): void {
     this.aboutText = (event.target as HTMLElement).innerText.trim();
   }
 
-//=========================================Helper Methods=========================================
-//temparary use this function letter return respective value of which part of object is updated like education ,resume, certifiaction
-  // refreshCandidate() is use in every function which needs api call
+  //=========================================Helper Methods=========================================
   refreshCandidate(): void {
 
-  this.authService.getCandidateProfile().subscribe({
+    this.authService.getCandidateProfile().subscribe({
+      next: (candidate) => {
 
-    next: (candidate) => {
+        this.authService.setCandidate(candidate);
+        this.calculateProfileStrength();
+      },
 
-      this.authService.setCandidate(candidate);
-
-    },
-
-    error: (err) => {
-
-      console.error('Failed to refresh candidate:', err);
-
-    }
-
-  });
-
-}
-// ==================================================================================
+      error: (err) => {
+        console.error('Failed to refresh candidate:', err);
+      }
+    });
+  }
+  // ========================================Helper Methods End==========================================
 
 
-  // ---- resume ----
+  // -------------------------Profile Strangth Section-------------------------
 
-  // selectedFile!: File;
-  // onFileSelected(event: any) {
-  //   this.selectedFile = event.target.files[0];
-  // }
-  selectedFile!: File;
 
-onResumeChange(event: any): void {
+  profileStrength = 0;
 
-  this.selectedFile = event.target.files[0];
+  calculateProfileStrength(): void {
+    const fields = [
+      this.candidate?.firstName,
+      this.candidate?.lastName,
+      this.candidate?.contactEmail,
+      this.candidate?.mobNo,
+      this.candidate?.candidateTitle,
+      this.candidate?.candidateAbout,
+      this.candidate?.educations?.length,
+      // this.candidate?.experiences?.length,
+      this.candidate?.projects?.length,
+      this.candidate?.languages?.length,
+      // this.candidate?.certifications?.length,
+      this.candidate?.resumeId,
+      this.candidate?.imageId
+    ];
 
-  if (this.selectedFile) {
-    this.updateResume();
+    const completedFields = fields.filter(field => {
+      if (typeof field === 'string') {
+        return field.trim().length > 0;
+      }
+
+      if (typeof field === 'number') {
+        return field > 0;
+      }
+
+      return field !== null && field !== undefined && field !== false;
+    }).length;
+
+    this.profileStrength = Math.round(
+      (completedFields / fields.length) * 100
+    );
   }
 
-}
+  // -------------------------Profile Strangth Section End-------------------------
+
+  // ------------------------- Resume -------------------------
+  selectedFile!: File;
+
+  onResumeChange(event: any): void {
+    this.selectedFile = event.target.files[0];
+    if (this.selectedFile) {
+      this.updateResume();
+    }
+  }
 
   updateResume(): void {
-        console.log("User Id is getting",this.usrId);
-
-    // this.selectedFile = event.target.files[0];
+    console.log("User Id is getting", this.usrId);
     if (!this.selectedFile) {
       alert('Please select a file');
-      // this.authService.getCandidate(this.candidate.email).subscribe(res => {
-      // localStorage.setItem('candidate', JSON.stringify(res)); // update storage
-      // });
-
-
-
-      // this.authService.getLoggedInCandidate().subscribe(res => {
-      // localStorage.setItem('candidate', JSON.stringify(res)); // update storage
-      // });
       return;
     }
 
@@ -382,15 +266,11 @@ onResumeChange(event: any): void {
           console.log("IN error massage of uploade resume");
           alert(err.error.message);
         } else {
-          // alert('Something went wrong ❌');
           alert('Upload failed ❌');
         }
 
       }
     });
-    //   }
-    // this.resumeUpdatedLabel = 'Updated just now';
-    // this.showToast('Resume updated successfully');
   }
 
   viewResume(): void {
@@ -413,10 +293,11 @@ onResumeChange(event: any): void {
       }
     });
   }
+  // ------------------------- Resume End -------------------------
 
-  uploadPhoto(): void {
-    this.showToast('Upload a new photo');
-  }
+  // uploadPhoto(): void {
+  //   this.showToast('Upload a new photo');
+  // }
 
   // ---- skills ----
   removeSkill(skill: SkillTag): void {
@@ -449,200 +330,332 @@ onResumeChange(event: any): void {
     this.showToast('Language added');
   }
 
+  //====================================Edit Profile==============================================
+  // =====================================================
+  // Profile edit state
+  // =====================================================
+
+  showProfileForm = false;
 
 
-  // Backend API Calls
-  // getCandidate(email: string) {
-  //   this.authService.getCandidateProfile(email).subscribe({
-  //     next: (res) => {
-  //       this.candidate = res;
-  //     },
-  //     error: (err) => {
-  //       console.error(err);
-  //     }
-  //   });
-  // }
+  // =====================================================
+  // Open modal in "Edit" mode
+  // The form takes the whole Candidate and pulls out only
+  // the fields it needs — no separate "Add" mode, since a
+  // profile always exists for a logged-in candidate.
+  // =====================================================
 
+  openEditProfile(): void {
 
+    if (!this.candidate) {
+      return;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //====================================================Eduaction Releted Code====================================================
-  // showEduForm = false;
-  // selectedEducation: EducationEntry | null = null;
-
-    showEduForm = false;
-    selectedEducation: Education | null = null;
-
-  // 4) Open modal in "Add" mode
-  openAddEducation(): void {
-    this.selectedEducation = null;
-    this.showEduForm = true;
-  }
-
-  // 5) Open modal in "Edit" mode — maps your existing TimelineItem (icon/title/subtitle)
-  //    into the richer EducationEntry shape the form expects.
-  // openEditEducation(edu: TimelineItem): void {
-  //   const parsed = this.parseEduSubtitle(edu.subtitle);
-  //   this.selectedEducation = {
-  //     id: (edu as any).id, // add an `id` field to TimelineItem if you don't have one yet
-  //     school: parsed.school,
-  //     degree: this.extractDegree(edu.title),
-  //     fieldOfStudy: this.extractFieldOfStudy(edu.title),
-  //     startMonth: '',
-  //     startYear: parsed.startYear,
-  //     endMonth: '',
-  //     endYear: parsed.endYear,
-  //     currentlyStudying: parsed.endYear.toLowerCase() === 'present',
-  //     grade: '',
-  //     description: ''
-  //   };
-  //   this.showEduForm = true;
-  // }
-
-
-  
-  openEditEducation(edu: Education): void {
-
-    this.selectedEducation = {
-      ...edu
-    };
-
-    this.showEduForm = true;
+    this.showProfileForm = true;
 
   }
 
-  // 6) Handle the form's (save) event — converts the EducationEntry back
-  //    into your TimelineItem shape and pushes/updates the education array.
-  // onEducationSaved(entry: EducationEntry): void {
-  //   const subtitle = `${entry.school} · ${entry.startYear} — ${entry.currentlyStudying ? 'Present' : entry.endYear}`;
-  //   const title = entry.fieldOfStudy ? `${entry.degree}, ${entry.fieldOfStudy}` : entry.degree;
 
-  //   const existingIndex = this.education.findIndex((e: any) => e.id === entry.id);
+  // =====================================================
+  // Handle the form's (save) event.
+  // If a new photo was picked, upload it first to get the
+  // fresh imageId, then send the profile fields.
+  // =====================================================
 
-  //   if (existingIndex > -1) {
-  //     this.education[existingIndex] = { ...this.education[existingIndex], title, subtitle };
-  //   } else {
-  //     this.education.push({
-  //       icon: '🎓',
-  //       title,
-  //       subtitle,
-  //       id: Date.now() // simple unique id for future edits
-  //     } as TimelineItem);
-  //   }
+  onProfileSaved(event: CandidateProfileSaveEvent): void {
 
-  //   this.showEduForm = false;
-  //   this.showToast(existingIndex > -1 ? 'Education updated' : 'Education added');
-  // }
+    if (!this.candidate) {
+      return;
+    }
 
+    const { profile, imageFile } = event;
 
-  onEducationSaved(entry: Education): void {
+    profile.candidateId = this.candidate.candidateId;
 
-  if (!this.candidate) {
-    return;
+    if (imageFile) {
+
+      this.authService
+        .uploadCandidateImage(this.candidate.candidateId, imageFile)
+        .subscribe({
+
+          next: (uploadRes) => {
+
+            profile.imageId = uploadRes.imageId;
+
+            this.loadCandidateImage(uploadRes.imageId);
+
+            this.saveProfileFields(profile);
+          },
+
+          error: (err) => {
+
+            console.error('Error uploading photo:', err);
+
+            this.alertService.error(
+              err?.error?.message ||
+              'Failed to upload photo.'
+            );
+
+          }
+
+        });
+
+      return;
+
+    }
+
+    this.saveProfileFields(profile);
+
   }
 
 
-  // ==============================
-  // ADD EDUCATION
-  // ==============================
+  // --------------------Get Image section---------------------------
 
-  if (!entry.educationId) {
+  imageUrl: string | null = null;
+  private imageObjectUrl: string | null = null;
 
-    entry.candidateId = this.candidate.candidateId;
+  loadCandidateImage(imageId: number | null | undefined): void {
+    // Clear the previous image
+    if (this.imageObjectUrl) {
+      URL.revokeObjectURL(this.imageObjectUrl);
+      this.imageObjectUrl = null;
+    }
+
+    this.imageUrl = null;
+
+    if (!imageId) {
+      return;
+    }
+
+    this.authService.getCandidateImage(imageId).subscribe({
+      next: (imageBlob: Blob) => {
+        this.imageObjectUrl = URL.createObjectURL(imageBlob);
+        this.imageUrl = this.imageObjectUrl;
+      },
+      error: (err) => {
+        console.error('Failed to load candidate image:', err);
+        this.imageUrl = null;
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.imageObjectUrl) {
+      URL.revokeObjectURL(this.imageObjectUrl);
+    }
+  }
+
+
+
+  // =====================================================
+  // Shared save call, used whether or not a new photo
+  // was uploaded first.
+  // =====================================================
+
+  private saveProfileFields(profile: CandidateProfileEdit): void {
 
     this.authService
-      .addEducation( entry)
+      .updateProfile(profile)
       .subscribe({
 
-        next: (res) => {
+        next: (response) => {
 
-          console.log('Education added:', res);
+          console.log('Profile updated:', response);
 
-          // this.authService.setCandidate(updatedCandidate);
+          // this.authService.setCandidate(response);
+
           this.refreshCandidate();
 
-          this.showEduForm = false;
+          this.showProfileForm = false;
 
           this.alertService.success(
-            'Education added successfully.'
+            'Profile updated successfully.'
           );
 
         },
 
         error: (err) => {
 
-          console.error('Error adding education:', err);
+          console.error('Error updating profile:', err);
 
           this.alertService.error(
             err?.error?.message ||
-            'Failed to add education.'
+            'Failed to update profile.'
           );
 
         }
 
       });
 
-    return;
   }
 
 
-  // ==============================
-  // UPDATE EDUCATION
-  // ==============================
+  // =====================================================
+  // Close the modal without saving
+  // =====================================================
 
-  this.authService
-    .updateEducation(entry)
-    .subscribe({
+  onProfileFormClosed(): void {
 
+    this.showProfileForm = false;
+
+  }
+
+
+  //=============Links===================
+  // =====================================================
+  // Candidate does not currently have `email` or a links
+  // array. Add these to the Candidate interface (or wherever
+  // the real data lives) — shown here so the template compiles:
+  //
+  //   email: string;
+  //   candidateLinks: CandidateLink[];
+  // =====================================================
+
+  // export interface CandidateLink {
+
+  //   linkId?: number;
+
+  //   type: 'LinkedIn' | 'GitHub' | 'Portfolio' | 'Twitter' | 'Website' | string;
+
+  //   url: string;
+
+  // }
+
+
+  // // =====================================================
+  // // Component state (add alongside your other properties)
+  // // =====================================================
+
+  // candidateLinks: CandidateLink[] = [];
+
+
+  // // =====================================================
+  // // Icon per link type
+  // // =====================================================
+
+  // linkIcon(type: string): string {
+
+  //   switch (type) {
+
+  //     case 'LinkedIn':
+  //       return '💼';
+
+  //     case 'GitHub':
+  //       return '🐙';
+
+  //     case 'Portfolio':
+  //       return '🌐';
+
+  //     case 'Twitter':
+  //       return '🐦';
+
+  //     default:
+  //       return '🔗';
+
+  //   }
+
+  // }
+
+
+  // // =====================================================
+  // // Open contact / links edit modals
+  // // (wire these to whatever form components you build next,
+  // // following the same [visible]/[editData]/(save)/(close)
+  // // pattern as ProfileFormComponent)
+  // // =====================================================
+
+  // showContactForm = false;
+
+  // openEditContact(): void {
+
+  //   if (!this.candidate) {
+  //     return;
+  //   }
+
+  //   this.showContactForm = true;
+
+  // }
+
+  // showLinksForm = false;
+
+  // openEditLinks(): void {
+
+  //   if (!this.candidate) {
+  //     return;
+  //   }
+
+  //   this.showLinksForm = true;
+
+  // }
+
+
+
+  //====================================================Eduaction Releted Code====================================================
+  showEduForm = false;
+  selectedEducation: Education | null = null;
+
+
+  openAddEducation(): void {
+    this.selectedEducation = null;
+    this.showEduForm = true;
+  }
+
+  openEditEducation(edu: Education): void {
+
+    this.selectedEducation = {
+      ...edu
+    };
+    this.showEduForm = true;
+  }
+
+  onEducationSaved(entry: Education): void {
+
+    if (!this.candidate) {
+      return;
+    }
+    //-----------Add Education----------------
+    if (!entry.educationId) {
+
+      entry.candidateId = this.candidate.candidateId;
+
+      this.authService.addEducation(entry).subscribe({
+        next: (res) => {
+          this.refreshCandidate();
+          this.showEduForm = false;
+
+          this.alertService.success('Education added successfully.');
+          // console.log('Education added:', res);
+        },
+        error: (err) => {
+          console.error('Error adding education:', err);
+          this.alertService.error(err?.error?.message || 'Failed to add education.');
+        }
+      });
+
+      return;
+    }
+    //-----------Add Education End----------------
+
+
+    //-----------Update Education----------------
+    this.authService.updateEducation(entry).subscribe({
       next: (response) => {
-
-        console.log('Education updated:', response);
-
-        // this.authService.setCandidate(response);
-
         this.refreshCandidate();
-
         this.showEduForm = false;
-
-        this.alertService.success(
-          'Education updated successfully.'
-        );
-
+        this.alertService.success('Education updated successfully.');
+        console.log('Education updated:', response);
+        // this.authService.setCandidate(response);
+        // this.calculateProfileStrength();
       },
-
       error: (err) => {
-
         console.error('Error updating education:', err);
-
         this.alertService.error(
           err?.error?.message ||
           'Failed to update education.'
         );
-
       }
-
     });
-
-}
+  }
 
 
   removeEducation(educationId: number): void {
@@ -678,6 +691,8 @@ onResumeChange(event: any): void {
           // this.appliedJobs = this.appliedJobs.filter(
           //   job => job.applyid !== applicationId
           // );
+
+          // this.calculateProfileStrength();
 
           console.log(response);
 
@@ -723,320 +738,24 @@ onResumeChange(event: any): void {
     return { school: school ?? '', startYear: startYear ?? '', endYear: endYear ?? '' };
   }
 
-//====================================Edit Profile==============================================
-// =====================================================
-// Profile edit state
-// =====================================================
- 
-showProfileForm = false;
- 
- 
-// =====================================================
-// Open modal in "Edit" mode
-// The form takes the whole Candidate and pulls out only
-// the fields it needs — no separate "Add" mode, since a
-// profile always exists for a logged-in candidate.
-// =====================================================
- 
-openEditProfile(): void {
- 
-  if (!this.candidate) {
-    return;
-  }
- 
-  this.showProfileForm = true;
- 
-}
- 
- 
-// =====================================================
-// Handle the form's (save) event.
-// If a new photo was picked, upload it first to get the
-// fresh imageId, then send the profile fields.
-// =====================================================
- 
-onProfileSaved(event: CandidateProfileSaveEvent): void {
- 
-  if (!this.candidate) {
-    return;
-  }
- 
-  const { profile, imageFile } = event;
- 
-  profile.candidateId = this.candidate.candidateId;
- 
-  if (imageFile) {
- 
-    this.authService
-      .uploadCandidateImage(this.candidate.candidateId, imageFile)
-      .subscribe({
- 
-        next: (uploadRes) => {
- 
-          profile.imageId = uploadRes.imageId;
-
-          this.loadCandidateImage(uploadRes.imageId);
- 
-          this.saveProfileFields(profile);
-        },
- 
-        error: (err) => {
- 
-          console.error('Error uploading photo:', err);
- 
-          this.alertService.error(
-            err?.error?.message ||
-            'Failed to upload photo.'
-          );
- 
-        }
- 
-      });
- 
-    return;
- 
-  }
- 
-  this.saveProfileFields(profile);
- 
-}
-
-
-// --------------------Get Image section---------------------------
-
-imageUrl: string | null = null;
-private imageObjectUrl: string | null = null;
-
-loadCandidateImage(imageId: number | null | undefined): void {
-  // Clear the previous image
-  if (this.imageObjectUrl) {
-    URL.revokeObjectURL(this.imageObjectUrl);
-    this.imageObjectUrl = null;
-  }
-
-  this.imageUrl = null;
-
-  if (!imageId) {
-    return;
-  }
-
-  this.authService.getCandidateImage(imageId).subscribe({
-    next: (imageBlob: Blob) => {
-      this.imageObjectUrl = URL.createObjectURL(imageBlob);
-      this.imageUrl = this.imageObjectUrl;
-    },
-    error: (err) => {
-      console.error('Failed to load candidate image:', err);
-      this.imageUrl = null;
-    }
-  });
-}
-
-ngOnDestroy(): void {
-  if (this.imageObjectUrl) {
-    URL.revokeObjectURL(this.imageObjectUrl);
-  }
-}
-
- 
- 
-// =====================================================
-// Shared save call, used whether or not a new photo
-// was uploaded first.
-// =====================================================
- 
-private saveProfileFields(profile: CandidateProfileEdit): void {
- 
-  this.authService
-    .updateProfile(profile)
-    .subscribe({
- 
-      next: (response) => {
- 
-        console.log('Profile updated:', response);
- 
-        // this.authService.setCandidate(response);
- 
-        this.refreshCandidate();
- 
-        this.showProfileForm = false;
- 
-        this.alertService.success(
-          'Profile updated successfully.'
-        );
- 
-      },
- 
-      error: (err) => {
- 
-        console.error('Error updating profile:', err);
- 
-        this.alertService.error(
-          err?.error?.message ||
-          'Failed to update profile.'
-        );
- 
-      }
- 
-    });
- 
-}
- 
- 
-// =====================================================
-// Close the modal without saving
-// =====================================================
- 
-onProfileFormClosed(): void {
- 
-  this.showProfileForm = false;
- 
-}
- 
-
-//=============Links===================
-// =====================================================
-// Candidate does not currently have `email` or a links
-// array. Add these to the Candidate interface (or wherever
-// the real data lives) — shown here so the template compiles:
-//
-//   email: string;
-//   candidateLinks: CandidateLink[];
-// =====================================================
-
-// export interface CandidateLink {
-
-//   linkId?: number;
-
-//   type: 'LinkedIn' | 'GitHub' | 'Portfolio' | 'Twitter' | 'Website' | string;
-
-//   url: string;
-
-// }
-
-
-// // =====================================================
-// // Component state (add alongside your other properties)
-// // =====================================================
-
-// candidateLinks: CandidateLink[] = [];
-
-
-// // =====================================================
-// // Icon per link type
-// // =====================================================
-
-// linkIcon(type: string): string {
-
-//   switch (type) {
-
-//     case 'LinkedIn':
-//       return '💼';
-
-//     case 'GitHub':
-//       return '🐙';
-
-//     case 'Portfolio':
-//       return '🌐';
-
-//     case 'Twitter':
-//       return '🐦';
-
-//     default:
-//       return '🔗';
-
-//   }
-
-// }
-
-
-// // =====================================================
-// // Open contact / links edit modals
-// // (wire these to whatever form components you build next,
-// // following the same [visible]/[editData]/(save)/(close)
-// // pattern as ProfileFormComponent)
-// // =====================================================
-
-// showContactForm = false;
-
-// openEditContact(): void {
-
-//   if (!this.candidate) {
-//     return;
-//   }
-
-//   this.showContactForm = true;
-
-// }
-
-// showLinksForm = false;
-
-// openEditLinks(): void {
-
-//   if (!this.candidate) {
-//     return;
-//   }
-
-//   this.showLinksForm = true;
-
-// }
-
-
-
+  //====================================================Eduaction Releted Code End====================================================
 
   //====================================================Experience Related Code====================================================
-
-  // ... your existing fields (name, role, skills, education, etc.) stay unchanged ...
-
-  // 3) New state for the Experience modal
-  // showExpForm = false;
-  // selectedExperience: ExperienceEntry | null = null;
 
   showExpForm = false;
   selectedExperience: Experience | null = null;
 
-  // 4) Open modal in "Add" mode
-  // openAddExperience(): void {
-  //   this.selectedExperience = null;
-  //   this.showExpForm = true;
-  // }
-
   openAddExperience(): void {
 
-  this.selectedExperience = null;
-  this.showExpForm = true;
+    this.selectedExperience = null;
+    this.showExpForm = true;
 
-}
-
-  // 5) Open modal in "Edit" mode — maps your existing TimelineItem (icon/title/subtitle)
-  //    into the richer ExperienceEntry shape the form expects.
-  // openEditExperience(exp: TimelineItem): void {
-  //   const parsed = this.parseExpSubtitle(exp.subtitle);
-  //   this.selectedExperience = {
-  //     id: (exp as any).id, // add an `id` field to TimelineItem if you don't have one yet
-  //     title: exp.title,
-  //     company: parsed.company,
-  //     location: parsed.location,
-  //     workMode: parsed.workMode,
-  //     startMonth: parsed.startMonth,
-  //     startYear: parsed.startYear,
-  //     endMonth: parsed.endMonth,
-  //     endYear: parsed.endYear,
-  //     currentlyWorking: parsed.endYear.toLowerCase() === 'present',
-  //     description: ''
-  //   };
-  //   this.showExpForm = true;
-  // }
+  }
 
   openEditExperience(exp: Experience): void {
-
-  this.selectedExperience = {
-    ...exp
-  };
-
-  this.showExpForm = true;
-
-}
+    this.selectedExperience = {...exp };
+    this.showExpForm = true;
+  }
 
   // 6) Handle the form's (save) event — converts the ExperienceEntry back
   //    into your TimelineItem shape and pushes/updates the experience array.
@@ -1064,93 +783,93 @@ onProfileFormClosed(): void {
 
   onExperienceSaved(entry: Experience): void {
 
-  if (!this.candidate) {
-    return;
-  }
+    if (!this.candidate) {
+      return;
+    }
 
 
-  // ==============================
-  // ADD EXPERIENCE
-  // ==============================
+    // ==============================
+    // ADD EXPERIENCE
+    // ==============================
 
-  if (!entry.candExpId) {
+    if (!entry.candExpId) {
 
-    entry.candidateId = this.candidate.candidateId;
+      entry.candidateId = this.candidate.candidateId;
+
+      this.authService
+        .addExperience(entry)
+        .subscribe({
+
+          next: (res) => {
+
+            console.log('Experience added:', res);
+
+            // this.authService.setCandidate(updatedCandidate);
+            this.refreshCandidate();
+
+            this.showExpForm = false;
+
+            this.alertService.success(
+              'Experience added successfully.'
+            );
+
+          },
+
+          error: (err) => {
+
+            console.error('Error adding experience:', err);
+
+            this.alertService.error(
+              err?.error?.message ||
+              'Failed to add experience.'
+            );
+
+          }
+
+        });
+
+      return;
+    }
+
+
+    // ==============================
+    // UPDATE EXPERIENCE
+    // ==============================
 
     this.authService
-      .addExperience( entry)
+      .updateExperience(entry)
       .subscribe({
 
-        next: (res) => {
+        next: (response) => {
 
-          console.log('Experience added:', res);
+          console.log('Experience updated:', response);
 
-          // this.authService.setCandidate(updatedCandidate);
+          // this.authService.setCandidate(response);
+
           this.refreshCandidate();
 
           this.showExpForm = false;
 
           this.alertService.success(
-            'Experience added successfully.'
+            'Experience updated successfully.'
           );
 
         },
 
         error: (err) => {
 
-          console.error('Error adding experience:', err);
+          console.error('Error updating experience:', err);
 
           this.alertService.error(
             err?.error?.message ||
-            'Failed to add experience.'
+            'Failed to update experience.'
           );
 
         }
 
       });
 
-    return;
   }
-
-
-  // ==============================
-  // UPDATE EXPERIENCE
-  // ==============================
-
-  this.authService
-    .updateExperience(entry)
-    .subscribe({
-
-      next: (response) => {
-
-        console.log('Experience updated:', response);
-
-        // this.authService.setCandidate(response);
-
-        this.refreshCandidate();
-
-        this.showExpForm = false;
-
-        this.alertService.success(
-          'Experience updated successfully.'
-        );
-
-      },
-
-      error: (err) => {
-
-        console.error('Error updating experience:', err);
-
-        this.alertService.error(
-          err?.error?.message ||
-          'Failed to update experience.'
-        );
-
-      }
-
-    });
-
-}
 
   // ---- helper used only to bridge TimelineItem <-> ExperienceEntry when editing ----
   private parseExpSubtitle(subtitle: string): {
@@ -1297,8 +1016,8 @@ onProfileFormClosed(): void {
   //   this.showCertForm = true;
   // }
 
-  
-  
+
+
   openEditCertification(certi: Certification): void {
 
     this.selectedCertification = {
@@ -1336,94 +1055,94 @@ onProfileFormClosed(): void {
   // }
 
 
-onCertificationSaved(entry: Certification): void {
+  onCertificationSaved(entry: Certification): void {
 
-  if (!this.candidate) {
-    return;
-  }
+    if (!this.candidate) {
+      return;
+    }
 
-  if (!entry.candidateId) {
+    if (!entry.candidateId) {
 
-    entry.candidateId = this.candidate.candidateId;
+      entry.candidateId = this.candidate.candidateId;
+
+      this.authService
+        .addCertificate(entry)
+        .subscribe({
+
+          next: (res) => {
+
+            console.log('Certificate added:', res);
+
+            // this.authService.setCandidate(updatedCandidate);
+            this.refreshCandidate();
+
+            this.showCertForm = false;
+
+            this.alertService.success(
+              'Certificate added successfully.'
+            );
+
+          },
+
+          error: (err) => {
+
+            console.error('Error adding Certificate:', err);
+
+            this.alertService.error(
+              err?.error?.message ||
+              'Failed to add Cretificate.'
+            );
+
+          }
+
+        });
+
+      return;
+    }
+
+
+    // ==============================
+    // UPDATE EXPERIENCE
+    // ==============================
 
     this.authService
-      .addCertificate( entry)
+      .updateCertificate(entry)
       .subscribe({
 
-        next: (res) => {
+        next: (response) => {
 
-          console.log('Certificate added:', res);
+          console.log('Certificationn updated:', response);
 
-          // this.authService.setCandidate(updatedCandidate);
+          // this.authService.setCandidate(response);
+
           this.refreshCandidate();
 
           this.showCertForm = false;
 
           this.alertService.success(
-            'Certificate added successfully.'
+            'Certification updated successfully.'
           );
 
         },
 
         error: (err) => {
 
-          console.error('Error adding Certificate:', err);
+          console.error('Error updating Certification:', err);
 
           this.alertService.error(
             err?.error?.message ||
-            'Failed to add Cretificate.'
+            'Failed to update Certification.'
           );
 
         }
 
       });
 
-    return;
   }
 
 
-  // ==============================
-  // UPDATE EXPERIENCE
-  // ==============================
-
-  this.authService
-    .updateCertificate(entry)
-    .subscribe({
-
-      next: (response) => {
-
-        console.log('Certificationn updated:', response);
-
-        // this.authService.setCandidate(response);
-
-        this.refreshCandidate();
-
-        this.showCertForm = false;
-
-        this.alertService.success(
-          'Certification updated successfully.'
-        );
-
-      },
-
-      error: (err) => {
-
-        console.error('Error updating Certification:', err);
-
-        this.alertService.error(
-          err?.error?.message ||
-          'Failed to update Certification.'
-        );
-
-      }
-
-    });
-
-}
-  
 
 
-  
   // ---- helper used only to bridge TimelineItem <-> CertificationEntry when editing ----
   // private parseCertSubtitle(subtitle: string): { issuingOrg: string; issueYear: string } {
   //   // Expected shape: "Issuing Org · 2023" (optionally " · Expires Month Year")
@@ -1530,7 +1249,7 @@ onCertificationSaved(entry: Certification): void {
   //   this.showProjectForm = true;
   // }
 
-    openEditProject(project: Project): void {
+  openEditProject(project: Project): void {
 
     this.selectedProject = {
       ...project
@@ -1565,88 +1284,88 @@ onCertificationSaved(entry: Certification): void {
 
   onProjectSaved(entry: Project): void {
 
-  if (!this.candidate) {
-    return;
-  }
+    if (!this.candidate) {
+      return;
+    }
 
-  if (!entry.candidateId) {
+    if (!entry.candidateId) {
 
-    entry.candidateId = this.candidate.candidateId;
+      entry.candidateId = this.candidate.candidateId;
+
+      this.authService
+        .addProject(entry)
+        .subscribe({
+
+          next: (res) => {
+
+            console.log('Project added:', res);
+
+            // this.authService.setCandidate(updatedCandidate);
+            this.refreshCandidate();
+
+            this.showProjectForm = false;
+
+            this.alertService.success(
+              'Project added successfully.'
+            );
+
+          },
+
+          error: (err) => {
+
+            console.error('Error adding Project:', err);
+
+            this.alertService.error(
+              err?.error?.message ||
+              'Failed to add Project.'
+            );
+
+          }
+
+        });
+
+      return;
+    }
+
+
+    // ==============================
+    // UPDATE EXPERIENCE
+    // ==============================
 
     this.authService
-      .addProject( entry)
+      .updateProject(entry)
       .subscribe({
 
-        next: (res) => {
+        next: (response) => {
 
-          console.log('Project added:', res);
+          console.log('Project updated:', response);
 
-          // this.authService.setCandidate(updatedCandidate);
+          // this.authService.setCandidate(response);
+
           this.refreshCandidate();
 
           this.showProjectForm = false;
 
           this.alertService.success(
-            'Project added successfully.'
+            'Project updated successfully.'
           );
 
         },
 
         error: (err) => {
 
-          console.error('Error adding Project:', err);
+          console.error('Error updating Project:', err);
 
           this.alertService.error(
             err?.error?.message ||
-            'Failed to add Project.'
+            'Failed to update Project.'
           );
 
         }
 
       });
 
-    return;
   }
-
-
-  // ==============================
-  // UPDATE EXPERIENCE
-  // ==============================
-
-  this.authService
-    .updateProject(entry)
-    .subscribe({
-
-      next: (response) => {
-
-        console.log('Project updated:', response);
-
-        // this.authService.setCandidate(response);
-
-        this.refreshCandidate();
-
-        this.showProjectForm = false;
-
-        this.alertService.success(
-          'Project updated successfully.'
-        );
-
-      },
-
-      error: (err) => {
-
-        console.error('Error updating Project:', err);
-
-        this.alertService.error(
-          err?.error?.message ||
-          'Failed to update Project.'
-        );
-
-      }
-
-    });
-
-}
 
   removeProject(projectId: number): void {
 
@@ -1728,7 +1447,7 @@ onCertificationSaved(entry: Certification): void {
     this.selectedLanguage = null;
     this.showLangForm = true;
   }
-  
+
 
   // 5) Open modal in "Edit" mode — LanguageItem { name, level } maps almost
   //    directly onto LanguageEntry { name, level }, no parsing needed.
@@ -1742,103 +1461,103 @@ onCertificationSaved(entry: Certification): void {
 
     this.showLangForm = true;
 
-}
-
-onLanguageSavedBackend(entry: LanguageEntry): void {
-
-  if (!this.candidate) {
-    return;
   }
 
-  const lang: language = {
-    langId: entry.langId,
-    language: entry.language,
-    proficiency: entry.proficiency,
-    candidateId: this.candidate.candidateId
-  };
+  onLanguageSavedBackend(entry: LanguageEntry): void {
 
-  // ADD
-  if (!entry.langId) {
+    if (!this.candidate) {
+      return;
+    }
 
+    const lang: language = {
+      langId: entry.langId,
+      language: entry.language,
+      proficiency: entry.proficiency,
+      candidateId: this.candidate.candidateId
+    };
+
+    // ADD
+    if (!entry.langId) {
+
+      this.authService
+        .addLanguage(lang)
+        .subscribe({
+
+          next: (res) => {
+
+            this.refreshCandidate();
+            // this.authService.setCandidate(updatedCandidate);
+            this.showLangForm = false;
+
+
+          },
+
+          error: (err) => {
+
+            console.error('Error adding language:', err);
+
+          }
+
+        });
+
+      return;
+    }
+
+
+    // UPDATE
     this.authService
-      .addLanguage( lang)
+      .updateLanguage(lang)
       .subscribe({
 
+        // next: (updatedCandidate) => {
         next: (res) => {
+
 
           this.refreshCandidate();
           // this.authService.setCandidate(updatedCandidate);
           this.showLangForm = false;
-          
 
         },
 
         error: (err) => {
 
-          console.error('Error adding language:', err);
+          console.error('Error updating language:', err);
 
         }
 
       });
 
-    return;
   }
+  removeLanguage(lang: language): void {
 
+    if (!lang.langId) {
+      return;
+    }
+    //For deleting language refresh candidate is working but the same code is not working for add and update language.
+    this.authService
+      .deleteLanguage(lang.langId)
+      .subscribe({
 
-  // UPDATE
-  this.authService
-    .updateLanguage(lang)
-    .subscribe({
+        // next: (updatedCandidate) => {
+        next: (res) => {
 
-      // next: (updatedCandidate) => {
-      next: (res) => {
+          // console.log('Language deleted:', updatedCandidate);
+          this.refreshCandidate();
 
-      
-        this.refreshCandidate();
-        // this.authService.setCandidate(updatedCandidate);
-        this.showLangForm = false;
+          // Update shared Candidate
+          // this.authService.setCandidate(updatedCandidate);
 
-      },
+        },
 
-      error: (err) => {
+        error: (err) => {
 
-        console.error('Error updating language:', err);
+          console.error('Error deleting language:', err);
 
-      }
+        }
 
-    });
+      });
 
-}
-removeLanguage(lang: language): void {
-
-  if (!lang.langId) {
-    return;
   }
-//For deleting language refresh candidate is working but the same code is not working for add and update language.
-  this.authService
-    .deleteLanguage(lang.langId)
-    .subscribe({
-
-      // next: (updatedCandidate) => {
-         next: (res) => {
-
-        // console.log('Language deleted:', updatedCandidate);
-        this.refreshCandidate();
-
-        // Update shared Candidate
-        // this.authService.setCandidate(updatedCandidate);
-
-      },
-
-      error: (err) => {
-
-        console.error('Error deleting language:', err);
-
-      }
-
-    });
-
-}
 
   // 6) Handle the form's (save) event — updates or adds to the languages array.
   onLanguageSaved(entry: language): void {
@@ -1857,40 +1576,40 @@ removeLanguage(lang: language): void {
   // 7) Simple remove handler (Languages didn't use the generic removeItem() helper
   //    since lang-list isn't a TimelineItem[] array)
   // removeLanguage(lang: language): void {
-    // this.languages = this.languages.filter((l: any) => l !== lang);
-    // this.showToast('Language removed');
+  // this.languages = this.languages.filter((l: any) => l !== lang);
+  // this.showToast('Language removed');
   // }
 
 
-//======================Skils Section
+  //======================Skils Section
 
-// getSkills(candidateId: number): Observable<Skill[]> {
-//     return this.http.get<Skill[]>(`${this.baseUrl}/${candidateId}/skills`);
-//   }
- 
-//   /** POST /api/candidates/:candidateId/skills  { label: string } */
-//   addSkill(candidateId: number, label: string): Observable<Skill> {
-//     return this.http.post<Skill>(`${this.baseUrl}/${candidateId}/skills`, { label });
-//   }
- 
-//   /** DELETE /api/candidates/:candidateId/skills/:skillId */
-//   removeSkill(candidateId: number, skillId: number): Observable<void> {
-//     return this.http.delete<void>(`${this.baseUrl}/${candidateId}/skills/${skillId}`);
-//   }
+  // getSkills(candidateId: number): Observable<Skill[]> {
+  //     return this.http.get<Skill[]>(`${this.baseUrl}/${candidateId}/skills`);
+  //   }
 
-// skills: Skill[] = [];
+  //   /** POST /api/candidates/:candidateId/skills  { label: string } */
+  //   addSkill(candidateId: number, label: string): Observable<Skill> {
+  //     return this.http.post<Skill>(`${this.baseUrl}/${candidateId}/skills`, { label });
+  //   }
+
+  //   /** DELETE /api/candidates/:candidateId/skills/:skillId */
+  //   removeSkill(candidateId: number, skillId: number): Observable<void> {
+  //     return this.http.delete<void>(`${this.baseUrl}/${candidateId}/skills/${skillId}`);
+  //   }
+
+  // skills: Skill[] = [];
   skillInput = '';
   isAddingSkill = false;
- 
+
   // TODO: replace with the logged-in candidate's id from your auth/session service
   // candidateId = 1;
- 
+
   // constructor(private skillService: SkillService) {}
- 
+
   // ngOnInit(): void {
   //   this.loadSkills();
   // }
- 
+
   // 5) Fetch the candidate's current skills on load
   // loadSkills(): void {
   //   this.skillService.getSkills(this.candidateId).subscribe({
@@ -1902,26 +1621,26 @@ removeLanguage(lang: language): void {
   //     }
   //   });
   // }
- 
+
   // 6) Add a new skill — called on button click or pressing Enter in the input
   // addSkill(): void {
   //   const label = this.skillInput.trim();
   //   if (!label || this.isAddingSkill) {
   //     return;
   //   }
- 
-    // avoid duplicate skill labels client-side before hitting the API
-    // const alreadyExists = this.skills.some(
-    //   s => s.label.toLowerCase() === label.toLowerCase()
-    // );
-    // if (alreadyExists) {
-    //   this.showToast('This skill is already added');
-    //   this.skillInput = '';
-    //   return;
-    // }
- 
+
+  // avoid duplicate skill labels client-side before hitting the API
+  // const alreadyExists = this.skills.some(
+  //   s => s.label.toLowerCase() === label.toLowerCase()
+  // );
+  // if (alreadyExists) {
+  //   this.showToast('This skill is already added');
+  //   this.skillInput = '';
+  //   return;
+  // }
+
   //   this.isAddingSkill = true;
- 
+
   //   this.skillService.addSkill(this.candidateId, label).subscribe({
   //     next: (newSkill) => {
   //       this.skills.push(newSkill);
@@ -1935,14 +1654,14 @@ removeLanguage(lang: language): void {
   //     }
   //   });
   // }
- 
+
   // // 7) Remove a skill — called when the ✕ on a chip is clicked
   // removeSkill(skill: Skill): void {
   //   const previousSkills = [...this.skills];
- 
+
   //   // optimistic UI update — remove immediately, roll back on error
   //   this.skills = this.skills.filter(s => s.id !== skill.id);
- 
+
   //   this.skillService.removeSkill(this.candidateId, skill.id).subscribe({
   //     next: () => {
   //       this.showToast(`Removed "${skill.label}"`);
@@ -1953,6 +1672,92 @@ removeLanguage(lang: language): void {
   //     }
   //   });
   // }
-  
+
 
 }
+
+
+
+// ---- experience ----
+// experience: TimelineItem[] = [
+//   {
+//     icon: 'Z',
+//     title: 'Senior Product Designer',
+//     subtitle: 'Zeta Finance · Bengaluru · Mar 2023 — Present'
+//   },
+//   {
+//     icon: 'M',
+//     title: 'Product Designer',
+//     subtitle: 'Meesho · Bengaluru · Jul 2020 — Feb 2023'
+//   },
+//   {
+//     icon: 'S',
+//     title: 'UI/UX Design Intern',
+//     subtitle: 'Swiggy · Bengaluru · Jan 2020 — Jun 2020'
+//   }
+// ];
+
+// ---- education ----
+// education: TimelineItem[] = [
+//   {
+//     icon: '🎓',
+//     title: 'B.Des, Communication Design',
+//     subtitle: 'National Institute of Design, Ahmedabad · 2016 — 2020'
+//   },
+//   {
+//     icon: '🎓',
+//     title: 'Higher Secondary, Science',
+//     subtitle: 'Fergusson College, Pune · 2014 — 2016'
+//   }
+// ];
+
+// export interface Skill {
+//   id: number;
+//   label: string;
+//   variant?: 'blue' | 'gray';
+// }
+
+// export interface LanguageItem {
+//   name: string;
+//   level: string;
+// }
+
+//===============================Load APIs on load profile page=================================
+
+// loadE
+
+// loadLanguage() {
+//   this.authService.getLanguages().subscribe({
+//     next: (data: language[]) => {
+
+//       console.log("Complete Response:", data);
+//       console.log("Is Array:", Array.isArray(data));
+
+//       this.backendlanguages = data;
+
+//       console.log("Backend Languages:", this.backendlanguages);
+
+//     },
+//     error: (err) => {
+//       this.alertService.error('Failed to load languages');
+//       // console.error(err);
+//     }
+//   });
+// }
+
+//==================================================================
+
+
+// Backend API Calls
+// getCandidate(email: string) {
+//   this.authService.getCandidateProfile(email).subscribe({
+//     next: (res) => {
+//       this.candidate = res;
+//     },
+//     error: (err) => {
+//       console.error(err);
+//     }
+//   });
+// }
+
+
