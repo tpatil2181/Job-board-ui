@@ -18,11 +18,11 @@ import { CandidateProfileEdit } from '../candidate/profile-form/profile-form.com
 })
 export class AuthService {
 
-  private baseUrl = 'http://localhost:8080';
+  // private baseUrl = 'http://localhost:8080';
 
-  private candidateUrl = 'http://localhost:8080/Hireflow/candidate'
+  // private candidateUrl = 'http://localhost:8080/Hireflow/candidate'
 
-  private employerUrl = 'http://localhost:8080/Hireflow/employer'
+  // private employerUrl = 'http://localhost:8080/Hireflow/employer'
 
   // codespace url
   // private baseUrl = 'https://curly-happiness-69gvp65gq79wcr55-8080.app.github.dev';
@@ -32,17 +32,25 @@ export class AuthService {
   // private employerUrl = `${this.baseUrl}/Hireflow/employer`;
 
 
+  private baseUrl = 'https://ancient-incantation-jj5rg675vgj7c57jq-8080.app.github.dev';
+
+  private candidateUrl = `${this.baseUrl}/Hireflow/candidate`;
+
+  private employerUrl = `${this.baseUrl}/Hireflow/employer`;
+
+
+
   // private employerNoAuthUrl ='http://localhost:8080/employer'
 
 
 
 
-//=====================demo Varuiable to store candidate data========================
+  //=====================demo Varuiable to store candidate data========================
   // private candidateSubject = new BehaviorSubject<Candidate | null>(null);
 
   // candidate$ = this.candidateSubject.asObservable();
 
-  
+
   //  private candidateSubject = new BehaviorSubject<Candidate | null>(
   //     JSON.parse(localStorage.getItem('candidate') || 'null')
   //   );
@@ -105,38 +113,38 @@ export class AuthService {
   // }
 
   private employerSubject =
-  new BehaviorSubject<Employer | null>(this.getEmployerFromStorage());
+    new BehaviorSubject<Employer | null>(this.getEmployerFromStorage());
 
-employer$ = this.employerSubject.asObservable();
+  employer$ = this.employerSubject.asObservable();
 
-private getEmployerFromStorage(): Employer | null {
-  const data = localStorage.getItem('Employer');
+  private getEmployerFromStorage(): Employer | null {
+    const data = localStorage.getItem('Employer');
 
-  if (!data) {
-    return null;
+    if (!data) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(data);
+    } catch {
+      return null;
+    }
   }
 
-  try {
-    return JSON.parse(data);
-  } catch {
-    return null;
-  }
-}
+  // setEmployer(employer: Employer | null): void {
+  //   if (employer) {
+  //     localStorage.setItem('Employer', JSON.stringify(employer));
+  //   } else {
+  //     localStorage.removeItem('Employer');
+  //   }
 
-// setEmployer(employer: Employer | null): void {
-//   if (employer) {
-//     localStorage.setItem('Employer', JSON.stringify(employer));
-//   } else {
-//     localStorage.removeItem('Employer');
-//   }
-
-//   this.employerSubject.next(employer);
-// }
-
-  
+  //   this.employerSubject.next(employer);
+  // }
 
 
-  
+
+
+
   //================================App Service================================
 
 
@@ -164,27 +172,27 @@ private getEmployerFromStorage(): Employer | null {
   }
 
   searchJobs(
-  filters: JobSearchDTO,
-  pageNo: number = 1,
-  pageSize: number = 5,
-  sortBy: string = 'jobId',
-  sortDir: string = 'ASE'
-): Observable<any> {
- 
-  const params = new HttpParams()
-    .set('pageNo', pageNo)
-    .set('pageSize', pageSize)
-    .set('sortBy', sortBy)
-    .set('sortDir', sortDir);
- 
-  return this.http.post<any>(
-    `${this.baseUrl}/jobsearch`,
-    filters,
-    { params }
-  );
- 
-}
-  
+    filters: JobSearchDTO,
+    pageNo: number = 1,
+    pageSize: number = 5,
+    sortBy: string = 'jobId',
+    sortDir: string = 'ASE'
+  ): Observable<any> {
+
+    const params = new HttpParams()
+      .set('pageNo', pageNo)
+      .set('pageSize', pageSize)
+      .set('sortBy', sortBy)
+      .set('sortDir', sortDir);
+
+    return this.http.post<any>(
+      `${this.baseUrl}/jobsearch`,
+      filters,
+      { params }
+    );
+
+  }
+
 
 
   // getAllJobs(): Observable<Job[]> {
@@ -246,7 +254,7 @@ private getEmployerFromStorage(): Employer | null {
 
   // Clear candidate during logout
   clearCandidate(): void {
-    
+
     this.candidateSubject.next(null);
 
   }
@@ -263,14 +271,14 @@ private getEmployerFromStorage(): Employer | null {
   // }
 
   setEmployer(employer: Employer | null): void {
-  if (employer) {
-    localStorage.setItem('Employer', JSON.stringify(employer));
-  } else {
-    localStorage.removeItem('Employer');
-  }
+    if (employer) {
+      localStorage.setItem('Employer', JSON.stringify(employer));
+    } else {
+      localStorage.removeItem('Employer');
+    }
 
-  this.employerSubject.next(employer);
-}
+    this.employerSubject.next(employer);
+  }
 
 
 
@@ -440,28 +448,28 @@ private getEmployerFromStorage(): Employer | null {
   //       return this.http.post(`${this.candidateUrl}/uploadImage`, candidateId);
   // }
 
-  
-uploadCandidateImage(
-  candidateId: number,
-  imageFile: File
-): Observable<any> {
 
-  const formData = new FormData();
-  formData.append('file', imageFile);
+  uploadCandidateImage(
+    candidateId: number,
+    imageFile: File
+  ): Observable<any> {
 
-  return this.http.post(
-    `${this.candidateUrl}/uploadImage/${candidateId}`,
-    formData
-  );
-}
+    const formData = new FormData();
+    formData.append('file', imageFile);
+
+    return this.http.post(
+      `${this.candidateUrl}/uploadImage/${candidateId}`,
+      formData
+    );
+  }
 
 
-getCandidateImage(imageId: number): Observable<Blob> {
-  return this.http.get(
-    `${this.candidateUrl}/candidateImage/${imageId}`,
-    { responseType: 'blob' }
-  );
-}
+  getCandidateImage(imageId: number): Observable<Blob> {
+    return this.http.get(
+      `${this.candidateUrl}/candidateImage/${imageId}`,
+      { responseType: 'blob' }
+    );
+  }
 
 
 
@@ -506,7 +514,7 @@ getCandidateImage(imageId: number): Observable<Blob> {
     return this.http.post<any>(`${this.candidateUrl}/profileEmpView`, null);
   }
 
-  
+
   withdrawJobApplication(applicationId: number): Observable<string> {
     return this.http.delete(
       `${this.candidateUrl}/withdrawAppln/${applicationId}`,
@@ -520,14 +528,14 @@ getCandidateImage(imageId: number): Observable<Blob> {
   //   return this.http.post(`${this.candidateUrl}/changePass `, CandidateChangepass);
   // }
 
-   changePassword(CandidateChangepass: CandidateChangePassword): Observable<any> {
+  changePassword(CandidateChangepass: CandidateChangePassword): Observable<any> {
     return this.http.post(`${this.baseUrl}/changePass `, CandidateChangepass);
   }
 
 
   //------------------Experience Service------------------
 
-  addExperience( experience: Experience): Observable<any> {
+  addExperience(experience: Experience): Observable<any> {
     console.log("Sending DATA:", experience)
     return this.http.post(`${this.candidateUrl}/experience`, experience);
   }
@@ -536,7 +544,7 @@ getCandidateImage(imageId: number): Observable<Blob> {
     return this.http.post(`${this.candidateUrl}/updateExperience`, experience);
   }
 
-  deleteExperience(candExpId: number ): Observable<any> {
+  deleteExperience(candExpId: number): Observable<any> {
     return this.http.delete(`${this.candidateUrl}/experience/${candExpId}`);
   }
 
@@ -572,7 +580,7 @@ getCandidateImage(imageId: number): Observable<Blob> {
   addProject(project: Project): Observable<any> {
     return this.http.post(`${this.candidateUrl}/proj`, project);
   }
-  
+
   updateProject(project: Project): Observable<any> {
     return this.http.post(`${this.candidateUrl}/updateProj`, project);
   }
@@ -617,7 +625,7 @@ getCandidateImage(imageId: number): Observable<Blob> {
 
   //------------------Language Service------------------
   addLanguage(lang: language): Observable<any> {
-    return this.http.post(`${this.candidateUrl}/addlang`, lang );
+    return this.http.post(`${this.candidateUrl}/addlang`, lang);
   }
 
   deleteLanguage(languageId: number): Observable<any> {
@@ -683,7 +691,7 @@ getCandidateImage(imageId: number): Observable<Blob> {
   }
   // This is not working just generated by AI
 
-  updateApplicationStatus(request:ChangeCandidateStatus): Observable<any> {
+  updateApplicationStatus(request: ChangeCandidateStatus): Observable<any> {
     return this.http.post(`${this.employerUrl}/updateApplicationStatus`, request);
   }
 
@@ -694,47 +702,47 @@ getCandidateImage(imageId: number): Observable<Blob> {
 
 
   // Uploads the logo file and returns the new image id,
-// e.g.  { "imageId": 12 }
-uploadEmployerLogo(employerId: number, file: File): Observable<any> {
- 
-  const formData = new FormData();
- 
-  formData.append('file', file);
- 
-  return this.http.post<any>(
-    `${this.employerUrl}/uploadLogo/${employerId}`,
-    formData
-  );
- 
-}
- 
-// Saves the employer (including the new companyLogoId)
-// and returns the updated employer.
-updateEmployer(employer: Employer): Observable<Employer> {
- 
-  return this.http.put<Employer>(
-    `${this.baseUrl}/employer/update`,
-    employer
-  );
- 
-}
- 
-// URL the <img> tag loads the logo from
-// getImageUrl(imageId: number): string {
- 
-//   return `${this.baseUrl}/image/${imageId}`;
- 
-// }
+  // e.g.  { "imageId": 12 }
+  uploadEmployerLogo(employerId: number, file: File): Observable<any> {
+
+    const formData = new FormData();
+
+    formData.append('file', file);
+
+    return this.http.post<any>(
+      `${this.employerUrl}/uploadLogo/${employerId}`,
+      formData
+    );
+
+  }
+
+  // Saves the employer (including the new companyLogoId)
+  // and returns the updated employer.
+  updateEmployer(employer: Employer): Observable<Employer> {
+
+    return this.http.put<Employer>(
+      `${this.baseUrl}/employer/update`,
+      employer
+    );
+
+  }
+
+  // URL the <img> tag loads the logo from
+  // getImageUrl(imageId: number): string {
+
+  //   return `${this.baseUrl}/image/${imageId}`;
+
+  // }
 
 
-getImageUrl(logoId: number): Observable<Blob> {
-  return this.http.get(
-    `${this.baseUrl}/employerLogo/${logoId}`,
-    { responseType: 'blob' }
-  );
-}
+  getImageUrl(logoId: number): Observable<Blob> {
+    return this.http.get(
+      `${this.baseUrl}/employerLogo/${logoId}`,
+      { responseType: 'blob' }
+    );
+  }
 
- 
+
 
 }
 

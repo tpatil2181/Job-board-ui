@@ -874,6 +874,8 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/companyRegistration']);
   }
 
+
+
   // goToCompanyRegister(){
   //   this.router.navigate(['/comapnyHome']);
   // }
